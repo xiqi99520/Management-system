@@ -13,4 +13,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 .git
-*.example.js
+config/*
+!config/dev.env.js
+!config/index.example.js
+!config/prod.env.js
