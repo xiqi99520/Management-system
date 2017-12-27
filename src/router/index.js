@@ -185,9 +185,9 @@ const router = new Router({
           }
         }]
       }, {// 渠道管理
-          path: 'customerMgmt',
-          component: customerMgmt,
-          name: 'customerMgmt',
+          path: 'channelMgmt',
+          component: channelMgmt,
+          name: 'channelMgmt',
           children: [{
             path: 'channelAdd',
             name: 'channelAdd',
