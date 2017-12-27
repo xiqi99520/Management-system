@@ -35,11 +35,11 @@
     </el-dialog>
 </template>
 <script>
-import { changePwd, pchangePwd } from '../service/getData'
+import { changePwd } from '../service/getData'
 let md5 = require('md5')
 export default {
   name: 'userContorl',
-  props: ['show', 'id', 'phone'],
+  props: ['show', 'phone'],
   data () {
     // 保存VUE实例
     const _this = this
@@ -75,7 +75,8 @@ export default {
           { required: true, message: '请输入旧密码', trigger: 'blur' }
         ],
         newPassword: [
-          { required: true, validator: checkNewPasswrod, trigger: 'blur' }
+          { required: true, validator: checkNewPasswrod, trigger: 'blur' },
+          { min: 6, message: '请输入至少6位字符', trigger: 'blur' }
         ],
         RePassword: [
           { required: true, validator: checkRePassword, trigger: 'blur' }
@@ -88,67 +89,39 @@ export default {
       this.$refs.modifyPassword.validate((valid) => {
         if (valid) {
           let type, message, title
-          if (this.id) {    // 登陆用户修改密码
-            changePwd(this.form)
-              .then(resp => {
-                if (resp.success) {
-                  type = 'success'
-                  title = '成功'
-                  message = '3s后请重新登录'
-                } else {
-                  title = '失败'
-                  type = 'error'
-                  message = resp.message
-                }
-              })
-              .catch(err => {                   // 错误处理
+          this.form.oldPassword = md5(this.form.oldPassword)
+          this.form.newPassword = md5(this.form.newPassword)
+          this.form.phoneNo = this.phone
+          changePwd(this.form)
+            .then(resp => {
+              if (resp.success) {
+                type = 'success'
+                title = '成功'
+                message = '3s后请重新登录'
+              } else {
                 title = '失败'
                 type = 'error'
-                message = err.message
-                console.log(err)
+                message = resp.message
+              }
+            })
+            .catch(err => {                   // 错误处理
+              title = '失败'
+              type = 'error'
+              message = err.message
+              console.log(err)
+            })
+            .then(() => {                     // 最后的用户通知
+              this.$notify({
+                title,
+                message,
+                type
               })
-              .then(() => {                     // 最后的用户通知
-                this.$notify({
-                  title,
-                  message,
-                  type
-                })
-                if (type === 'success') {
-                  this.Close(true)
-                } else {
-                  this.Close()
-                }
-              })
-          } else {  // 公共修改密码
-            this.form.oldPassword = md5(this.form.oldPassword)
-            this.form.newPassword = md5(this.form.newPassword)
-            this.form.phoneNo = this.phone
-            pchangePwd(this.form)
-              .then(resp => {
-                if (resp.success) {
-                  type = 'success'
-                  title = '成功'
-                } else {
-                  title = '失败'
-                  type = 'error'
-                  message = resp.message
-                }
-              })
-              .catch(err => {
-                title = '失败'
-                type = 'error'
-                message = err.message
-                console.log(err)
-              })
-              .then(() => {
-                this.$notify({
-                  title,
-                  message,
-                  type
-                })
+              if (type === 'success') {
+                this.handleClose(true)
+              } else {
                 this.handleClose()
-              })
-          }
+              }
+            })
         } else {
           return false
         }

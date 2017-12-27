@@ -27,7 +27,14 @@
       font-size: 14px;
     }
   }
-
+  .needs::before{
+    content: "*";
+    left: -4px;
+    top: 5px;
+    position: relative;
+    font-size: 20px;
+    color: @red;
+  }
   table {
     width: 100%;
     border-left: 1px solid @lineGray;
@@ -77,14 +84,20 @@
       text-align: center!important;
       .img {
         position: relative;
+        .pdfImg{
+          width: 100%;
+          height: 150px;
+          cursor: pointer;
+        }
         .upload {
           max-width: 100%;
           display: inline-block;
           height: 150px;
+          cursor: pointer;
         }
         .delete {
           position: absolute;
-          right: 0px;
+          right: -10px;
           top: 0px;
           cursor: pointer;
         }

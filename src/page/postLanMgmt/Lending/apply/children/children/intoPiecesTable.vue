@@ -63,7 +63,7 @@
               <td colspan="7" class="table-img-idCard" style="padding: 0">
                 <el-row>
                   <el-col :span="4" v-for="(photo, index) in idPhoto" :key="index" class="imgBox">
-                    <img :src="photo.url" alt="">
+                    <img :src="context + photo.url" alt="" @click="showBigImg(photo)">
                     <div>{{photo.type}}</div>
                   </el-col>
                 </el-row>
@@ -75,7 +75,7 @@
               <td colspan="7" class="table-img-idCard" style="padding: 0">
                 <el-row>
                   <el-col :span="3" v-for="(photo, index) in hoursePhoto" :key="index" class="imgBox">
-                    <img :src="photo.url" alt="">
+                    <img :src="context + photo.url" alt="" @click="showBigImg(photo)">
                     <div>房产证-{{index + 1}}</div>
                   </el-col>
                 </el-row>
@@ -108,7 +108,7 @@
           <table cellspacing="0" cellpadding="10">
             <tr>
               <td>贷款需求金额</td>
-              <td>{{formatter.changeMoney(loanApply.applyMoney, 100)}}</td>
+              <td>&yen;{{formatter.changeMoney(loanApply.applyMoney, 100)}}</td>
               <td>贷款期限</td>
               <td>{{loanApply.loanMonth + '个月'}}</td>
               <td>关心问题</td>
@@ -171,11 +171,11 @@
           <table cellspacing="0" cellpadding="10">
             <tr>
               <td>链家评估价</td>
-              <td>{{formatter.changeMoney(lianjia, 100)}}</td>
-              <td>第三方估价1</td>
-              <td>{{formatter.changeMoney(shilian, 100)}}</td>
-              <td>第三方估价2</td>
-              <td>{{formatter.changeMoney(renda, 100)}}</td>
+              <td>{{formatter.changeMoney(lianjia, 100, '￥')}}</td>
+              <td>世联评估价</td>
+              <td>{{formatter.changeMoney(shilian, 100, '￥')}}</td>
+              <td>仁达评估价</td>
+              <td>{{formatter.changeMoney(renda, 100, '￥')}}</td>
               <td></td>
               <td></td>
             </tr>
@@ -183,7 +183,7 @@
           <!-- 系统评估预授信额度 -->
           <el-row class="table-summary font-red">
             <el-col :span="24">
-              {{'系统评估预授信额度为：' + formatter.money(loanApply.predictMoney) + '万元'}}
+              {{'房产估值：' + formatter.money(loanApply.predictMoney) + '万元'}}
             </el-col>
           </el-row>
         </div>
@@ -281,7 +281,7 @@
   </el-form>
 </template>
 <script>
-import { formatter } from '@/util/utils'
+import { formatter, showBigImg } from '@/util/utils'
 export default {
   name: 'intoPiecesTable',
   props: ['data'],
@@ -291,6 +291,7 @@ export default {
       houseShow: true,
       systemShow: true,
       bigDataShow: true,
+      context: process.env.CONTEXT,
       idPhoto: [],  // 身份证照片
       hoursePhoto: [], // 房产证照片
       loanApply: {},
@@ -301,12 +302,13 @@ export default {
       relateLoanApplies: {},
       managerOperation: {},
       listOperationHistory: {},
-      lianjia: '-',
-      shilian: '-',
-      renda: '-',
+      lianjia: '',
+      shilian: '',
+      renda: '',
       listLoseCreditExecutedUser: {},
       listExecutedUser: {},
-      formatter: formatter
+      formatter: formatter,
+      showBigImg: showBigImg
     }
   },
   methods: {
@@ -344,9 +346,19 @@ export default {
         }
       })
 
-      this.lianjia = this.bigDataResult.houseValuation[0].houseTotalValue
-      this.shilian = this.bigDataResult.houseValuation[1].houseTotalValue
-      this.renda = this.bigDataResult.houseValuation[2].houseTotalValue
+      this.bigDataResult.houseValuation.map(item => {
+        if (item.source === '链家') {
+          this.lianjia = item.houseTotalValue
+        } else if (item.source === '世联') {
+          this.shilian = item.houseTotalValue
+        } else if (item.source === '仁达') {
+          this.renda = item.houseTotalValue
+        }
+      })
+
+      // this.lianjia = this.bigDataResult.houseValuation[0].houseTotalValue
+      // this.shilian = this.bigDataResult.houseValuation[1].houseTotalValue
+      // this.renda = this.bigDataResult.houseValuation[2].houseTotalValue
       this.listLoseCreditExecutedUser = value.bigDataResult.listLoseCreditExecutedUser[0]
       this.listExecutedUser = value.bigDataResult.listExecutedUser[0]
     }
@@ -366,7 +378,7 @@ export default {
 .no-border-bottom {
   border-bottom: none;
 }
-.imgBox{
+.imgBox {
   padding: 5px;
 }
 </style>

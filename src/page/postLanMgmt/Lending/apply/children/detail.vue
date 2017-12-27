@@ -19,7 +19,7 @@
             <el-col :span="12">
               <p class="detail-title">
                 <span>{{title}}放款申请信息</span>
-              </p> 
+              </p>
             </el-col>
             <el-col :span="12" class="detail-title-btn">
               <el-button type="primary" @click="handleBack">返回</el-button>
@@ -27,6 +27,14 @@
           </el-row>
         </el-header>
         <el-main id="detailMain" @scroll.native="onScroll">
+          <!-- 产品信息 -->
+          <product-table
+            ref="products"
+            :data="tableData.loanDetail"
+            :other="tableData.other"
+            @on-save="handleSave"
+            @on-query="handleShowDialog('query')">
+          </product-table>
           <!-- 服务人员信息 -->
           <service-table
             ref="servants"
@@ -57,14 +65,14 @@
             @on-save="handleSave">
           </common-borrower-table>
           <!-- 担保人基本信息 -->
-          <guarantor-table 
+          <guarantor-table
             ref="guarantor"
             :data="tableData.guarantor"
             :other="tableData.other"
             @on-save="handleSave">
           </guarantor-table>
           <!-- 放还款信息 -->
-          <repayment-table 
+          <repayment-table
             ref="repayment"
             :data="tableData.loanDetail"
             :other="tableData.other"
@@ -72,7 +80,7 @@
             @on-save="handleSave">
           </repayment-table>
           <!-- 影像资料 -->
-          <image-table 
+          <image-table
             ref="image"
             :data="tableData.photo"
             :upload="upData"
@@ -86,22 +94,22 @@
               <el-button v-if="tableData.other.write" type="primary" @click="handleComplete" :loading="loading">完成录入</el-button>
               <template v-if="render3Btn()">
                 <el-button type="primary"
-                  v-if="formatter.renderBtn('APPLY_AUDIT_DENY')" 
-                  @click="handleShowDialog('refuse')" 
+                  v-if="formatter.renderBtn('APPLY_AUDIT_DENY')"
+                  @click="handleShowDialog('refuse')"
                   :loading="loading">
                   审核不通过
                 </el-button>
-                <el-button type="primary" 
-                  v-if="formatter.renderBtn('REJECT_APPLY_FILL')" 
-                  @click="handleShowDialog('reject')" 
+                <el-button type="primary"
+                  v-if="formatter.renderBtn('REJECT_APPLY_FILL')"
+                  @click="handleShowDialog('reject')"
                   :loading="loading">
                   驳回补件
                 </el-button>
-                <el-button type="primary" 
-                  v-if="formatter.renderBtn('APPLY_AUDIT_PASS')" 
-                  @click="handleShowDialog('pass')" 
+                <el-button type="primary"
+                  v-if="formatter.renderBtn('APPLY_AUDIT_PASS')"
+                  @click="handleShowDialog('pass')"
                   :loading="loading">
-                  放款审核通过
+                  审核通过
                 </el-button>
               </template>
             </el-col>
@@ -113,6 +121,7 @@
 </template>
 <script>
 import serviceTable from './children/serviceTable'
+import productTable from './children/productTable'
 import intoPiecesTable from './children/intoPiecesTable'
 import mainBorrowerTable from './children/mainBorrowerTable'
 import commonBorrowerTable from './children/commonBorrowerTable'
@@ -127,6 +136,8 @@ import {
 export default {
   name: 'lendingApplyDetail',
   components: {
+    // 产品信息 （V1.3版本新增）
+    productTable,
     // 服务人员信息
     serviceTable,
     // 进件详情
@@ -152,9 +163,10 @@ export default {
       stepActive: 0,  // 当前激活导航
       title: '查看',
       automaticStep: '共同借款人基本信息',
-      steps: ['服务人员信息', '进件详情', '主借款人基本信息', '共同借款人基本信息', '担保人基本信息', '放还款信息', '影像资料'], // 左侧导航数据
+      steps: ['产品信息', '服务人员信息', '进件详情', '主借款人基本信息', '共同借款人基本信息', '担保人基本信息', '放还款信息', '影像资料'], // 左侧导航数据
       offsetTops: [], // 表格离顶部的偏移量
       tableData: { // 表格数据
+        products: '',
         servants: {},
         loanApplyDetail: {},
         mainBorrower: {},
@@ -178,7 +190,10 @@ export default {
       } else {
         this.title = '查看'
       }
+      // 产品信息
+      this.tableData.products = {
 
+      }
       // 服务人员信息
       this.tableData.servants = value.servants || {}
       // 服务人员信息-拒绝原因
@@ -191,7 +206,7 @@ export default {
       // 服务人员信息-受理专员
       if (this.tableData.loanApplyDetail.listOperationHistory) {
         this.tableData.loanApplyDetail.listOperationHistory.map(item => {
-          if (item.operation === '受理专员跟进') {
+          if (item.operation === '评房专员评房') {
             this.tableData.servants.acceptorName = item.operatorName
           }
         })
@@ -213,20 +228,19 @@ export default {
       }
 
       // 共同借款人基本信息
-      this.tableData.commonBorrower = value.commonBorrower || {}
-      if (!value.commonBorrowe && !value.other.write) { // 共同借款人信息为空
+      this.tableData.commonBorrower = value.commonBorrower || []
+      if (!this.tableData.commonBorrower.length && !value.other.write) { // 共同借款人信息为空
         this.renderCommonBorrower = false
         if (this.steps.includes(this.automaticStep)) {
           this.steps.splice(3, 1)
         }
-        this.handleCollapse()
       } else {
         this.renderCommonBorrower = true
         if (!this.steps.includes(this.automaticStep)) {
           this.steps.splice(3, 0, this.automaticStep)
         }
-        this.handleCollapse()
       }
+      this.handleCollapse()
 
       // 担保人基本信息
       this.tableData.guarantor = value.guarantor || {}
@@ -320,17 +334,30 @@ export default {
       })
       this.mapping = false
     },
-    handleBack () { // 关闭详情页
-      this.$emit('on-close', 'detail')
+    handleBack (refresh = false) { // 关闭详情页
+      this.$emit('on-close', 'detail', refresh)
       document.querySelector('#detailMain').scrollTop = 0
       this.stepActive = 0
     },
     handleSave (area, entity) { // 保存区域数据
       autoWrite(this.tableData.other.applyId, area, entity)
+        .then(resp => {
+          if (!resp.success) {
+            throw new Error(resp.message)
+          }
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: '保存失败',
+            message: err.name === 'Error' ? err.message : err.response.data.message
+          })
+        })
     },
     handleComplete () { // 完成录入
       let complete = []
-      for (let ref of Object.values(this.$refs)) {
+      for (let [name, ref] of Object.entries(this.$refs)) {
+        console.log(name)
+      // for (let ref of Object.values(this.$refs)) {
         if (ref.$refs.form) {
           if (ref.$refs.form.length) {
             ref.$refs.form.map(form => {
@@ -348,7 +375,7 @@ export default {
         }
       }
       complete = [...new Set(complete)]
-      if (complete.length !== 2 && complete[0]) {
+      if (complete.length !== 2 && complete[0]) {   // 验证完成开始录入
         let type, message, title
         this.loading = true
         completeEntering(this.tableData.other.applyId)
@@ -375,7 +402,7 @@ export default {
               type
             })
             if (type === 'success') {
-              this.$router.back()
+              this.handleBack(true)
             }
           })
       } else {

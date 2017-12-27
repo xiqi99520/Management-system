@@ -83,7 +83,7 @@
           prop="applyMoney"
           label="贷款申请金额">
           <template slot-scope="scope">
-            <span>{{ formatter.changeMoney(scope.row.applyMoney, 100) }}</span>
+            <span>&yen;{{ formatter.changeMoney(scope.row.applyMoney, 100) }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -191,6 +191,8 @@
       :data="query"
       @on-close="handleDialogClose">
     </under-cost-dialog>
+    <!--展示大图-->
+    <big-img></big-img>
   </el-container>
 </template>
 <script>
@@ -206,6 +208,7 @@ import lendingApplyDetail from './children/detail'
 import loanApplyDialog from './children/applyDialog'
 import imgDialog from './children/imgDialog'
 import underCostDialog from './children/underCostDialog'
+import bigImg from '../../../../components/bigImg'
 import { formatter, keydownSubmit } from '@/util/utils'
 export default {
   name: 'lendingApply',
@@ -266,15 +269,17 @@ export default {
       refuse: { // 拒绝数据
         key: 'refuse',
         show: false,
+        title: '提示',
         select: '审核意见(不通过理由)',
         note: '补充说明',
-        desc: '确认不予放款后,该单业务立即终止.是否确认不予放款',
+        desc: '确认不予放款后，该单业务立即终止。是否确认不予放款？',
         submitText: '审核不通过',
         sbumitFunc: auditRefuse
       },
       reject: { // 驳回数据
         key: 'reject',
         show: false,
+        title: '提示',
         note: '审核意见(补件提示)：',
         desc: '驳回补件后将由相关人员对录入信息进行修改、补充等，可再一次进行提交操作，是否确认驳回补件',
         submitText: '驳回补件',
@@ -283,6 +288,7 @@ export default {
       pass: { // 通过数据
         key: 'pass',
         show: false,
+        title: '是否确认提交放款申请？',
         note: '审核意见',
         desc: '是否确认提交放款申请?',
         submitText: '确认提交',
@@ -308,7 +314,9 @@ export default {
     // 影像资料
     imgDialog,
     // 下户费
-    underCostDialog
+    underCostDialog,
+    // 展示大图
+    bigImg
   },
   beforeMount () {
     // 预加载表格数据
@@ -319,9 +327,6 @@ export default {
           this.stateOptions = this.stateOptions.concat(resp.data.loanApplyState)
         }
       })
-  },
-  mounted () {
-    keydownSubmit(this.handleSearch)
   },
   beforeRouteLeave (to, from, next) {
     this.detail.show = false
@@ -343,10 +348,21 @@ export default {
           }
         })
       }
+    },
+    $route: {
+      handler: function (val, oldVal) {
+        if (val.name === 'lendingApply') {
+          this.getTableData()
+        }
+      },
+      deep: true
     }
   },
   methods: {
     getTableData () { // 查询数据
+      if (this.form.dateRange === null) {
+        this.form.dateRange = ''
+      }
       getloanApplyData(this.form, this.currentPage, this.pageSize)
         .then(resp => {
           if (resp.success) {
@@ -445,10 +461,12 @@ export default {
         this[dialog].data = data
       }
     },
-    handleDialogClose (dialog, refresh = false) { // 关闭对话框
+    handleDialogClose (dialog, refresh = false, detailClose = false) { // 关闭对话框
       this[dialog].show = false
+      if (detailClose) {
+        this.detail.show = false
+      }
       if (refresh) {  // 提交成功后刷新表格
-        this.detailShow = false
         this.getTableData()
       }
     },

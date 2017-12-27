@@ -6,7 +6,7 @@
     <el-form-item class="detailForm-item">
       <table cellspacing="0" cellpadding="10">
         <tr>
-          <td>担保人姓名</td>
+          <td :class="{ needs:other.write}">担保人姓名</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="name">
               <el-input
@@ -23,7 +23,7 @@
           </td>
           <td>担保人证件类型</td>
           <td>身份证</td>
-          <td>担保人证件号码</td>
+          <td :class="{ needs:other.write}">担保人证件号码</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="certificateNo">
               <el-input
@@ -37,12 +37,12 @@
             </el-form-item>
             <span v-else>{{Data.certificateNo}}</span>
           </td>
-          <td>担保方式</td>
+          <td :class="{ needs:other.write}">担保方式</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="guarantyMode">
               <el-select
                 placeholder="请选择担保方式"
-                class="table-input" 
+                class="table-input"
                 v-model="Data.guarantyMode"
                 @change="handlerBlur('guarantyMode')">
                 <el-option
@@ -57,7 +57,7 @@
           </td>
         </tr>
         <tr>
-          <td>担保金额</td>
+          <td :class="{ needs:other.write}">担保金额</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="guarantyMoney">
              <el-input
@@ -68,14 +68,15 @@
                 :maxlength="20"
                 v-model="Data.guarantyMoney"
                 @blur="handlerBlur('guarantyMoney')">
+                <template slot="prepend">&yen;</template>
               </el-input>
             </el-form-item>
-            <span v-else>{{Data.guarantyMoney}}</span>
+            <span v-else>{{formatter.changeMoney(Data.guarantyMoney, 1, '￥')}}</span>
           </td>
-          <td>担保关系</td>
+          <td :class="{ needs:other.write}">担保关系</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="guarantyRelation">
-              <el-select 
+              <el-select
                 placeholder="请选择担保关系"
                 class="table-input"
                 v-model="Data.guarantyRelation"
@@ -93,7 +94,7 @@
           <td>与主借款人关系</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="lenderRelation">
-              <el-select 
+              <el-select
                 placeholder="请选择关系"
                 class="table-input"
                 v-model="Data.lenderRelation"
@@ -153,7 +154,8 @@ export default {
         // lenderRelation: [
         //   { required: true, message: '请选择与主借款人关系', trigger: 'change' }
         // ]
-      }
+      },
+      formatter: formatter
     }
   },
   created () {
@@ -166,13 +168,12 @@ export default {
   },
   methods: {
     handlerBlur (key) {
+      if (!this.Data[key]) {
+        return
+      }
       if (key === 'guarantyMoney') {
-        if (this.Data[key].indexOf('￥') === -1) {
-          this.Data[key] = formatter.changeMoney(this.Data[key], 1)
-        }
-        if (parseInt(this.Data[key].substring(1, this.Data[key].length)) === 0) {
-          this.error('担保金额不能为0')
-          return
+        if (parseInt(this.Data[key]) === 0) {
+          return this.error('担保金额不能为0')
         }
       }
       const entity = {

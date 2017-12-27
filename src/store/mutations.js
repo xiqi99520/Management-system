@@ -5,7 +5,8 @@ import {
   SET_MENU,
   SET_BTN,
   LOG_OUT,
-  SET_IMG_DIALOG
+  SET_IMG_DIALOG,
+  SET_BIGIMG
 } from './mutation-types'
 
 import {
@@ -43,6 +44,7 @@ export default {
   },
   [LOG_OUT] (state) {
     window.sessionStorage.clear()
+    window.location.reload()
   },
   [SET_BTN] (state, btns) {
     state.btns = btns
@@ -50,5 +52,9 @@ export default {
   },
   [SET_IMG_DIALOG] (state, value) {
     state.imgDialog = value
+  },
+  [SET_BIGIMG] (state, bigImg) {
+    state.bigImg = bigImg
+    setStore('bigImg', bigImg)
   }
 }

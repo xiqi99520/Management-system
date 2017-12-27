@@ -38,21 +38,10 @@
           </el-input>
         </el-form-item>
         <!-- 修改用户专有 -->
-        <template v-if="update">
-          <!-- 当前角色 -->
-          <!--<el-form-item label="当前角色">-->
-            <!--<el-input-->
-              <!--type="text"-->
-              <!--auto-complete="off"-->
-              <!--:value="form.roleName"-->
-              <!--readonly>-->
-            <!--</el-input>-->
-          <!--</el-form-item>-->
-          <!-- 重置密码 -->
-          <el-form-item v-if="update" label="重置密码">
-          <el-button type="primary" @click="showReset = true">重置密码</el-button>
-          </el-form-item>
-        </template>
+        <!-- 重置密码 -->
+        <el-form-item v-if="update" label="重置密码">
+        <el-button type="primary" @click="showReset = true">重置密码</el-button>
+        </el-form-item>
         <template v-else>
           <!-- 密码 -->
           <el-form-item label="密码" class="userdialog-form">
@@ -72,31 +61,21 @@
           </el-form-item>
         </template>
         <!-- 选择角色 -->
-        <el-form-item label="用户角色" prop="rolelist">
-          <!--<el-select v-model="form.roleId" placeholder="请选择角色" style="width:100%;">-->
-          <!--<el-option-->
-          <!--v-for="(option, index) in roleData"-->
-          <!--v-if="!notSelectRoles.includes(option.name)"-->
-          <!--:key="index"-->
-          <!--:label="option.name"-->
-          <!--:value="String(option.roleId)">-->
-          <!--</el-option>-->
-          <!--</el-select>-->
-          <el-input
-            placeholder="请输入用户角色"
-            type="text"
-            auto-complete="off"
-            v-model="form.rolelist"
-            @change="searchrole()">
-          </el-input>
-        </el-form-item>
-        <el-form-item>
+        <el-form-item label="选择角色">
           <el-transfer
             v-model="form.rolelist"
-            :data="data"
+            :data="roles"
+            :filterable="true"
             :titles="['全部角色', '已选角色']"
+            :props="{
+              key: 'roleName',
+              label: 'roleName'
+            }"
             class="userdialog">
           </el-transfer>
+        </el-form-item>
+        <el-form-item label="用户角色" style="text-align:left;" prop="rolelist">
+          <el-tag class="user-tag" v-for="name in form.rolelist" :key="name">{{name}}</el-tag>
         </el-form-item>
         <!-- 状态 -->
         <el-form-item label="状态" prop="state">
@@ -111,7 +90,6 @@
         <el-button type="primary" @click="submitUserInfoForm('form')">保 存</el-button>
       </span>
     </el-dialog>
-
     <!-- 重置密码 -->
     <el-dialog
       title="确认重置密码?"
@@ -133,23 +111,22 @@
 <script>
 import { valiData } from '../../../../util/utils'
 import {
-  getRoleList,
   doNewUser,
   doUpdateUser,
   doRsetUserPwd
 } from '../../../../service/getData'
 export default {
-  name: 'user-dialog',
-  props: ['title', 'show', 'userData', 'roleData'],
+  name: 'userDialog',
+  props: ['title', 'show', 'userData', 'roles'],
   data () {
     return {
-      data: this.roleData,
       loading: false,                        // 用户信息对话框加载中
       Show: this.show,                       // 显示用户信息对话框
       showReset: false,                      // 显示重置密码对话框
       resetLoading: false,                   // 重置密码对话框加载中
       update: this.title === '编辑用户信息',   // 当前为编辑用户信息
       notSelectRoles: ['普通客户', '客户经理'], // 不允许在对话框角色下拉菜单中出现的角色
+      roleData: [],
       form: {                                // 表单数据
         role: [],
         rolelist: [],
@@ -171,24 +148,22 @@ export default {
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
         rolelist: [
-          { type: 'array', required: true, message: '请选择角色', trigger: 'blur' }
+          { type: 'array', required: true, message: '请选择角色', trigger: 'change' }
         ]
       }
     }
   },
-//  beforeMount (){
-//    console.log(this.roleData)
-//  },
   methods: {
     submitUserInfoForm (formName) {               // 表单条件检测、提交、错误处理
-      console.log(this.data)
-      for(let i = 0;i < this.roleData.length;i++){
-        if(this.form.rolelist.includes(this.roleData[i].roleName)){
-          this.form.role.push(this.roleData[i])
-        }
-      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.form.rolelist.map(name => {  // 添加用户到表单中
+            this.roles.map(role => {
+              if (role.roleName === name) {
+                this.form.role.push(role)
+              }
+            })
+          })
           let type, message, title
           this.loading = true
           if (this.update) {
@@ -256,13 +231,8 @@ export default {
       })
     },
     Close (refresh = false) {                     // 用户信息模态框隐藏
-      console.log(this.form.rolelist)
       this.$emit('on-close', this.update, refresh)
-      this.$refs['form'].resetFields()
-      this.form.role = []
-      this.form.rolelist = []
-      console.log(this.data)
-      console.log(this.roleData)
+      this.$refs['form'].clearValidate()
     },
     resetPassword () {
       let type, message, title
@@ -297,75 +267,48 @@ export default {
           this.showReset = false
           this.Close(true)
         })
-    },
-    searchrole () {
-      getRoleList(this.form.rolelist) // 获取所有角色
-        .then(resp => {
-          if (resp.success) {
-            let roles, datas
-            roles = []
-            datas = resp.data
-            for(let i = 0; i < datas.length; i++){
-              roles.push({
-                key: datas[i].roleName,
-                label: datas[i].roleName
-              })
-            }
-            this.data = roles
-            console.log(this.roleData)
-          }
-        })
-      this.form.rolelist = []
     }
   },
   watch: {
     show (value) {                                // 监控显示用户信息对话框
       this.Show = value
     },
-    userData (value) {                            // 初始化可编辑的用户信息
-      this.form.userId = value.userId
-      //this.form.role = value.authorities[0].name
-      this.form.username = value.username
-      this.form.phone = value.phoneNo
-      this.form.state = value.state
-      this.form.operateNo = value.operateNo
-      this.form.organizationId = value.organizationId
-      for(let i = 0; i < value.authorities.length; i++){
-        this.form.rolelist.push(value.authorities[i].name)
-      }
-      this.form.roleList = value.authorities[0].roleName
-      this.form.roleName = value.authorities[0].name
-    },
-    roleData (value) {
-      const roles = []
-      for(let i = 0; i < value.length; i++){
-        roles.push({
-          key: value[i].roleName,
-          label: value[i].roleName
+    userData: {
+      handler (value) {                            // 初始化可编辑的用户信息
+        this.form.role = []
+        this.form.rolelist = []
+        this.form.userId = value.userId
+        this.form.username = value.username
+        this.form.phone = value.phoneNo
+        this.form.state = value.state
+        this.form.operateNo = value.operateNo
+        this.form.organizationId = value.organizationId
+        value.authorities.map(role => {
+          this.form.rolelist.push(role.name)
         })
-      }
-      this.data = roles
-    },
-    rolelist (value) {
-      this.form.rolelist = value
+      },
+      deep: true
     }
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .userdialog {
-  margin-top: 18px;
+  margin-top: 8px;
   text-align: left;
 }
 
-.userdialog-form{
-  .el-input__inner{
-      color:#a7a7a7;
-    }
-  .title-align{
+.userdialog-form {
+  .el-input__inner {
+    color: #a7a7a7;
+  }
+  .title-align {
     text-align: left;
   }
 }
 
+.user-tag {
+  margin-right: 10px;
+}
 </style>

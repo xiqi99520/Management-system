@@ -11,7 +11,7 @@
         <el-row class="collapse-row collapse-row-top" :class="{'collapse-row-bottom': !show}">
           <el-col :span="12">共同借款人信息{{idx + 1}}</el-col>
           <el-col :span="12">
-            <el-button type="text" @click="handleRemoveUser(item.mainly, idx)">删除</el-button>
+            <el-button type="text" v-if="other.write" @click="handleRemoveUser(item.mainly, idx)">删除</el-button>
             <el-button type="text" @click="handleCollapse('show')">{{collapseText(show)}}</el-button>
           </el-col>
         </el-row>
@@ -19,7 +19,7 @@
           <div v-show="show">
             <table class="" cellspacing="0" cellpadding="10">
               <tr>
-                <td>借款人姓名</td>
+                <td :class="{ needs:other.write}">借款人姓名</td>
                 <td>
                   <el-form-item v-if="other.write" prop="name">
                     <el-input
@@ -35,7 +35,7 @@
                 </td>
                 <td>证件类型</td>
                 <td>身份证</td>
-                <td>证件号码</td>
+                <td :class="{ needs:other.write}">证件号码</td>
                 <td>
                   <el-form-item v-if="other.write" prop="certificateNo">
                     <el-input
@@ -49,7 +49,7 @@
                   </el-form-item>
                   <span v-else>{{item.certificateNo}}</span>
                 </td>
-                <td>联系电话</td>
+                <td :class="{ needs:other.write}">联系电话</td>
                 <td>
                   <el-form-item v-if="other.write" prop="contactNo">
                     <el-input
@@ -65,7 +65,7 @@
                 </td>
               </tr>
               <tr>
-                <td>工作单位</td>
+                <td :class="{ needs:other.write}">工作单位</td>
                 <td>
                   <el-form-item v-if="other.write" prop="organizationAddress">
                     <el-input

@@ -8,7 +8,7 @@
         <tr>
           <td>借款人姓名</td>
           <td>{{Data.name}}</td>
-          <td>借款人类型</td>
+          <td :class="{ needs:other.write}">借款人类型</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="type">
               <el-select
@@ -24,7 +24,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <span v-else>{{Data.name}}</span>
+            <span v-else>{{Data.type}}</span>
           </td>
           <td>证件类型</td>
           <td>身份证</td>
@@ -32,7 +32,7 @@
           <td>{{Data.idCardNo}}</td>
         </tr>
         <tr>
-          <td>联系电话</td>
+          <td :class="{ needs:other.write}">联系电话</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="contactNo">
               <el-input
@@ -47,7 +47,7 @@
           </td>
           <td>手机电话</td>
           <td>{{Data.phoneNo}}</td>
-          <td>邮政编码</td>
+          <td :class="{ needs:other.write}">邮政编码</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="postalCode">
               <el-input
@@ -60,7 +60,7 @@
             </el-form-item>
             <span v-else>{{Data.postalCode}}</span>
           </td>
-          <td>通讯地址</td>
+          <td :class="{ needs:other.write}">通讯地址</td>
           <td class="input">
             <template v-if="other.write">
               <el-form-item prop="contact">
@@ -84,11 +84,11 @@
                 </el-input>
               </el-form-item>
             </template>
-            <span v-else>{{Data.contactProvince}}</span>
+            <span v-else>{{Data.contactProvince || ''}}{{Data.contactCity || ''}}{{Data.contactAddress || ''}}</span>
           </td>
         </tr>
         <tr>
-          <td>婚姻情况</td>
+          <td :class="{ needs:other.write}">婚姻情况</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="maritalState">
               <el-select
@@ -106,7 +106,7 @@
             </el-form-item>
             <span v-else>{{Data.maritalState}}</span>
           </td>
-          <td>学历</td>
+          <td :class="{ needs:other.write}">学历</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="educationalBackground">
               <el-select
@@ -124,7 +124,7 @@
             </el-form-item>
             <span v-else>{{Data.educationalBackground}}</span>
           </td>
-          <td>职业</td>
+          <td :class="{ needs:other.write}">职业</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="career">
               <el-select
@@ -142,7 +142,7 @@
             </el-form-item>
             <span v-else>{{Data.career}}</span>
           </td>
-          <td>个人月收入</td>
+          <td :class="{ needs:other.write}">个人月收入</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="monthIncome">
               <el-input
@@ -151,14 +151,14 @@
                 placeholder="请输入"
                 v-model="Data.monthIncome"
                 @blur="handlerBlur('monthIncome')">
-                <template slot="append">元</template>
+                <template slot="prepend">&yen;</template>
               </el-input>
             </el-form-item>
-            <span v-else>{{Data.monthIncome}}</span>
+            <span v-else>{{formatter.changeMoney(Data.monthIncome, 1, '￥')}}</span>
           </td>
         </tr>
         <tr>
-          <td>单位名称</td>
+          <td :class="{ needs:other.write}">单位名称</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="organization">
               <el-input
@@ -171,7 +171,7 @@
             </el-form-item>
             <span v-else>{{Data.organization}}</span>
           </td>
-          <td>单位所属行业</td>
+          <td :class="{ needs:other.write}">单位所属行业</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="organizationDomain">
               <el-select
@@ -189,7 +189,7 @@
             </el-form-item>
             <span v-else>{{Data.organizationDomain}}</span>
           </td>
-          <td>单位地址</td>
+          <td :class="{ needs:other.write}">单位地址</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="organizationAddress">
               <el-input
@@ -202,7 +202,7 @@
             </el-form-item>
             <span v-else>{{Data.organizationAddress}}</span>
           </td>
-          <td>单位邮政编码</td>
+          <td :class="{ needs:other.write}">单位邮政编码</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="organizationPostalCode">
               <el-input
@@ -217,12 +217,12 @@
           </td>
         </tr>
         <tr>
-          <td>本单位工作起始年份</td>
+          <td :class="{ needs:other.write}">本单位工作起始年份</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="enterOrganizationYear">
               <el-date-picker
                 class="table-input"
-                v-model="Data.enterOrganizationYear"
+                v-model="enterOrganizationYear"
                 align="right"
                 size="mini"
                 type="year"
@@ -233,7 +233,7 @@
             </el-form-item>
             <span v-else>{{Data.enterOrganizationYear}}</span>
           </td>
-          <td>本人职务</td>
+          <td :class="{ needs:other.write}">本人职务</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="positionInOrganization">
               <el-select
@@ -251,7 +251,7 @@
             </el-form-item>
             <span v-else>{{Data.positionInOrganization}}</span>
           </td>
-          <td>本人职称</td>
+          <td :class="{ needs:other.write}">本人职称</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="professionalTitle">
               <el-select
@@ -269,54 +269,60 @@
             </el-form-item>
             <span v-else>{{Data.professionalTitle}}</span>
           </td>
-          <td>户籍地址</td>
+          <td :class="{ needs:other.write}">户籍地址</td>
           <td class="input">
-            <el-form-item v-if="other.write" prop="family">
-              <el-cascader
-                class="table-input"
-                placeholder="省/自治区/直辖市"
-                :options="city"
-                :props="cascaderProps"
-                v-model="family"
-                @active-item-change="handleItemChange"
-                @change="handlerAddress('family')">
-              </el-cascader>
-            </el-form-item>
-            <el-form-item v-if="other.write" prop="familyAddress">
-              <el-input
-                class="table-input"
-                size="mini"
-                placeholder="详细地址"
-                v-model="Data.familyAddress"
-                @blur="handlerBlur('familyAddress')">
-              </el-input>
-            </el-form-item>
+            <template v-if="other.write">
+              <el-form-item prop="family">
+                <el-cascader
+                  class="table-input"
+                  placeholder="省/自治区/直辖市"
+                  :options="city"
+                  :props="cascaderProps"
+                  v-model="family"
+                  @active-item-change="handleItemChange"
+                  @change="handlerAddress('family')">
+                </el-cascader>
+              </el-form-item>
+              <el-form-item prop="familyAddress">
+                <el-input
+                  class="table-input"
+                  size="mini"
+                  placeholder="详细地址"
+                  v-model="Data.familyAddress"
+                  @blur="handlerBlur('familyAddress')">
+                </el-input>
+              </el-form-item>
+            </template>
+            <span v-else>{{Data.familyProvince || ''}}{{Data.familyCity || ''}}{{Data.familyAddress || ''}}</span>
           </td>
         </tr>
         <tr>
           <td>家庭住址</td>
           <td class="input">
-            <el-form-item v-if="other.write">
-                <el-cascader
+            <template v-if="other.write">
+              <el-form-item>
+                  <el-cascader
+                    class="table-input"
+                    style="width: 100%;"
+                    placeholder="省/自治区/直辖市"
+                    :options="city"
+                    :props="cascaderProps"
+                    v-model="home"
+                    @active-item-change="handleItemChange"
+                    @change="handlerAddress('home')">
+                  </el-cascader>
+                </el-form-item>
+              <el-form-item>
+                <el-input
                   class="table-input"
-                  style="width: 100%;"
-                  placeholder="省/自治区/直辖市"
-                  :options="city"
-                  :props="cascaderProps"
-                  v-model="home"
-                  @active-item-change="handleItemChange"
-                  @change="handlerAddress('home')">
-                </el-cascader>
+                  size="mini"
+                  placeholder="详细地址"
+                  v-model="Data.homeAddress"
+                  @blur="handlerBlur('homeAddress')">
+                </el-input>
               </el-form-item>
-            <el-form-item v-if="other.write" prop="homeAddress">
-              <el-input
-                class="table-input"
-                size="mini"
-                placeholder="详细地址"
-                v-model="Data.homeAddress"
-                @blur="handlerBlur('homeAddress')">
-              </el-input>
-            </el-form-item>
+            </template>
+            <span v-else>{{Data.homeProvince || ''}}{{Data.homeCity || ''}}{{Data.homeAddress || ''}}</span>
           </td>
           <td>家庭邮编</td>
           <td class="input">
@@ -352,7 +358,7 @@
   </el-form>
 </template>
 <script>
-import { valiData } from '@/util/utils'
+import { formatter, valiData } from '@/util/utils'
 import {
   getDict,
   getSubLocation
@@ -362,7 +368,7 @@ export default {
   props: ['data', 'other'],
   data () {
     return {
-      date: '2014',
+      enterOrganizationYear: '',
       show: false,
       address: ['contact', 'family', 'home'], // 初始化地址
       contact: [], // 通讯地址数据
@@ -379,6 +385,7 @@ export default {
         'positionInOrganization', // 本人职务
         'professionalTitle' // 本人职称
       ],
+      canEmptyKey: ['homeAddress', 'homePostalCode', 'homePhone'],
       options: {}, // 下拉菜单选项
       cascaderProps: { // 城市级联配置
         value: 'locationId',
@@ -387,10 +394,12 @@ export default {
       Data: this.data, // 内部继承数据
       rules: {  // 表单验证
         contactNo: [
-          { required: true, validator: valiData.homePhoneNumber, trigger: 'blur' }
+          { required: true, message: '请输入联系电话', trigger: 'blur' },
+          { validator: valiData.homePhoneNumber, trigger: 'blur' }
         ],
         postalCode: [
-          { required: true, validator: valiData.postNumber, trigger: 'blur' }
+          { required: true, message: '请输入邮政编码', trigger: 'blur' },
+          { validator: valiData.postNumber, trigger: 'blur' }
         ],
         contact: [
           { type: 'array', required: true, message: '请选择地区', trigger: 'change' }
@@ -423,7 +432,7 @@ export default {
           { required: true, validator: valiData.postNumber, trigger: 'blur' }
         ],
         enterOrganizationYear: [
-          { type: 'date', required: true, validator: valiData.getYear, trigger: 'change' }
+          { type: 'date', validator: valiData.getYear, trigger: 'change' }
         ],
         positionInOrganization: [
           { required: true, message: '请选择职务', trigger: 'change' }
@@ -440,19 +449,20 @@ export default {
         // home: [
         //   { type: 'array', required: true, message: '请选择家庭住址', trigger: 'blur' }
         // ],
-        homeAddress: [
-          { message: '请输入详细住址', trigger: 'blur' }
-        ],
-        homePostalCode: [
-          { validator: valiData.postNumber, trigger: 'blur' }
-        ],
-        homePhone: [
-          { validator: valiData.homePhoneNumber, trigger: 'blur' }
-        ],
+        // homeAddress: [
+        //   { message: '请输入详细住址', trigger: 'blur' }
+        // ],
+        // homePostalCode: [
+        //   { validator: valiData.postNumber, trigger: 'blur' }
+        // ],
+        // homePhone: [
+        //   { validator: valiData.homePhoneNumber, trigger: 'blur' }
+        // ],
         type: [
           { required: true, message: '请选择借款人类型', trigger: 'change' }
         ]
-      }
+      },
+      formatter: formatter
     }
   },
   created () {
@@ -469,13 +479,33 @@ export default {
   },
   methods: {
     handlerBlur (key) {
-      let _date = this.Data[key]
-      if (typeof (_date) === 'object') {
-        _date = _date.getFullYear()
+      let value = this.Data[key]
+      if (!value && key !== 'enterOrganizationYear') {
+        if (this.canEmptyKey.includes(key)) {
+          value = ' '
+        } else {
+          return
+        }
       }
+
+      if (key === 'monthIncome') {
+        if (parseInt(value) === 0) {
+          return this.error('担保金额不能为0')
+        }
+      }
+
+      if (key === 'enterOrganizationYear') {
+        if (this.enterOrganizationYear) {
+          value = this.Data.enterOrganizationYear = new Date(this.enterOrganizationYear).getFullYear()
+        } else {
+          value = this.Data.enterOrganizationYear = ''
+        }
+      }
+
+      this.Data[key] = value
       const entity = {
         fieldKey: key,
-        arraysValue: _date + ','
+        arraysValue: this.Data[key] + ','
       }
       this.$emit('on-save', 'lender', entity)
     },
@@ -488,7 +518,9 @@ export default {
           fieldKey: idx === 0 ? `${key}Province` : `${key}City`,
           arraysValue: item
         }
-        this.$emit('on-save', 'lender', entity)
+        setTimeout(() => {
+          this.$emit('on-save', 'lender', entity)
+        }, 1000 * idx)
       })
     },
     handleItemChange (val) {
@@ -549,18 +581,25 @@ export default {
           }
         }
       }
+    },
+    error (message) {
+      this.$message.error(message)
     }
   },
   watch: {
     data (value) {
       this.Data = value
+      this.enterOrganizationYear = ''
       this.address.map(item => { // 初始化地址数据结构
         let arr = [value[`${item}Province`], value[`${item}City`]]
         this.getCityName(this.city, arr, this[item], 'name', 'locationId')
         this.Data[item] = this[item]
       })
-//      debugger
-      this.Data.enterOrganizationYear = new Date(value.enterOrganizationYear, 1, 1)
+      if (this.other.write) {
+        if (value.enterOrganizationYear) {
+          this.enterOrganizationYear = new Date(value.enterOrganizationYear, 1, 1)
+        }
+      }
     }
   }
 }

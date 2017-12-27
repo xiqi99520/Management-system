@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import {
   getStore
-} from '../util/utils'
-import store from '../store'
+} from '@/util/utils'
+import store from '@/store'
 
 // 登陆页
 const login = r => require.ensure([], () => r(require('../page/login')), 'Login')
@@ -43,6 +43,68 @@ const user = r => require.ensure([], () => r(require('../page/systemMgmt/user'))
 
 // 客户经理管理
 const customer = r => require.ensure([], () => r(require('../page/systemMgmt/customerManager')), 'system')
+
+// 资金项目管理
+const financeMgmt = r => require.ensure([], () => r(require('../page/systemMgmt/financeProject')), 'system')
+
+// 账户管理
+const account = r => require.ensure([], () => r(require('../page/systemMgmt/accountMgmt')), 'system')
+
+// 产品管理
+const production = r => require.ensure([], () => r(require('../page/systemMgmt/productionMgmt')), 'system')
+
+/**
+ * 台账
+ */
+const standingBook = r => require.ensure([], () => r(require('../page/standingBook')), 'standingBook')
+
+// 预拨申请
+const predialing = r => require.ensure([], () => r(require('../page/standingBook/predialing')), 'predialing')
+
+// 预拨申请记录
+const predialingLog = r => require.ensure([], () => r(require('../page/standingBook/predialingLog')), 'predialingLog')
+
+// 放款入账
+const lending = r => require.ensure([], () => r(require('../page/standingBook/lending')), 'lending')
+
+// 台账查询
+const standingBookSearch = r => require.ensure([], () => r(require('../page/standingBook/standingBookSearch')), 'standingBookSearch')
+
+// 逾期列表
+const overdueList = r => require.ensure([], () => r(require('../page/standingBook/overdueList')), 'overdueList')
+
+// 还款入账
+const reimbursement = r => require.ensure([], () => r(require('../page/standingBook/reimbursement')), 'reimbursement')
+
+// 代偿入账
+const compensableAdmission = r => require.ensure([], () => r(require('../page/standingBook/compensableAdmission')), 'compensableAdmission')
+
+// 提前还款管理
+const earlyRepayment = r => require.ensure([], () => r(require('../page/standingBook/earlyRepayment')), 'earlyRepayment')
+
+// 减免管理
+const reductionManage = r => require.ensure([], () => r(require('../page/standingBook/reductionManage')), 'reductionManage')
+
+// 退款申请
+const refundApplication = r => require.ensure([], () => r(require('../page/standingBook/refundApplication')), 'standingBook')
+
+// 退款入账
+const refundsCredited = r => require.ensure([], () => r(require('../page/standingBook/refundsCredited')), 'standingBook')
+
+// 专户、待拨户非业务类流水记录
+const nonBusinessRecords = r => require.ensure([], () => r(require('../page/standingBook/nonBusinessRecords')), 'standingBook')
+
+// 第三方支付非业务类流水记录
+const thirdPartyRecords = r => require.ensure([], () => r(require('../page/standingBook/thirdPartyRecords')), 'standingBook')
+
+// 放还款流水记录查询
+const repayingWaterRecords = r => require.ensure([], () => r(require('../page/standingBook/repayingWaterRecords')), 'standingBook')
+
+// 账户余额查询
+const accountBalance = r => require.ensure([], () => r(require('../page/standingBook/accountBalance')), 'standingBook')
+
+// 渤海对接文档审核
+const dockDocumentReview = r => require.ensure([], () => r(require('../page/standingBook/dockDocumentReview')), 'standingBook')
 
 Vue.use(Router)
 
@@ -144,10 +206,166 @@ const router = new Router({
         meta: {
           requireAuth: true
         }
+      }, { // 项目资金管理
+        path: 'financeMgmt',
+        name: 'financeMgmt',
+        component: financeMgmt,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 产品管理
+        path: 'productionMgmt',
+        name: 'productionMgmt',
+        component: production,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 账户管理
+        path: 'accountMgmt',
+        name: 'accountMgmt',
+        component: account,
+        meta: {
+          requireAuth: true
+        }
+      }]
+    }, { // 台账
+      path: 'standingBook',
+      name: 'standingBook',
+      component: standingBook,
+      meta: {
+        requireAuth: true
+      },
+      children: [{ // 预拨申请
+        path: 'predialing',
+        name: 'predialing',
+        component: predialing,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 预拨申请记录
+        path: 'predialingLog',
+        name: 'predialingLog',
+        component: predialingLog,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 放款入账
+        path: 'lending',
+        name: 'lending',
+        component: lending,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 台账查询
+        path: 'standingBookSearch',
+        name: 'standingBookSearch',
+        component: standingBookSearch,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 逾期列表
+        path: 'overdueList',
+        name: 'overdueList',
+        component: overdueList,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 还款入账
+        path: 'reimbursement',
+        name: 'reimbursement',
+        component: reimbursement,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 代偿入账
+        path: 'compensableAdmission',
+        name: 'compensableAdmission',
+        component: compensableAdmission,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 提前还本管理
+        path: 'earlyRepayment',
+        name: 'earlyRepayment',
+        component: earlyRepayment,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 减免管理
+        path: 'reductionManage',
+        name: 'reductionManage',
+        component: reductionManage,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 退款申请
+        path: 'refundApplication',
+        name: 'refundApplication',
+        component: refundApplication,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 退款入账
+        path: 'refundsCredited',
+        name: 'refundsCredited',
+        component: refundsCredited,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 专户、待拨户非业务类流水记录
+        path: 'nonBusinessRecords',
+        name: 'nonBusinessRecords',
+        component: nonBusinessRecords,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 第三方支付非业务类流水记录
+        path: 'thirdPartyRecords',
+        name: 'thirdPartyRecords',
+        component: thirdPartyRecords,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 放还款流水记录查询
+        path: 'repayingWaterRecords',
+        name: 'repayingWaterRecords',
+        component: repayingWaterRecords,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 账户余额查询
+        path: 'accountBalance',
+        name: 'accountBalance',
+        component: accountBalance,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 渤海对接文档审核
+        path: 'dockDocumentReview',
+        name: 'dockDocumentReview',
+        component: dockDocumentReview,
+        meta: {
+          requireAuth: true
+        }
       }]
     }]
   }]
 })
+
+const getActiveMenu = (menus, active = '') => {
+  let menu = menus[0]
+  let str = active.length ? active : '0'
+  if (menu.type === '菜单') {
+    return getActiveMenu(menu.children, str + '-')
+  } else if (menu.type === '页面') {
+    if (str.includes('-')) {
+      console.log(str + '0')
+      return str + '0'
+    } else {
+      return '0'
+    }
+  }
+}
 
 // enter钩子
 router.beforeEach((to, from, next) => {
@@ -164,13 +382,19 @@ router.beforeEach((to, from, next) => {
       })
     } else {
       if (to.query.index !== undefined && to.query.index !== navs.active) {
+        let nActive = String(to.query.index)
+        let menu = navs.data[to.query.index].children
+        let mActive = getActiveMenu(menu)
+        let openeds = mActive.includes('-') ? mActive.split('-') : []
         store.commit('SET_NAV', {
-          active: to.query.index,
+          active: nActive,
           data: navs.data
         })
         store.commit('SET_MENU', {
-          active: 0,
-          data: navs.data[to.query.index].children
+          active: mActive,
+          openeds,
+          // active: '1',
+          data: menu
         })
       }
       next()

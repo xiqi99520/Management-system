@@ -11,13 +11,15 @@
     element-loading-background="rgba(0, 0, 0, 0.7)">
     <el-form ref="form" :model="form" label-width="120px">
       <el-form-item label-width="0" style="text-align: center;">
-        <img :src="file" alt="" style="max-width: 100%">
+        <embed style="max-width: 100%;max-height: 200px" :src="context + file" v-if="(imgType === 'application/pdf' || imgType === 'pdf')"> </embed>
+        <img v-else :src="context + file" alt="" style="max-width: 100%">
+        <!--<img :src="file" alt="" style="max-width: 100%">-->
       </el-form-item>
       <el-form-item label="影像资料名称：">
-        <el-input v-model="form.name"></el-input>
+        <el-input v-model="form.name" :maxlength="10"></el-input>
       </el-form-item>
       <el-form-item label="备注：">
-        <el-input v-model="form.note"></el-input>
+        <el-input v-model="form.note" :maxlength="10"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -31,8 +33,11 @@ export default {
   name: 'imgDialog',
   data () {
     return {
+      context: process.env.CONTEXT,
       show: false,
       file: '',
+      type: '',
+      imgType: '',
       loading: false,
       form: {
         name: '',
@@ -45,6 +50,8 @@ export default {
     data (value) {
       this.show = value.show
       this.file = value.file
+      this.type = value.type
+      this.imgType = value.imgType || value.file.split('.')[1]
       this.form = {
         name: value.name || '',
         note: value.note || '',
@@ -67,7 +74,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  img {
-    max-width: 100%;
-  }
+img {
+  max-width: 400px !important;
+}
 </style>

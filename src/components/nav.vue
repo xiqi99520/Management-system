@@ -17,8 +17,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
-import { navMockData } from '../mockData'
-// import { getNav } from '../service/getData'
+// import { navMockData } from '../mockData'
 export default {
   name: 'headNavigation',
   computed: {
@@ -26,7 +25,7 @@ export default {
   },
   beforeMount () {
     if (!this.navs.data.length) { // 登录跳转
-      console.log(navMockData)
+      // console.log(navMockData)
       let nav = { active: '', data: [] }
       let btns
       this.userInfo.permissionTree.map(item => {
@@ -50,12 +49,14 @@ export default {
       let url = `/${nav.content}`
       // 导航栏高亮当前导航条
       if (jump) {
-        url += `/${nav.children[0].content}`
+        // url += `/${nav.children[0].content}`
+        url += this.getPage(nav)
         if (this.menus.data) {
           this.$router.push({
             path: url,
             query: {
-              index: index
+              index: index,
+              time: new Date().getTime()
             }
           })
         } else {
@@ -66,6 +67,19 @@ export default {
             }
           })
         }
+      }
+    },
+    getPage (data, url = '') {
+      if (data.type === '页面') {
+        return `${url}/${data.content}`
+      } else if (['导航', '菜单'].includes(data.type)) {
+        if (data.children.length) {
+          return this.getPage(data.children[0])
+        } else {
+          return url
+        }
+      } else {
+        return url
       }
     }
   }

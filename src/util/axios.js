@@ -1,11 +1,13 @@
 import axios from 'axios'
 import qs from 'qs'
-import router from '../router'
+// import router from '../router'
 // import store from '../store'
 // import {
 //   LOGOUT
 // } from '../store/mutation-types'
 
+const env = process.env
+const context = env.CONTEXT
 axios.defaults.timeout = 30000 // 响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8' // 配置请求头
 axios.defaults.baseURL = '' // 配置接口地址
@@ -24,8 +26,12 @@ axios.defaults.withCredentials = true // 跨域开关
 axios.interceptors.request.use(
   config => {
     // 在发送请求之前做某件事
-    if (config.method === 'post' && config.url !== '/loanApply/agencyPredictMoney' &&
-      !config.url.startsWith('/entering/write') && config.url !== '/user/addSingleUser' && config.url !== '/user/updateUser' && config.url !== '/public/getDict') {
+    if (config.method === 'post' &&
+      config.url !== `${context}/loanApply/agencyPredictMoney` &&
+      !config.url.startsWith(`${context}/entering/write`) &&
+      config.url !== `${context}/user/addSingleUser` &&
+      config.url !== `${context}/user/updateUser` &&
+      config.url !== `${context}/public/getDict`) {
       config.data = qs.stringify(config.data)
     }
     return config
@@ -39,18 +45,11 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   res => {
     // 对响应数据做些事
-    if (res.data.apiCode === '888888') {
-      // store.commit(LOGOUT)
-      router.replace({
-        path: '/login',
-        query: {
-          redirect: router.currentRoute.fullPath
-        }
-      })
-    }
     return res
   },
   error => {
+    // store.commit('LOG_OUT')
+    // router.go(0)
     // _.toast("网络异常", 'fail');
     return Promise.reject(error)
   })

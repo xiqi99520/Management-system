@@ -31,7 +31,7 @@
 </template>
 <script>
 export default {
-  name: 'tree-menu-item',
+  name: 'treeMenuItem',
   props: ['menu', 'no']
 }
 </script>

@@ -2,18 +2,27 @@
   <el-row class="collapse-row image-row">
     <el-col :span="3" v-for="(item, idx) in img" :key="idx" class="p10 imgBox">
       <div class="img">
-        <img :src="item.url" alt="" class="upload" @click="handlePreModify(item, idx)">
+        <div
+          style="cursor: pointer"
+          v-if="PDF.includes(item.type) && item.format === 'pdf'"
+          @mousedown="handlePreModify(item, idx)">
+          <embed
+            class="pdfImg"
+            :src="context + item.url"
+            type="application/pdf">
+          </embed>
+        </div>
+        <img v-else :src="context + item.url" alt="" class="upload" @click="handlePreModify(item, idx)">
         <img v-if="entering" src="../../../../../../../assets/delete_img.jpg" alt="" class="delete" @click="handleDelete(item, idx)">
       </div>
-      <div>{{item.name}}</div>
-      <div>{{item.note ? '备注：'+ item.note : ''}}</div>
+      <div class="noWeight">{{item.name}}</div>
+      <div class="noWeight">{{item.note ? '备注：'+ item.note : ''}}</div>
     </el-col>
-    <el-col :span="6" v-if="entering" class="uploadBox p10">
-    <!--<el-col v-if="entering" >-->
+    <el-col :span="6" v-if="entering && img.length <= 20" class="uploadBox p10">
       <el-upload
         drag
         ref="upload"
-        action="/LoanApplyPhoto/addImageData"
+        :action="upUrl"
         :data="form"
         :auto-upload="false"
         :show-file-list="false"
@@ -21,11 +30,16 @@
         :on-change="handleChange"
         :on-success="handleSuccess"
         :on-error="handleError"
-        :before-upload="beforeAvatarUpload"
         @click.native="ready = true">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        <div class="el-upload__tip tip" slot="tip">
+          只能上传jpg/png
+          <template v-if="PDF.includes(data.title)">
+            /pdf
+          </template>
+          文件，且不超过50MB
+        </div>
       </el-upload>
     </el-col>
   </el-row>
@@ -33,15 +47,21 @@
 <script>
 import {
   deletePhoto,
-  updataImgData
+  updataImgData,
+  uploadImgDataUrl
 } from '@/service/getData'
+import { showBigImg } from '@/util/utils'
 export default {
   name: 'imageRow',
   props: ['data', 'id', 'entering', 'upload'],
   data () {
     return {
+      context: process.env.CONTEXT,
+      PDF: ['征信报告', '合同类'],
       img: this.data.data,
+      isPdf: false,
       ready: true,
+      upUrl: uploadImgDataUrl,
       form: {
         applyId: this.id,
         name: '',
@@ -72,24 +92,27 @@ export default {
     }
   },
   methods: {
-    beforeAvatarUpload (file) {
-      const imgType = (file.type === 'image/jpeg' || file.type === 'image/png')
-      const imgSize = file.size / 1024 < 500
-
-      if (!imgType) {
-        this.$message.error('图片只能是 JPG、PNG 格式!')
-      }
-      if (!imgSize) {
-        this.$message.error('图片大小不能超过 500kb!')
-      }
-      return imgType && imgSize
-    },
     handleChange (file, fileList) { // 选择图片完成
       if (this.ready) {
+        const imgType = (this.PDF.includes(this.data.title))
+          ? (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png' || file.raw.type === 'application/pdf')
+          : (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png')
+        const imgSize = file.raw.size / 1024 / 1024 < 50
+        if (!imgType) {
+          this.$message.error('图片只能是 JPG、PNG 格式!')
+          fileList.splice(0, 1)
+          return
+        }
+        if (!imgSize) {
+          this.$message.error('图片大小不能超过 50MB!')
+          fileList.splice(0, 1)
+          return
+        }
         let imgDialog = {
           show: true,
           file: file.url,
-          type: this.data.title
+          type: this.data.title,
+          imgType: file.raw.type
         }
         const len = fileList.length
         if (len !== 1) {
@@ -166,6 +189,8 @@ export default {
           index: idx
         }
         this.$emit('on-pre-upload', imgDialog)
+      } else {
+        showBigImg(file)
       }
     },
     handleModify () { // 修改图片名称及备注
@@ -222,5 +247,11 @@ export default {
 }
 .imgBox {
   height: 250px;
+  .noWeight{
+    font-weight: 500!important;
+  }
+}
+.tip {
+  // text-align: left;
 }
 </style>

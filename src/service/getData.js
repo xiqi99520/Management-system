@@ -27,6 +27,9 @@ const incomingDataInterface = `${context}/incomingData`
 // 贷款申请
 const loanApplyInterface = `${context}/loanApply`
 
+// 产品
+const productInterface = `${context}/productBase`
+
 // 录入放款信息
 const enteringInterface = `${context}/entering`
 
@@ -35,6 +38,10 @@ const permissionInterface = `${context}/permission`
 
 // 影像资料
 const loanApplyPhotoInterface = `${context}/LoanApplyPhoto`
+
+// 退款申请接口类
+const refundInterface = `${context}/reduction`
+
 /**
  * 详细接口URL
  */
@@ -57,8 +64,8 @@ const subLocationUrl = `${publicInterface}/getSubLocation`
 // 获取已开通服务城市
 const displayLocationUrl = `${publicInterface}/displayLocations`
 
-// 无法登陆用户修改密码
-const pchangePwdUrl = `${publicInterface}/changePassword`
+// 用户修改密码
+const changePwdUrl = `${publicInterface}/changePassword`
 
 // 登录
 const loginUrl = `${context}/login`
@@ -78,7 +85,7 @@ const newUserUrl = `${userInterface}/addSingleUser`
 // 登录
 const updateUserUrl = `${userInterface}/updateUser`
 
-// 登录
+// 重置密码
 const resetUserPwdUrl = `${userInterface}/resetPassword`
 
 // 登录
@@ -90,8 +97,8 @@ const addManagerUrl = `${userInterface}/addManager`
 // 登录
 const acceptorsUrl = `${userInterface}/findAcceptors`
 
-// 登录
-const changePwdUrl = `${userInterface}/changePassword`
+// 用户修改密码
+// const changePwdUrl = `${userInterface}/changePassword`
 
 // 查询角色
 const rolesUrl = `${roleInterface}/findRoles`
@@ -141,8 +148,14 @@ const auditApplyPassUrl = `${loanApplyInterface}/loanApply/auditApplyPass`
 // 驳回补件
 const rejectApplyUrl = `${loanApplyInterface}/rejectApply`
 
+// 获取产品名称
+const productNameUrl = `${productInterface}/getProductSelect`
+
+// 选择下拉框获取产品数据
+const productInfoUrl = `${productInterface}/getTermsAndRepayType`
+
 // 放款上传图片
-const uploadImgDataUrl = `${loanApplyPhotoInterface}/addImageData`
+export const uploadImgDataUrl = `${loanApplyPhotoInterface}/addImageData`
 
 // 放款删除图片
 const deleteImgDataUrl = `${loanApplyPhotoInterface}/deletePhoto`
@@ -170,6 +183,9 @@ const deleteLenderUrl = `${enteringInterface}/deleteLender`
 
 // 查询所有权限
 const findPermUrl = `${permissionInterface}/findPermissions`
+
+// 获取退款单列表
+const listRefundUrl = `${refundInterface}/listRefund`
 
 /**
  * 接口实现
@@ -287,7 +303,7 @@ export const getIncomingDataDetail = (applyId) => fetch(incomingDataDetailUrl, {
 export const agencyPredictMoney = (form) => fetch(agencyPredictMoneyUrl, form, 'post')
 
 // 修改密码
-export const changePwd = (form) => fetch(changePwdUrl, form, 'post')
+// export const changePwd = (form) => fetch(changePwdUrl, form, 'post')
 
 // 放款申请详情
 export const applyDetail = (uuid) => fetch(applyDetailUrl + '/' + uuid, {}, 'post')
@@ -295,6 +311,12 @@ export const applyDetail = (uuid) => fetch(applyDetailUrl + '/' + uuid, {}, 'pos
 
 // 获取下拉框选项
 export const getDict = (queryList) => fetch(dictUrl, queryList, 'post')
+
+// 获取产品名称下拉框选项
+export const getProductName = () => fetch(productNameUrl, {}, 'get')
+
+// 根据下拉框选项获取产品合同期限等数据
+export const getProductInfo = (productId) => fetch(productInfoUrl + '?productId=' + productId, {}, 'get')
 
 // 获取所有城市列表
 export const getSubLocation = (parentId) => fetch(subLocationUrl, {
@@ -312,7 +334,7 @@ export const queryServants = () => fetch(queryServantUrl, {}, 'post')
 // export const queryServants = () => fetch('http://localMock.com/getServants')
 
 // 上传图片
-export const uploadImg = (form) => fetch(uploadImgDataUrl, form, 'post')
+// export const uploadImg = (form) => fetch(uploadImgDataUrl, form, 'post')
 
 // 删除图片
 export const deletePhoto = (photoId) => fetch(deleteImgDataUrl, {
@@ -339,7 +361,7 @@ export const updateManager = (formData) => fetch(updateManagerUrl, {
   state: formData.state,
   phoneNo: formData.phoneNo,
   operateNo: formData.operateNo,
-  organizationId: formData.branch,
+  organizationId: formData.organizationId,
   city: formData.areaName
 }, 'post')
 
@@ -370,11 +392,61 @@ export const getloanApplyData = (formData, page, limit, count = true) => fetch(L
   count
 }, 'post')
 
-// 无法登陆用户修改密码
-export const pchangePwd = (form) => fetch(pchangePwdUrl, form, 'post')
+// 用户修改密码
+export const changePwd = (form) => fetch(changePwdUrl, form, 'post')
 
 // 查询下户费
 export const findUnderCost = (uuid) => fetch(`${underCostUrl}/${uuid}`)
 
 // 删除共同的担保人
 export const deleteLender = (uuid, mainly) => fetch(`${deleteLenderUrl}/${uuid}/${mainly}`)
+
+// 查询预拨申请
+export const getPredialing = (input = '', city = '', offset = 0, limit = 15, count = true) => fetch(managerUrl, {
+  offset,
+  limit,
+  count,
+  input,
+  city
+}, 'post')
+
+// 查询预拨申请记录
+export const getPredialingLog = (input = '', city = '', offset = 0, limit = 15, count = true) => fetch(managerUrl, {
+  offset,
+  limit,
+  count,
+  input,
+  city
+}, 'post')
+
+// 查询预拨申请记录
+export const getPredialingLogDetail = (input = '', city = '', offset = 0, limit = 15, count = true) => fetch(managerUrl, {
+  offset,
+  limit,
+  count,
+  input,
+  city
+}, 'post')
+
+// 查询台账记录
+export const getstandingBook = (input = '', state = '', dateRange = '', offset = 0, limit = 15, count = true) => fetch(managerUrl, {
+  offset,
+  limit,
+  count,
+  input,
+  state,
+  dateRange
+}, 'post')
+
+// 查询逾期列表
+export const getOverdueList = (input = '', day = '', dateRange = '', offset = 0, limit = 15, count = true) => fetch(managerUrl, {
+  offset,
+  limit,
+  count,
+  input,
+  day,
+  dateRange
+}, 'post')
+
+// 获取退款单列表
+export const listRefund = (form) => fetch(listRefundUrl, form)

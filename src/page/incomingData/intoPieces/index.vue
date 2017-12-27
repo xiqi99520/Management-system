@@ -129,19 +129,23 @@
         prop="applyMoney"
         label="贷款申请金额">
         <template slot-scope="scope">
-          <span>{{ formatter.changeMoney(scope.row.applyMoney, 100) }}</span>
+          <span>&yen;{{ formatter.changeMoney(scope.row.applyMoney, 100) }}</span>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
         prop="loanMonth"
-        label="货款期限">
+        label="货款期限（月）">
       </el-table-column>
       <el-table-column
         align="center"
         prop="auditMoney"
-        label="合同金额"
-        :formatter="formatterMoney">
+        label="合同金额">
+        <!--:formatter="formatterMoney">-->
+        <template slot-scope="scope">
+          <span v-if="scope.row.auditMoney">&yen;{{ formatter.changeMoney(scope.row.auditMoney, 100) }}</span>
+          <span v-else> - </span>
+        </template>
       </el-table-column>
       <el-table-column
         align="center"
@@ -209,9 +213,12 @@
       <into-piece-detail
         v-show="detail.show"
         :data="detail"
+        :third-entry="thirdPart"
         @on-close="handleCloseDetail">
       </into-piece-detail>
     </transition>
+    <!--展示大图-->
+    <big-img></big-img>
   </div>
 </template>
 
@@ -228,6 +235,7 @@ import cancelDialog from './children/cancel'
 import acceptorDialog from './children/acceptor'
 import followDialog from './children/follow'
 import intoPieceDetail from './children/detail'
+import bigImg from '@/components/bigImg'
 import { mapState } from 'vuex'
 import { formatter, keydownSubmit } from '@/util/utils'
 export default {
@@ -250,6 +258,7 @@ export default {
         lastOperation: '',
         dateRange: ''
       },
+      thirdPart: false,       // 第三方录入操作权限
       pickerOptions: {          // 日期选择器快捷选择功能
         shortcuts: [{
           text: '最近一周',
@@ -324,6 +333,16 @@ export default {
   mounted () {
     keydownSubmit(this.searchSubmit)
   },
+  watch: {
+    $route: {
+      handler: function (val, oldVal) {
+        if (val.name === 'intoPieces') {
+          this.doGetIncomingData()
+        }
+      },
+      deep: true
+    }
+  },
   components: {
     //    passDialog,
     denyDialog,
@@ -331,7 +350,8 @@ export default {
     acceptorDialog,
     followDialog,
     // 进件详情
-    intoPieceDetail
+    intoPieceDetail,
+    bigImg
   },
   computed: {
     ...mapState(['btns', 'userInfo', 'allStates']),
@@ -340,6 +360,9 @@ export default {
       this.btns.map(item => {
         if (item.code === 'INTO_PIECES_DETAIL') {
           render = true
+        }
+        if (item.code === 'APPLY_RISK_EVALUATE') {
+          this.thirdPart = true
         }
       })
       return render
@@ -354,6 +377,9 @@ export default {
       this.doGetIncomingData()
     },
     doGetIncomingData () {
+      if (this.formSearch.dateRange === null) {
+        this.formSearch.dateRange = ''
+      }
       getIncomingData(this.formSearch, this.currentPage, this.pageSize)
         .then(resp => {
           if (resp.success) {
@@ -371,7 +397,7 @@ export default {
       for (let i in this.btnState) {
         this.btnState[i] = false
       }
-//      if (['客户已申请', '已提交贷款', '风控已预审', '待跟进', '待客户经理推荐', '待风控总监预审'].includes(currentRow.state)) {
+      //      if (['客户已申请', '已提交贷款', '风控已预审', '待跟进', '待客户经理推荐', '待风控总监预审'].includes(currentRow.state)) {
       let statesArr = this.allStates
       if (![statesArr.C1008, statesArr.C1009, statesArr.C1010].includes(currentRow.state)) {  // 审核不通过、客户放弃
         this.btnState.APPLY_CUSTOM_CANCEL = this.btnState.APPLY_AUDIT_DENY = true

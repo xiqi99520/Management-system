@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style lang="less">
-
+@import '~@/style/iconFont/iconfont.css';
 body {
   position: fixed;
   left: 0;
@@ -56,19 +56,19 @@ body {
 
 /*表格高亮修改*/
 .el-table--striped .el-table__body tr.el-table__row--striped.current-row td,
-.el-table__body tr.current-row>td,
-.el-table__body tr.hover-row.current-row>td,
-.el-table__body tr.hover-row.el-table__row--striped.current-row>td,
-.el-table__body tr.hover-row.el-table__row--striped>td,
-.el-table__body tr.hover-row>td{
-  background-color: #a0cfff!important;
+.el-table__body tr.current-row > td,
+.el-table__body tr.hover-row.current-row > td,
+.el-table__body tr.hover-row.el-table__row--striped.current-row > td,
+.el-table__body tr.hover-row.el-table__row--striped > td,
+.el-table__body tr.hover-row > td {
+  background-color: #a0cfff !important;
 }
-.el-upload{
+.el-upload {
   display: inline;
-  .el-upload-dragger{
-    width: 100%!important;
+  .el-upload-dragger {
+    width: 100% !important;
     height: 150px;
-    .el-icon-upload{
+    .el-icon-upload {
       margin-top: 25px;
     }
   }

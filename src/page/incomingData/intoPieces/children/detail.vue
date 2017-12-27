@@ -58,7 +58,7 @@
             <el-row>
               <el-col :span="4" v-for="(photo, index) in listPhoto" v-if="photo.type !== '房产证照片'" :key="index">
                 <el-card class="idCard">
-                  <img :src="photo.url" class="image">
+                  <img :src="context + photo.url" class="image" @click="showBigImg(photo)">
                   <div>
                     <span>{{ photo.type }}</span>
                   </div>
@@ -74,7 +74,7 @@
             <el-row>
               <el-col :span="4" v-for="(photo, index) in listPhoto" v-if="photo.type === '房产证照片'" :key="index">
                 <el-card class="idCard">
-                  <img :src="photo.url" class="image">
+                  <img :src="context + photo.url" class="image" @click="showBigImg(photo)">
                   <div>
                     <span>{{ photo.type }} - {{ index-1 }}</span>
                   </div>
@@ -157,9 +157,9 @@
         </el-row>
         <el-row class="row-content">
           <el-col :span="3"><div class="grid-content bg-purple">客户来源</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple-light">{{loanApply.customFrom}}</div></el-col>
+          <el-col :span="3"><div class="grid-content bg-purple-light">{{loanApply.customFrom || '-'}}</div></el-col>
           <el-col :span="3"><div class="grid-content bg-purple">意见</div></el-col>
-          <el-col :span="3"><div class="grid-content bg-purple-light">{{loanApply.managerSuggest}}</div></el-col>
+          <el-col :span="3"><div class="grid-content bg-purple-light">{{loanApply.managerSuggest || '-'}}</div></el-col>
           <el-col :span="3"><div class="grid-content bg-purple">客户经理姓名</div></el-col>
           <el-col :span="3"><div class="grid-content bg-purple-light">{{customManager.username || '-'}}</div></el-col>
           <el-col :span="3"><div class="grid-content bg-purple">手机号码</div></el-col>
@@ -210,7 +210,7 @@
                 <el-form-item>
                   <el-col :span="8" :offset="2">
                     <el-form-item prop="sl">
-                      <el-input placeholder="请输入金额" v-model="form.sl" :disabled="form.readOnly">
+                      <el-input placeholder="请输入金额" v-model="form.sl" :disabled="form.readOnly || !thirdEntry">
                         <template slot="prepend">世联:</template>
                         <template slot="append">万元</template>
                       </el-input>
@@ -218,14 +218,14 @@
                   </el-col>
                   <el-col :span="8" :offset="4">
                     <el-form-item prop="rd">
-                      <el-input placeholder="请输入金额" v-model="form.rd" :disabled="form.readOnly">
+                      <el-input placeholder="请输入金额" v-model="form.rd" :disabled="form.readOnly || !thirdEntry">
                         <template slot="prepend">仁达:</template>
                         <template slot="append">万元</template>
                       </el-input>
                     </el-form-item>
                   </el-col>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item v-if="thirdEntry">
                   <el-row>
                     <el-col :span="11" :offset="1">
                       <span>系统评估房产值为:{{system.money}}</span>
@@ -388,13 +388,14 @@ import JsPDF from 'jspdf'
 import {
   agencyPredictMoney
 } from '../../../../service/getData'
-import { valiData } from '../../../../util/utils'
+import { valiData, showBigImg } from '../../../../util/utils'
 export default {
   name: 'intoPieceDetail',
   data () {
     return {
       loading: false,
       download: false,
+      context: process.env.CONTEXT,
       listPhoto: [],
       listOperationHistory: [],
       loanApply: {},
@@ -435,10 +436,11 @@ export default {
       system: {
         state: '-',
         money: ''
-      }
+      },
+      showBigImg: showBigImg
     }
   },
-  props: ['data'],
+  props: ['data', 'thirdEntry'],
   watch: {
     data (value) {
       this.loanApply = value.loanApplyVo.loanApply
@@ -618,7 +620,7 @@ export default {
     },
     back () {
       this.$emit('on-close')
-//      this.form.sl = this.form.rd = ''
+      //      this.form.sl = this.form.rd = ''
       this.$refs['form'].resetFields()
       this.form.readOnly = false
       this.system.money = ''
@@ -642,16 +644,16 @@ export default {
         address += this.loanApply.houseRegion
       }
       if (detail && this.loanApply.communityName !== '-') {
-        address += this.loanApply.communityName
+        address = this.loanApply.communityName
       }
       return address
     },
     submitForm () {
+      let _this = this
       this.$refs.form.validate((valid) => {
-        debugger
         if (valid) {
           let type, message, title
-          this.loading = true
+          _this.loading = true
           let form = {
             applyId: this.loanApply.applyId,
             evaluations: [
@@ -677,14 +679,16 @@ export default {
               console.log(err)
             })
             .then(() => {
-              this.loading = false
-              this.$notify({
+              _this.loading = false
+              _this.$notify({
                 title,
                 message,
                 type
               })
               if (type === 'success') {
-                this.$router.go(0)
+                setTimeout(() => {
+                  this.$router.go(0)
+                }, 2000)
               }
             })
         }
@@ -854,7 +858,7 @@ export default {
     }
   }
 }
-.el-card{
+.el-card {
   border: none;
 }
 .el-table__fixed {

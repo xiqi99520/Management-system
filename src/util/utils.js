@@ -1,3 +1,8 @@
+import store from '@/store'
+import {
+  getDict
+} from '@/service/getData'
+
 /**
  * 存储localStorage
  */
@@ -104,7 +109,7 @@ export const valiData = {
   },
   homePhoneNumber: (rules, value, callback) => { // 检查录入第三方机构评估值有效性
     if (!value) {
-      return callback(new Error('电话号码不能为空'))
+      return callback()
     } else if (!(/(^(\d{3,4}-)?\d{7,8})$|(^1[0-9]\d{9}$)/.test(value))) {
       return callback(new Error('联系方式输入有误'))
     } else {
@@ -127,27 +132,27 @@ export const valiData = {
 export const formatter = {
   money: (value, base = 10000, fixed = 0) => {
     if (!value) {
-      return '-'
+      return ''
     } else {
       let m = Number((value / base).toFixed(fixed))
       return String(m / 100).replace(/(?=((?!\b)\d{3})+$)/g, ',')
       // return '￥' + String(value / 100).replace(/(?=((?!\b)\d{3})+$)/g, ',')
     }
   },
-  changeMoney: (value, base = 100) => { // 将6000000的数值转换成￥6,000,000.00格式
+  changeMoney: (value, base = 100, prefix = '') => { // 将6000000的数值转换成￥6,000,000.00格式
     if (!value) {
-      return '-'
+      return ''
     } else {
       value = String(value / base)
       if (value.indexOf('.') !== -1) {
         if (value.split('.')[1].length <= 2) {
           // value.split('.')[1]
-          return '￥' + value.split('.')[0].replace(/(?=((?!\b)\d{3})+$)/g, ',') + '.' + value.split('.')[1].padEnd(2, '0')
+          return prefix + value.split('.')[0].replace(/(?=((?!\b)\d{3})+$)/g, ',') + '.' + value.split('.')[1].padEnd(2, '0')
         } else {
-          return '￥' + value.split('.')[0].replace(/(?=((?!\b)\d{3})+$)/g, ',') + '.' + value.split('.')[1].substring(0, 2)
+          return prefix + value.split('.')[0].replace(/(?=((?!\b)\d{3})+$)/g, ',') + '.' + value.split('.')[1].substring(0, 2)
         }
       } else {
-        return '￥' + String(value).replace(/(?=((?!\b)\d{3})+$)/g, ',') + '.00'
+        return prefix + String(value).replace(/(?=((?!\b)\d{3})+$)/g, ',') + '.00'
       }
     }
   },
@@ -303,7 +308,7 @@ export const formatter = {
 }
 
 /**
- *回车事件
+ * 回车事件
  */
 export const keydownSubmit = (submitFun, formName) => {
   document.body.addEventListener('keydown', (e) => {
@@ -311,4 +316,72 @@ export const keydownSubmit = (submitFun, formName) => {
       submitFun(formName)
     }
   })
+}
+
+/**
+ * 查看大图
+ */
+export const showBigImg = (photo) => {
+  store.commit('SET_BIGIMG', {
+    showBigImg: true,
+    imgName: photo.name || '',
+    imgType: photo.format,
+    imgUrl: photo.url
+  })
+}
+
+/**
+ * 日期选择器快捷选择功能
+ */
+export const pickerOptions = {
+  shortcuts: [{
+    text: '最近一周',
+    onClick: (picker) => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      picker.$emit('pick', [start, end])
+    }
+  }, {
+    text: '最近一个月',
+    onClick: (picker) => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      picker.$emit('pick', [start, end])
+    }
+  }, {
+    text: '最近三个月',
+    onClick: (picker) => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      picker.$emit('pick', [start, end])
+    }
+  }]
+}
+
+/**
+ * 初始化下拉框的值
+ * @param {Ayyay} selects 查询的下拉框type
+ * @param {Object} form 赋值
+ */
+export const initSelectOptions = (selects, form) => {
+  return getDict(selects)
+    .then(resp => {
+      if (resp.success) {
+        Object.entries(resp.data).map(([key, value]) => {
+          if (Object.keys(form).includes(key)) {
+            form[key] = form[key].concat(value)
+          }
+        })
+        return form
+      } else {
+        throw new Error(resp.message)
+      }
+    })
+    .catch(err => {
+      console.log(err.resonse ? err.response.data : err.message)
+      return form
+    })
 }

@@ -1,7 +1,6 @@
 <template>
   <div>
-      <h1 class="title">用户管理</h1>
-    <!-- form search 表单 -->
+    <h1 class="title">用户管理</h1>
     <el-form :inline="true" :model="formSearch" class="form-search">
       <el-form-item>
         <el-input v-model="formSearch.input" placeholder="请输入用户名/手机号"></el-input>
@@ -17,7 +16,6 @@
       </el-form-item>
       <el-form-item class="table-btn-ctl">
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="showNewUser = true" title="添加内部管理账号"></el-button>
-        <!--<el-button type="primary" icon="el-icon-edit" :disabled="btnDisabled" @click="showUpdateUser = true" title="修改"></el-button>-->
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -57,7 +55,7 @@
         align="center"
         label="角色">
         <template v-if="scope.row.authorities.length" slot-scope="scope">
-          <span v-for="item in scope.row.authorities" style="display: block">{{item.name}}</span>
+          <span v-for="(item, idx) in scope.row.authorities" :key="idx" style="display: block">{{item.name}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -74,7 +72,7 @@
         align="center"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" @click="showUpdateUser = true" title="修改"></el-button>
+          <el-button type="primary" icon="el-icon-edit" @click="handleEditClick" title="修改"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -88,9 +86,9 @@
       class="pagination">
     </el-pagination>
     <!-- 新增用户信息 -->
-    <user-dialog title="新增用户信息" :show="showNewUser" :role-data="roleData" @on-close="Close" ></user-dialog>
+    <user-dialog title="新增用户信息" :show="showNewUser" :roles="roleData" @on-close="Close" ></user-dialog>
     <!-- 编辑用户信息 -->
-    <user-dialog title="编辑用户信息" :show="showUpdateUser" :user-data="currentRow" :role-data="roleData" @on-close="Close" ></user-dialog>
+    <user-dialog title="编辑用户信息" :show="showUpdateUser" :user-data="currentRow" :roles="roleData" @on-close="Close" ></user-dialog>
   </div>
 </template>
 
@@ -182,6 +180,10 @@ export default {
     },
     indexMethod (index) {
       return index + 1 + (this.currentPage - 1) * this.pageSize
+    },
+    handleEditClick () {
+      this.showUpdateUser = true
+      // this.currentRow.time = new Date().getTime()
     }
   }
 }
@@ -204,39 +206,3 @@ export default {
   text-align: left;
 }
 </style>
-<!--<template>-->
-  <!--<el-transfer-->
-    <!--filterable-->
-    <!--:filter-method="filterMethod"-->
-    <!--filter-placeholder="请输入城市拼音"-->
-    <!--v-model="value2"-->
-    <!--:data="data2">-->
-  <!--</el-transfer>-->
-<!--</template>-->
-
-<!--<script>-->
-  <!--export default {-->
-    <!--data () {-->
-      <!--const generateData2 = _ => {-->
-        <!--const data = []-->
-        <!--const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都']-->
-        <!--const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu']-->
-        <!--cities.forEach((city, index) => {-->
-          <!--data.push({-->
-            <!--label: city,-->
-            <!--key: index,-->
-            <!--pinyin: pinyin[index]-->
-          <!--})-->
-        <!--})-->
-        <!--return data-->
-      <!--}-->
-      <!--return {-->
-        <!--data2: generateData2(),-->
-        <!--value2: [],-->
-        <!--filterMethod (query, item) {-->
-          <!--return item.pinyin.indexOf(query) > -1-->
-        <!--}-->
-      <!--}-->
-    <!--}-->
-  <!--}-->
-<!--</script>-->

@@ -28,7 +28,7 @@
                     disabled
                     :key="idx"
                     size="mini">
-                    &nbsp;&nbsp;&nbsp;&nbsp;{{role.name}}
+                    &nbsp;&nbsp;{{role.name}}
                   </el-dropdown-item>
                   <el-dropdown-item @click.native='show = true' divided>修改密码</el-dropdown-item>
                 </el-dropdown-menu>
@@ -54,7 +54,7 @@
         </keep-alive>
       </el-main>
     </el-container>
-    <user-contorl :show="show" :id="userInfo.userId" @on-close="handleClose"></user-contorl>
+    <user-contorl :show="show" :phone="userInfo.phoneNo" @on-close="handleClose"></user-contorl>
   </el-container>
 </template>
 
@@ -78,7 +78,7 @@ export default {
     }
   },
   created () {
-    if (this.menus.data.length <= 1) {
+    if (!this.menus.data || this.menus.data.length <= 1) {
       this.asideWidth = '0'
     } else {
       this.asideWidth = '200px'
@@ -108,9 +108,24 @@ export default {
     handleLogOut () {
       logOut()
         .then(resp => {
+          if (resp.success) {
+            this.LOG_OUT()
+            this.$route.push('/login')
+            // this.$router.go(0)
+          } else {
+            console.log('没有resp.success')
+            console.log(resp)
+            throw new Error(resp.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
           this.LOG_OUT()
-          this.$router.push('/login')
-          this.$router.go(0)
+          this.$route.push('/login')
+          // this.$notify.error({
+          //   title: '错误',
+          //   message: err.response ? err.response.data.message : err.message
+          // })
         })
     }
   }

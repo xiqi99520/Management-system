@@ -7,7 +7,7 @@
       <!-- 贷款证明 -->
       <el-row class="collapse-row collapse-row-top" :class="{'collapse-row-bottom': imgs.loan.show}">
         <el-col :span="12">
-          <span>{{imgs.loan.title}}</span>
+          <span :class="{ needs:other.write}">{{imgs.loan.title}}</span>
           <span class="desc">(建议格式: JPG)</span>
         </el-col>
         <el-col :span="12">
@@ -16,7 +16,7 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.loan.show">
-          <image-row 
+          <image-row
             ref="loan"
             :data="imgs.loan"
             :id="applyId"
@@ -29,7 +29,7 @@
       <!-- 征信报告 -->
       <el-row class="collapse-row collapse-row-top" :class="{'collapse-row-bottom': imgs.credit.show}">
         <el-col :span="12">
-          <span>征信报告</span>
+          <span :class="{ needs:other.write}">征信报告</span>
           <span class="desc">(建议格式: PDF,JPG)</span>
         </el-col>
         <el-col :span="12">
@@ -38,10 +38,10 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.credit.show">
-          <image-row 
-            ref="credit" 
-            :data="imgs.credit" 
-            :id="applyId" 
+          <image-row
+            ref="credit"
+            :data="imgs.credit"
+            :id="applyId"
             :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
@@ -51,7 +51,7 @@
       <!-- 身份证明 -->
       <el-row class="collapse-row collapse-row-top" :class="{'collapse-row-bottom': imgs.identity.show}">
         <el-col :span="12">
-          <span>身份证明</span>
+          <span :class="{ needs:other.write}">身份证明</span>
           <span class="desc">(建议格式: JPG)</span>
         </el-col>
         <el-col :span="12">
@@ -61,11 +61,11 @@
       <el-collapse-transition>
         <div v-show="imgs.identity.show">
           <keep-alive>
-          <image-row 
-            ref="identity" 
-            :data="imgs.identity" 
-            :id="applyId" 
-            :entering="other.write" 
+          <image-row
+            ref="identity"
+            :data="imgs.identity"
+            :id="applyId"
+            :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
           </image-row>
@@ -75,7 +75,7 @@
       <!-- 居住证明 -->
       <el-row class="collapse-row collapse-row-top" :class="{'collapse-row-bottom': imgs.residence.show}">
         <el-col :span="12">
-          <span>居住证明</span>
+          <span :class="{ needs:other.write}">居住证明</span>
           <span class="desc">(建议格式: JPG)</span>
         </el-col>
         <el-col :span="12">
@@ -84,11 +84,11 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.residence.show">
-          <image-row 
-            ref="residence" 
-            :data="imgs.residence" 
-            :id="applyId" 
-            :entering="other.write" 
+          <image-row
+            ref="residence"
+            :data="imgs.residence"
+            :id="applyId"
+            :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
           </image-row>
@@ -97,7 +97,7 @@
       <!-- 资产证明 -->
       <el-row class="collapse-row collapse-row-top" :class="{'collapse-row-bottom': imgs.asset.show}">
         <el-col :span="12">
-          <span>资产证明</span>
+          <span :class="{ needs:other.write}">资产证明</span>
           <span class="desc">(建议格式: JPG)</span>
         </el-col>
         <el-col :span="12">
@@ -106,11 +106,11 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.asset.show">
-          <image-row 
-            ref="asset" 
-            :data="imgs.asset" 
-            :id="applyId" 
-            :entering="other.write" 
+          <image-row
+            ref="asset"
+            :data="imgs.asset"
+            :id="applyId"
+            :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
           </image-row>
@@ -128,10 +128,10 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.work.show">
-          <image-row 
-            :data="imgs.work" 
-            :id="applyId" 
-            :entering="other.write" 
+          <image-row
+            :data="imgs.work"
+            :id="applyId"
+            :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
           </image-row>
@@ -149,9 +149,9 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.certificate.show">
-          <image-row 
-            :data="imgs.certificate" 
-            :id="applyId" 
+          <image-row
+            :data="imgs.certificate"
+            :id="applyId"
             :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
@@ -161,7 +161,7 @@
       <!-- 合同类 -->
       <el-row class="collapse-row collapse-row-top" :class="{'collapse-row-bottom': imgs.contract.show}">
         <el-col :span="12">
-          <span>合同类</span>
+          <span :class="{ needs:other.write}">合同类</span>
           <span class="desc">(建议格式: PDF)</span>
         </el-col>
         <el-col :span="12">
@@ -170,10 +170,10 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.contract.show">
-          <image-row 
+          <image-row
             ref="contract"
-            :data="imgs.contract" 
-            :id="applyId" 
+            :data="imgs.contract"
+            :id="applyId"
             :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
@@ -183,7 +183,7 @@
       <!-- 外访类材料 -->
       <el-row class="collapse-row collapse-row-top" :class="{'collapse-row-bottom': imgs.outside.show}">
         <el-col :span="12">
-          <span>外访类材料</span>
+          <span :class="{ needs:other.write}">外访类材料</span>
           <span class="desc">(建议格式: JPG)</span>
         </el-col>
         <el-col :span="12">
@@ -192,9 +192,10 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.outside.show">
-          <image-row 
-            :data="imgs.outside" 
-            :id="applyId" 
+          <image-row
+            ref="outside"
+            :data="imgs.outside"
+            :id="applyId"
             :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
@@ -213,11 +214,11 @@
       </el-row>
       <el-collapse-transition>
         <div v-show="imgs.other.show">
-          <image-row 
+          <image-row
             class="collapse-row-bottom"
-            :data="imgs.other" 
-            :id="applyId" 
-            :entering="other.write" 
+            :data="imgs.other"
+            :id="applyId"
+            :entering="other.write"
             :upload="upload"
             @on-pre-upload="handelPreUpload">
           </image-row>

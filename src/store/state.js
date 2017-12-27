@@ -7,6 +7,7 @@ const state = {
   },
   menus: {
     active: 0,
+    openeds: [],
     data: null
   },
   btns: [],
@@ -15,6 +16,12 @@ const state = {
     file: '',
     name: '',
     mark: ''
+  },
+  bigImg: {
+    showBigImg: false,
+    imgName: '',
+    imgType: '',
+    imgUrl: ''
   },
   allStates: {
     C1000: '全部',

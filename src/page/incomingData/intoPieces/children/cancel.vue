@@ -99,7 +99,7 @@ export default {
       })
     },
     Close (refresh = false) {       // 用户信息模态框隐藏
-      this.form.reason = ''
+      this.$refs['form'].resetFields()
       this.$emit('on-close', this.code, refresh)
     }
   }

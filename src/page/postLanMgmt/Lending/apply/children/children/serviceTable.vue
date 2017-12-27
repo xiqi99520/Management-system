@@ -8,13 +8,13 @@
         <tr>
           <td>评房专员</td>
           <td>{{Data.acceptorName}}</td>
-          <td>下户专员</td>
+          <td :class="{ needs:other.write}">下户专员</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="inquirerId">
-              <el-select 
-                filterable 
-                placeholder="输入下户调查专员的名字，可联想检索选择" 
-                v-model="Data.inquirerId" 
+              <el-select
+                filterable
+                placeholder="请输入"
+                v-model="Data.inquirerId"
                 @change="handlerBlur('inquirerId')">
                 <el-option
                   v-for="(item, idx) in options"
@@ -29,10 +29,10 @@
           <!-- <td>风控初审</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="predictorId">
-              <el-select 
-                filterable 
-                placeholder="请选择" 
-                v-model="Data.predictorId" 
+              <el-select
+                filterable
+                placeholder="请选择"
+                v-model="Data.predictorId"
                 @change="handlerBlur('predictorId')">
                 <el-option
                   v-for="(item, idx) in options"
@@ -44,13 +44,13 @@
             </el-form-item>
             <span v-else>{{Data.predictorName}}</span>
           </td> -->
-          <td>面签专员</td>
+          <td :class="{ needs:other.write}">面签专员</td>
           <td>
             <el-form-item v-if="other.write" prop="interviewerId">
-              <el-select 
-                filterable 
-                placeholder="输入面签专员的名字，可联想检索选择" 
-                v-model="Data.interviewerId" 
+              <el-select
+                filterable
+                placeholder="请输入"
+                v-model="Data.interviewerId"
                 @change="handlerBlur('interviewerId')">
                 <el-option
                   v-for="(item, idx) in options"
@@ -62,13 +62,13 @@
             </el-form-item>
             <span v-else>{{Data.interviewerName}}</span>
           </td>
-          <td>权证专员</td>
+          <td :class="{ needs:other.write}">权证专员</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="attestorId">
-              <el-select 
-                filterable 
-                placeholder="输入权证专员的名字，可联想检索选择" 
-                v-model="Data.attestorId" 
+              <el-select
+                filterable
+                placeholder="请输入"
+                v-model="Data.attestorId"
                 @change="handlerBlur('attestorId')">
                 <el-option
                   v-for="(item, idx) in options"
@@ -82,13 +82,13 @@
           </td>
         </tr>
         <tr>
-          <td>风控终审</td>
+          <td :class="{ needs:other.write}">风控终审</td>
           <td class="input">
             <el-form-item v-if="other.write" prop="auditorId">
-              <el-select 
-                filterable 
-                placeholder="输入风控终审员的名字，可联想检索选择" 
-                v-model="Data.auditorId" 
+              <el-select
+                filterable
+                placeholder="请输入"
+                v-model="Data.auditorId"
                 @change="handlerBlur('auditorId')">
                 <el-option
                   v-for="(item, idx) in options"
