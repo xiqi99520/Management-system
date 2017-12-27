@@ -22,6 +22,30 @@ const intoPieces = r => require.ensure([], () => r(require('../page/incomingData
 // 进件管理详情
 const intoPieceDetail = r => require.ensure([], () => r(require('../page/incomingData/intoPieces/children/detail')), 'incomingData')
 
+// 渠道管理
+const channelMgmt = r => require.ensure([], () => r(require('@/page/incomingData/channel')), 'channelMgmt')
+
+// 新增渠道
+const channelAdd = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/channel-add')), 'channelMgmt')
+
+// 渠道详情
+const channelDetail = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/channel-detail')), 'channelMgmt')
+
+// 客户经理管理
+const managerList = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/manager-list')), 'channelMgmt')
+
+// 新增客户经理
+const managerAdd = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/manager-add')), 'channelMgmt')
+
+// 客户经理详情
+const managerDetail = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/manager-detail')), 'channelMgmt')
+
+// 客户管理
+const customerMgmt = r => require.ensure([], () => r(require('@/page/incomingData/customer')), 'customerMgmt')
+
+// 客户详情
+const customerDetail = r => require.ensure([], () => r(require('@/page/incomingData/customer/children/detail')), 'customerMgmt')
+
 /**
  * 贷款管理
  */
@@ -32,6 +56,26 @@ const lendingApply = r => require.ensure([], () => r(require('../page/postLanMgm
 
 // 放款申请详情
 const lendingApplyDetail = r => require.ensure([], () => r(require('../page/postLanMgmt/Lending/apply/children/detail')), 'postLan')
+
+const loanSys = r => require.ensure([], () => r(require('@/page/postLanMgmt')), 'postLan')
+
+// 房产评估
+const valuationMgt = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/index')), 'postLan')
+const evaluationList = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/children/evaluationList')), 'postLan')
+const taskList = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/children/taskList')), 'postLan')
+// 下户尽调
+const xhResearch = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhResearch/index')), 'postLan')
+const xhResearchList = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhResearch/index')), 'postLan')
+// 下户复核
+const xhRecheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhRecheck/index')), 'postLan')
+// 风控审批
+const riskApproval = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskApproval/index')), 'postLan')
+// 合同面签
+const visaInterview = r => require.ensure([], () => r(require('@/page/postLanMgmt/visaInterview/index')), 'postLan')
+// 权证上抵
+const warrants = r => require.ensure([], () => r(require('@/page/postLanMgmt/warrants/index')), 'postLan')
+// 风控审查
+const riskCheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskCheck/index')), 'postLan')
 
 /**
  * 系统管理
@@ -140,7 +184,42 @@ const router = new Router({
             requireAuth: true
           }
         }]
-      }]
+      }, {// 渠道管理
+          path: 'customerMgmt',
+          component: customerMgmt,
+          name: 'customerMgmt',
+          children: [{
+            path: 'channelAdd',
+            name: 'channelAdd',
+            component: channelAdd
+          }, {
+            path: 'channelDetail',
+            name: 'channelDetail',
+            component: channelDetail
+          }, {
+            path: 'managerList',
+            name: 'managerList',
+            component: managerList
+          }, {
+            path: 'managerAdd',
+            name: 'managerAdd',
+            component: managerAdd
+          }, {
+            path: 'managerDetail',
+            name: 'managerDetail',
+            component: managerDetail
+          }]
+        }, {// 客户管理
+          path: 'customerMgmt',
+          component: customerMgmt,
+          name: 'customerMgmt',
+          redirect: 'customerMgmt/list',
+          children: [{
+            path: 'view',
+            name: 'customerDetail',
+            component: customerDetail
+          }]
+        }]
     }, { // 业务流程
       path: 'operationFlow',
       name: 'operationFlow',
@@ -169,6 +248,61 @@ const router = new Router({
           meta: {
             requireAuth: true
           }
+        }, {// 房产评估
+          path: 'valuationMgt',
+          name: 'valuationMgt',
+          component: valuationMgt,
+          children: [{
+            path: 'evaluationList',
+            name: 'evaluationList',
+            component: evaluationList
+          }, {
+            path: 'taskList',
+            name: 'taskList',
+            component: taskList
+          }]
+        }, { // 下户尽调
+          path: 'xhResearch',
+          name: 'xhResearch',
+          component: xhResearch,
+          // redirect: 'list',
+          children: [
+            {
+              path: 'xhResearchList',
+              name: 'xhResearchList',
+              component: xhResearchList
+            }
+          ]
+        }, { // 下户复核
+          path: 'xhRecheck',
+          name: 'xhRecheck',
+          component: xhRecheck,
+          // redirect: 'list',
+          children: []
+        }, { // 风控审批
+          path: 'riskApproval',
+          name: 'riskApproval',
+          component: riskApproval,
+          // redirect: 'list',
+          children: []
+        }, { // 合同面签
+          path: 'visaInterview',
+          name: 'visaInterview',
+          component: visaInterview,
+          // redirect: 'list',
+          children: []
+        }, { // 权证上抵
+          path: 'warrants',
+          name: 'warrants',
+          component: warrants,
+          // redirect: 'list',
+          children: []
+        }, { // 风控审查
+          path: 'riskCheck',
+          name: 'riskCheck',
+          component: riskCheck,
+          // redirect: 'list',
+          children: []
         }]
       }]
     }, { // 大数据风控
@@ -359,7 +493,6 @@ const getActiveMenu = (menus, active = '') => {
     return getActiveMenu(menu.children, str + '-')
   } else if (menu.type === '页面') {
     if (str.includes('-')) {
-      console.log(str + '0')
       return str + '0'
     } else {
       return '0'
@@ -385,15 +518,12 @@ router.beforeEach((to, from, next) => {
         let nActive = String(to.query.index)
         let menu = navs.data[to.query.index].children
         let mActive = getActiveMenu(menu)
-        let openeds = mActive.includes('-') ? mActive.split('-') : []
         store.commit('SET_NAV', {
           active: nActive,
           data: navs.data
         })
         store.commit('SET_MENU', {
           active: mActive,
-          openeds,
-          // active: '1',
           data: menu
         })
       }
