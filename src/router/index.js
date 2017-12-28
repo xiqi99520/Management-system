@@ -76,6 +76,9 @@ const warrants = r => require.ensure([], () => r(require('@/page/postLanMgmt/war
 // 风控审查
 const riskCheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskCheck/index')), 'postLan')
 
+// 风控审查任务
+const riskCheckTask = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskCheck/children/task')), 'postLan')
+
 /**
  * 系统管理
  */
@@ -288,6 +291,10 @@ const router = new Router({
           path: 'riskCheck',
           name: 'riskCheck',
           component: riskCheck,
+        }, { // 风控审查
+          path: 'riskCheckTask',
+          name: 'riskCheckTask',
+          component: riskCheckTask,
         }]
     }, { // 大数据风控
       path: 'bigDataRiskMgmt',
