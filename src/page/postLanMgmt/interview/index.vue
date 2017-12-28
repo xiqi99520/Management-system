@@ -18,6 +18,26 @@
         </el-select>
       </el-form-item>
 
+      <!-- 地区 -->
+      <el-form-item>
+        <el-select v-model="filterData.state" filterable placeholder="全部/朝阳区/..." style="width:100%;">
+          <el-option label="全部" value="0"></el-option>
+          <el-option label="北京" value="1"></el-option>
+          <el-option label="上海" value="2"></el-option>
+          <el-option label="深圳" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <!-- 专员 -->
+      <el-form-item>
+        <el-select v-model="filterData.state" filterable placeholder="面签专员" style="width:100%;">
+          <el-option label="老王" value="0"></el-option>
+          <el-option label="小王" value="1"></el-option>
+          <el-option label="小李" value="2"></el-option>
+          <el-option label="小陈" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
       <!-- 申请时间 -->
       <el-form-item>
         <el-date-picker

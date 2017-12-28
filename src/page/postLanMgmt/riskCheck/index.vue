@@ -9,6 +9,16 @@
       <el-form-item>
         <el-input v-model="filterData.input" placeholder="申请人姓名/手机号/申请编号"></el-input>
       </el-form-item>
+
+      <!-- 等待时长 -->
+      <el-form-item>
+        <el-select v-model="filterData.state" filterable placeholder="风控经理" style="width:100%;">
+          <el-option label="王经理" value="0"></el-option>
+          <el-option label="李经理" value="1"></el-option>
+          <el-option label="陈经理" value="2"></el-option>
+        </el-select>
+      </el-form-item>
+
       <!-- 等待时长 -->
       <el-form-item>
         <el-select v-model="filterData.state" filterable placeholder="等待时长" style="width:100%;">
@@ -117,7 +127,7 @@
             type="primary"
             icon="el-icon-tickets"
             title="查看详情"
-            @click="showDetail(scope.row.applyId)">
+            @click="showDetail(scope.row.id)">
         </el-button>
         </template>
       </el-table-column>
@@ -133,6 +143,8 @@
 </template>
 
 <script>
+import riskCheckDetail from './children/detail'
+
 export default {
     data () {
       return {
@@ -160,7 +172,7 @@ export default {
           total: 2365,
           amount: '2272W'
         }, {
-          id: 1,
+          id: 2,
           name: '王力宏',
           sex: '男',
           code: 'XC083802',
@@ -297,10 +309,13 @@ export default {
         }]
       }
     },
+    components: {
+      riskCheckDetail
+    },
     methods: {
       showDetail (row) {
         console.log(row)
-        return this.$router.push({path: '/appSys/channelMgt/managerDetail', query: {id: row.id}})
+        // return this.$router.push({path: '/appSys/channelMgt/managerDetail', query: {id: row.id}})
       },
       handleOff (row) {
         if (row.status === '激活') {

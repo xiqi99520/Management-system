@@ -9,12 +9,22 @@
       <el-form-item>
         <el-input v-model="filterData.input" placeholder="申请人姓名/手机号/申请编号"></el-input>
       </el-form-item>
-      <!-- 等待时长 -->
+      <!-- 分配 -->
       <el-form-item>
-        <el-select v-model="filterData.state" filterable placeholder="等待时长" style="width:100%;">
-          <el-option label="0~30分钟" value="0"></el-option>
-          <el-option label="30~60分钟" value="1"></el-option>
-          <el-option label="60分钟以上" value="2"></el-option>
+        <el-select v-model="filterData.state" filterable placeholder="全部/已分配/未分配" style="width:100%;">
+          <el-option label="全部" value="0"></el-option>
+          <el-option label="已分配" value="1"></el-option>
+          <el-option label="未分配" value="2"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <!-- 地区 -->
+      <el-form-item>
+        <el-select v-model="filterData.state" filterable placeholder="全部/朝阳区/..." style="width:100%;">
+          <el-option label="全部" value="0"></el-option>
+          <el-option label="北京" value="1"></el-option>
+          <el-option label="上海" value="2"></el-option>
+          <el-option label="深圳" value="3"></el-option>
         </el-select>
       </el-form-item>
 
