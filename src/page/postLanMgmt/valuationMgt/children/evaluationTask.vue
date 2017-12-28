@@ -2,7 +2,7 @@
   <el-container>
      <el-header>
       <el-row type="flex" justify="space-between">
-        <el-col :span="12"><div class="title">任务列表</div></el-col>
+        <el-col :span="12"><div class="title">房产价值评估</div></el-col>
         <el-col :span="12" align="right">
           <el-button type="primary" class="allian-btn-default" @click="handleBack()">返回</el-button>
         </el-col>
@@ -12,19 +12,12 @@
       <!-- 表格筛选 -->
       <el-form :inline="true" :model="filterData" class="form">
         <el-form-item>
-          <el-input v-model="filterData.user" placeholder="客户姓名/手机号"></el-input>
+          <el-input v-model="filterData.user" placeholder="申请人姓名/手机号/申请编号"></el-input>
         </el-form-item>
-        <el-form-item label="贷款状态">
-          <el-select v-model="filterData.loanStatus" placeholder="所有">
-            <el-option label="申请中" value="0"></el-option>
-            <el-option label="未通过" value="1"></el-option>
-            <el-option label="已放款" value="2"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="用户状态">
-          <el-select v-model="filterData.userStatus" placeholder="所有">
-            <el-option label="激活" value="0"></el-option>
-            <el-option label="禁用" value="1"></el-option>
+        <el-form-item>
+          <el-select v-model="filterData.userStatus" placeholder="等待时长">
+            <el-option label="1小时" value="0"></el-option>
+            <el-option label="2小时" value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -40,25 +33,27 @@
         </el-form-item>
       </el-form>
       <!-- 表格 -->
-      <el-table :data="tableData" stripe border style="width: 100%" @cell-click="handleView">
+      <el-table :data="tableData" stripe border style="width: 100%">
         <el-table-column
-          fixed
-          prop="id"
-          label="ID"
+          prop="code"
+          label="申请编号"
           align="center"
           width="100">
+          <template slot-scope="scope">
+            <span @click="handleView(scope.row)">{{ scope.row.code }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="realName"
-          label="姓名"
+          label="申请人"
           align="center"
-          width="100">
+          width="60">
         </el-table-column>
         <el-table-column
           prop="sex"
           label="性别"
           align="center"
-          width="60">
+          width="120">
         </el-table-column>
         <el-table-column
           prop="telnum"
@@ -68,43 +63,43 @@
         </el-table-column>
         <el-table-column
           prop="createTime"
-          label="创建时间"
+          label="提交时间"
           align="center"
           width="150">
         </el-table-column>
         <el-table-column
-          prop="manager"
-          label="客户经理"
+          prop="loanMoney"
+          label="贷款额（万）"
           align="center"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="loanMoney"
-          label="贷款额（万元）"
+          prop="manager"
+          label="贷款期限"
           align="center"
           width="120">
         </el-table-column>
         <el-table-column
           prop="loanStatus"
-          label="部门"
+          label="客户经理"
           align="center"
           width="100">
         </el-table-column>
         <el-table-column
           prop="userStatus"
-          label="用户状态"
+          label="推荐意见"
           align="center"
           width="120">
         </el-table-column>
         <el-table-column
           prop="updateTime"
-          label="最后更新时间"
+          label="处理时间"
           align="center"
           width="150">
         </el-table-column>
         <el-table-column
           prop="pwdStatus"
-          label="密码激活状态"
+          label="等待时间"
           align="center"
           width="120">
         </el-table-column>
@@ -140,7 +135,8 @@
         },
         data: [ ],
         tableData: [{
-          id: '000001',
+          id: 1,
+          code: '000001',
           loanStatus: '渠道部',
           pwdStatus: '未激活',
           telnum: '134xxxx7123',
@@ -153,7 +149,8 @@
           email: 'liubao@hanglian.com',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: '000002',
+          id: 2,
+          code: '000002',
           loanStatus: '渠道部',
           pwdStatus: '未激活',
           telnum: '134xxxx7123',
@@ -166,7 +163,8 @@
           email: 'liubao@hanglian.com',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: '000003',
+          id: 3,
+          code: '000003',
           loanStatus: '渠道部',
           pwdStatus: '未激活',
           telnum: '134xxxx7123',
@@ -179,7 +177,8 @@
           email: 'liubao@hanglian.com',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: '000004',
+          id: 4,
+          code: '000004',
           loanStatus: '渠道部',
           pwdStatus: '未激活',
           telnum: '134xxxx7123',
@@ -192,7 +191,8 @@
           email: 'liubao@hanglian.com',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: '000005',
+          id: 5,
+          code: '000005',
           loanStatus: '渠道部',
           pwdStatus: '未激活',
           telnum: '134xxxx7123',
@@ -210,7 +210,7 @@
     methods: {
       handleView (row) {
         console.log(row.id)
-        return this.$router.push({path: '/appSys/customerMgt/view', query: {id: row.id}})
+        return this.$router.push({path: '/postLanMgmt/evaluationTaskDetail', query: {id: row.id}})
       },
       handleOff (row) {
        // let id = row.id
@@ -256,6 +256,7 @@
   }
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
 .el-header {
   text-align: left;
   line-height: 20px;

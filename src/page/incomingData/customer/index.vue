@@ -40,7 +40,7 @@
         </el-form-item>
       </el-form>
       <!-- 表格 -->
-      <el-table :data="tableData" stripe border style="width: 100%" @cell-click="handleView">
+      <el-table :data="tableData" stripe border style="width: 100%">
         <el-table-column
           fixed
           prop="id"
