@@ -72,7 +72,7 @@
       <el-table-column
         align="center"
         prop="createTime"
-        label="面签完成时间"
+        label="审批完成时间"
         min-width="100">
       </el-table-column>
       <el-table-column
@@ -95,30 +95,26 @@
       <el-table-column
         align="center"
         prop="handleTime"
-        label="处理时间">
+        label="预约时间">
       </el-table-column>
       <el-table-column
         align="center"
         prop="waitTime"
-        label="等待/累计时间"
+        label="分配累计时间"
         min-width="100">
       </el-table-column>
       <el-table-column
         align="center"
         prop="manager"
-        label="风控经理">
+        label="面签专员">
       </el-table-column>
       <el-table-column
         align="center"
         label="操作"
-        width="80">
+        width="120">
         <template slot-scope="scope">
-          <el-button
-            type="primary"
-            icon="el-icon-tickets"
-            title="查看详情"
-            @click="showDetail(scope.row.applyId)">
-        </el-button>
+          <el-button type="text" size="small">处理</el-button>
+          <el-button type="text" size="small">挂起</el-button>
         </template>
       </el-table-column>
     </el-table>

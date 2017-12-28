@@ -89,24 +89,34 @@
       </el-table-column>
       <el-table-column
         align="center"
-        prop="floating"
-        label="利率上浮">
+        prop="examine"
+        label="审核额度(万)">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="area"
+        label="房屋所在区域">
       </el-table-column>
       <el-table-column
         align="center"
         prop="handleTime"
-        label="处理时间">
+        label="预约/规划时间">
       </el-table-column>
       <el-table-column
         align="center"
         prop="waitTime"
-        label="等待/累计时间"
+        label="分配累计时间"
         min-width="100">
       </el-table-column>
       <el-table-column
         align="center"
+        prop="partake"
+        label="客户参与">
+      </el-table-column>
+      <el-table-column
+        align="center"
         prop="manager"
-        label="风控经理">
+        label="权证专员">
       </el-table-column>
       <el-table-column
         align="center"
@@ -151,10 +161,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -166,10 +178,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -181,10 +195,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -196,10 +212,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -211,10 +229,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -226,10 +246,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -241,10 +263,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -256,10 +280,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -271,10 +297,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,
@@ -286,10 +314,12 @@ export default {
           code: 'XC083802',
           phoneNo: '134xxxx7123',
           deadline: '2个月',
-          floating: '+0.08%',
+          examine: '1400',
           status: '激活',
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
+          area: '朝阳区',
+          partake: '是',
           waitTime: '1小时0分钟',
           manager: '王小宝',
           total: 2365,

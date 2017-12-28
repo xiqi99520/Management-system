@@ -61,18 +61,25 @@ const loanSys = r => require.ensure([], () => r(require('@/page/postLanMgmt')), 
 
 // 房产评估
 const valuationMgt = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/index')), 'postLan')
-const evaluationList = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/children/evaluationList')), 'postLan')
-const evaluationTask = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/children/evaluationTask')), 'postLan')
+
+// 房产评估
+const evaluation = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/index')), 'postLan')
+
 // 下户尽调
 const xhResearch = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhResearch/index')), 'postLan')
+
 // 下户复核
 const xhRecheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhRecheck/index')), 'postLan')
+
 // 风控审批
 const riskApproval = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskApproval/index')), 'postLan')
+
 // 合同面签
-const interview = r => require.ensure([], () => r(require('@/page/postLanMgmt/visaInterview/index')), 'postLan')
+const interview = r => require.ensure([], () => r(require('@/page/postLanMgmt/interview/index')), 'postLan')
+
 // 权证上抵
 const warrants = r => require.ensure([], () => r(require('@/page/postLanMgmt/warrants/index')), 'postLan')
+
 // 风控审查
 const riskCheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskCheck/index')), 'postLan')
 
@@ -192,17 +199,9 @@ const router = new Router({
             name: 'channelAdd',
             component: channelAdd
           }, {
-            path: 'channelDetail',
-            name: 'channelDetail',
-            component: channelDetail
-          }, {
             path: 'managerList',
             name: 'managerList',
             component: managerList
-          }, {
-            path: 'managerAdd',
-            name: 'managerAdd',
-            component: managerAdd
           }, {
             path: 'managerDetail',
             name: 'managerDetail',
@@ -247,17 +246,9 @@ const router = new Router({
           requireAuth: true
         }
       }, {// 房产评估
-        path: 'evaluationList',
-        name: 'evaluationList',
-        component: evaluationList,
-        meta: {
-          requireAuth: true
-        }
-      }, {
-        // 任务列表
-        path: 'evaluationTask',
-        name: 'evaluationTask',
-        component: evaluationTask,
+        path: 'evaluation',
+        name: 'evaluation',
+        component: evaluation,
         meta: {
           requireAuth: true
         }
@@ -272,22 +263,37 @@ const router = new Router({
         path: 'xhRecheck',
         name: 'xhRecheck',
         component: xhRecheck,
+        meta: {
+          requireAuth: true
+        }
       }, { // 风控审批
         path: 'riskApproval',
         name: 'riskApproval',
         component: riskApproval,
+        meta: {
+          requireAuth: true
+        }
       }, { // 合同面签
         path: 'interview',
         name: 'interview',
         component: interview,
+        meta: {
+          requireAuth: true
+        }
       }, { // 权证上抵
         path: 'warrants',
         name: 'warrants',
         component: warrants,
+        meta: {
+          requireAuth: true
+        }
       }, { // 风控审查
         path: 'riskCheck',
         name: 'riskCheck',
         component: riskCheck,
+        meta: {
+          requireAuth: true
+        }
       }]
     }, { // 大数据风控
       path: 'bigDataRiskMgmt',
