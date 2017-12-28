@@ -105,6 +105,11 @@
       </el-table-column>
       <el-table-column
         align="center"
+        prop="manager"
+        label="风控经理">
+      </el-table-column>
+      <el-table-column
+        align="center"
         label="操作"
         width="80">
         <template slot-scope="scope">
@@ -151,6 +156,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -165,6 +171,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -179,6 +186,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -193,6 +201,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -207,6 +216,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -221,6 +231,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -235,6 +246,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -249,6 +261,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -263,6 +276,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }, {
@@ -277,6 +291,7 @@ export default {
           createTime: '2017/10/12 11:00',
           handleTime: '2017/10/12 11:00',
           waitTime: '1小时0分钟',
+          manager: '王小宝',
           total: 2365,
           amount: '2272W'
         }]
