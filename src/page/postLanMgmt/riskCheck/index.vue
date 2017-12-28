@@ -139,6 +139,10 @@
     </el-pagination>
     <!-- 审核通过对话框 -->
   </el-main>
+
+  <transition name="el-zoom-in-center">
+    <risk-check-detail v-show="detail.show" @on-close="handleClose"></risk-check-detail>
+  </transition>
   </el-container>
 </template>
 
@@ -154,6 +158,9 @@ export default {
           role: '',
           area: '',
           dateRange: ''
+        },
+        detail: { // 详情数据
+          show: false
         },
         pickerOptions: '2017-12-26',
         tableData: [{
@@ -314,6 +321,7 @@ export default {
     },
     methods: {
       showDetail (row) {
+        this.detail.show = true
         console.log(row)
         // return this.$router.push({path: '/appSys/channelMgt/managerDetail', query: {id: row.id}})
       },
@@ -329,6 +337,10 @@ export default {
       },
       onSubmit () {
         console.log('submit!')
+      },
+      handleClose(){
+        console.log(456)
+        this.detail.show = false
       }
     }
   }

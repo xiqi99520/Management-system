@@ -304,6 +304,15 @@ export const formatter = {
       })
       return result
     }
+  },
+  dateRangeChange: (val, form) => {
+    if (val) {
+      form.startDate = val[0]
+      form.endDate = val[1]
+    } else {
+      form.startDate = ''
+      form.endDate = ''
+    }
   }
 }
 
@@ -366,22 +375,48 @@ export const pickerOptions = {
  * @param {Ayyay} selects 查询的下拉框type
  * @param {Object} form 赋值
  */
-export const initSelectOptions = (selects, form) => {
+export const initSelectOptions = (selects, options) => {
   return getDict(selects)
     .then(resp => {
       if (resp.success) {
         Object.entries(resp.data).map(([key, value]) => {
-          if (Object.keys(form).includes(key)) {
-            form[key] = form[key].concat(value)
+          if (Object.keys(options).includes(key)) {
+            options[key] = options[key].concat(value)
           }
         })
-        return form
+        return options
       } else {
         throw new Error(resp.message)
       }
     })
     .catch(err => {
       console.log(err.resonse ? err.response.data : err.message)
-      return form
+      return options
+    })
+}
+
+/**
+ * 初始化表格数据及分页信息
+ * @param {*} promise 查询的promise对象
+ * @param {*} vue 当前页面的vue实例
+ */
+export const initTable = (promise, vue) => {
+  return promise(vue.form)
+    .then(resp => {
+      if (resp.success) {
+        vue.data = resp.data.content
+        vue.totalPage = resp.data.total
+        return true
+      } else {
+        throw new Error(resp.message)
+      }
+    })
+    .catch(err => {
+      vue.data = []
+      vue.$notify.error({
+        title: '失败',
+        message: err.name === 'Error' ? err.message : err.response.data.message
+      })
+      return false
     })
 }
