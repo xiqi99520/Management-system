@@ -62,10 +62,9 @@ const loanSys = r => require.ensure([], () => r(require('@/page/postLanMgmt')), 
 // 房产评估
 const valuationMgt = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/index')), 'postLan')
 const evaluationList = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/children/evaluationList')), 'postLan')
-const taskList = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/children/taskList')), 'postLan')
+const evaluationTask = r => require.ensure([], () => r(require('@/page/postLanMgmt/valuationMgt/children/evaluationTask')), 'postLan')
 // 下户尽调
 const xhResearch = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhResearch/index')), 'postLan')
-const xhResearchList = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhResearch/index')), 'postLan')
 // 下户复核
 const xhRecheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhRecheck/index')), 'postLan')
 // 风控审批
@@ -213,7 +212,6 @@ const router = new Router({
           path: 'customerMgmt',
           component: customerMgmt,
           name: 'customerMgmt',
-          redirect: 'customerMgmt/list',
           children: [{
             path: 'view',
             name: 'customerDetail',
@@ -240,71 +238,57 @@ const router = new Router({
         component: lendingApply,
         meta: {
           requireAuth: true
-        },
-        children: [{
-          path: 'detail',
-          name: 'lendingApplyDetail',
-          component: lendingApplyDetail,
-          meta: {
-            requireAuth: true
-          }
-        }, {// 房产评估
-          path: 'valuationMgt',
-          name: 'valuationMgt',
-          component: valuationMgt,
-          children: [{
-            path: 'evaluationList',
-            name: 'evaluationList',
-            component: evaluationList
-          }, {
-            path: 'taskList',
-            name: 'taskList',
-            component: taskList
-          }]
-        }, { // 下户尽调
-          path: 'xhResearch',
-          name: 'xhResearch',
-          component: xhResearch,
-          // redirect: 'list',
-          children: [
-            {
-              path: 'xhResearchList',
-              name: 'xhResearchList',
-              component: xhResearchList
-            }
-          ]
-        }, { // 下户复核
-          path: 'xhRecheck',
-          name: 'xhRecheck',
-          component: xhRecheck,
-          // redirect: 'list',
-          children: []
-        }, { // 风控审批
-          path: 'riskApproval',
-          name: 'riskApproval',
-          component: riskApproval,
-          // redirect: 'list',
-          children: []
-        }, { // 合同面签
+        }
+      }, {
+        path: 'detail',
+        name: 'lendingApplyDetail',
+        component: lendingApplyDetail,
+        meta: {
+          requireAuth: true
+        }
+      }, {// 房产评估
+        path: 'evaluationList',
+        name: 'evaluationList',
+        component: evaluationList,
+        meta: {
+          requireAuth: true
+        }
+      }, {
+        // 任务列表
+        path: 'evaluationTask',
+        name: 'evaluationTask',
+        component: evaluationTask,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 下户尽调
+        path: 'xhResearch',
+        name: 'xhResearch',
+        component: xhResearch,
+        meta: {
+          requireAuth: true
+        }
+      }, { // 下户复核
+        path: 'xhRecheck',
+        name: 'xhRecheck',
+        component: xhRecheck,
+      }, { // 风控审批
+        path: 'riskApproval',
+        name: 'riskApproval',
+        component: riskApproval,
+      }, { // 合同面签
           path: 'visaInterview',
           name: 'visaInterview',
           component: visaInterview,
-          // redirect: 'list',
-          children: []
         }, { // 权证上抵
           path: 'warrants',
           name: 'warrants',
           component: warrants,
-          // redirect: 'list',
-          children: []
         }, { // 风控审查
           path: 'riskCheck',
           name: 'riskCheck',
           component: riskCheck,
-          // redirect: 'list',
-          children: []
         }]
-      }]
     }, { // 大数据风控
       path: 'bigDataRiskMgmt',
       name: 'bigDataRiskMgmt',

@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <div>客户经理管理</div>
+      <div>下户资料复核</div>
     </el-header>
     <el-main>
       <!-- 表格筛选 -->
