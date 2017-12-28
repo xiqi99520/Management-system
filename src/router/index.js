@@ -70,14 +70,11 @@ const xhRecheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/xh
 // 风控审批
 const riskApproval = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskApproval/index')), 'postLan')
 // 合同面签
-const visaInterview = r => require.ensure([], () => r(require('@/page/postLanMgmt/visaInterview/index')), 'postLan')
+const interview = r => require.ensure([], () => r(require('@/page/postLanMgmt/visaInterview/index')), 'postLan')
 // 权证上抵
 const warrants = r => require.ensure([], () => r(require('@/page/postLanMgmt/warrants/index')), 'postLan')
 // 风控审查
 const riskCheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskCheck/index')), 'postLan')
-
-// 风控审查任务
-const riskCheckTask = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskCheck/children/task')), 'postLan')
 
 /**
  * 系统管理
@@ -280,22 +277,18 @@ const router = new Router({
         name: 'riskApproval',
         component: riskApproval,
       }, { // 合同面签
-          path: 'visaInterview',
-          name: 'visaInterview',
-          component: visaInterview,
-        }, { // 权证上抵
-          path: 'warrants',
-          name: 'warrants',
-          component: warrants,
-        }, { // 风控审查
-          path: 'riskCheck',
-          name: 'riskCheck',
-          component: riskCheck,
-        }, { // 风控审查
-          path: 'riskCheckTask',
-          name: 'riskCheckTask',
-          component: riskCheckTask,
-        }]
+        path: 'interview',
+        name: 'interview',
+        component: interview,
+      }, { // 权证上抵
+        path: 'warrants',
+        name: 'warrants',
+        component: warrants,
+      }, { // 风控审查
+        path: 'riskCheck',
+        name: 'riskCheck',
+        component: riskCheck,
+      }]
     }, { // 大数据风控
       path: 'bigDataRiskMgmt',
       name: 'bigDataRiskMgmt',
