@@ -194,6 +194,7 @@
   }
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
 .el-header {
   text-align: left;
   line-height: 20px;
@@ -201,7 +202,7 @@
   .title {
     margin: 5px;
     text-indent: 10px;
-    border-left: 5px solid $blue;
+    border-left: 5px solid @blue;
     font-size: 20px;
     vertical-align: middle
   }
@@ -213,7 +214,7 @@
 .view-container {
   margin-top:20px;
   padding-top:30px;
-  border-top:1px solid $blue;
+  border-top:1px solid @blue;
 }
 .view-item {
   .view-item-title {
@@ -221,7 +222,7 @@
     text-align: left;
     font-weight: 500;
     font-size:16px;
-    color: $blue;
+    color: @blue;
   }
 }
 .form-static {

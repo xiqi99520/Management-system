@@ -56,7 +56,6 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@/style/color";
-
 .detail-full-screnn {
   position: absolute;
   top: 0;

@@ -1,7 +1,13 @@
 <template>
+  <router-view/>
 </template>
 <script>
 export default {
-  name: 'dd'
+  data () {
+    return {
+    }
+  }
 }
 </script>
+<style lang="less" scoped>
+</style>

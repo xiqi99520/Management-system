@@ -72,7 +72,7 @@ const xhResearch = r => require.ensure([], () => r(require('@/page/postLanMgmt/x
 const xhRecheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhRecheck/index')), 'postLan')
 
 // 风控审批
-const riskApproval = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskApproval/index')), 'postLan')
+const riskApproval = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskApproval/children/list')), 'postLan')
 
 // 合同面签
 const interview = r => require.ensure([], () => r(require('@/page/postLanMgmt/interview/index')), 'postLan')

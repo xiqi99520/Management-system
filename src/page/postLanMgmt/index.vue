@@ -6,6 +6,6 @@ export default {
   name: 'postLanManagement'
 }
 </script>
-<style lang="less" scoped>
-
+<style lang="less">
+@import "~@/style/color";
 </style>
