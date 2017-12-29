@@ -135,7 +135,7 @@
         <template slot-scope="scope">
           <el-form :inline="true">
             <el-form-item>
-              <el-select placeholder="陈经理">
+              <el-select v-model="filterData.role" placeholder="陈经理">
                 <el-option label="陈经理" value="chen"></el-option>
                 <el-option label="王经理" value="wang"></el-option>
               </el-select>
@@ -364,9 +364,7 @@ export default {
           row.tatus = '激活'
         }
       },
-      handleEdit (row) {
-        return this.$router.push({path: '/system/userMgt/add', query: {id: row.id}})
-      },
+
       onSubmit () {
         console.log('submit!')
       },
