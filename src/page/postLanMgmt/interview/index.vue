@@ -71,6 +71,9 @@
         align="center"
         prop="code"
         label="申请编号">
+        <template slot-scope="scope">
+          <span class="link" @click="showDetail(scope.row)">{{ scope.row.code }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         align="center"
@@ -120,8 +123,13 @@
       <el-table-column
         align="center"
         prop="waitTime"
-        label="分配累计时间"
+        label="等待累计时间"
         min-width="100">
+        <template slot-scope="scope">
+          <span>{{scope.row.waitTime}}</span>
+          <el-tag type="warning" color="warning">{{scope.row.waitTime}}</el-tag>
+          <el-tag type="danger" color="danger">{{scope.row.waitTime}}</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
         align="center"
@@ -133,11 +141,21 @@
         label="操作"
         width="120">
         <template slot-scope="scope">
+          <el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
           <el-button type="text" size="small">处理</el-button>
           <el-button type="text" size="small">挂起</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-row>
+      <el-col :span="24" class="tip">
+      <div>
+        注：<span class="warning"></span>代表等待时间为30-60分钟的单  &nbsp;&nbsp;<span class="danger"></span>代表等待时间为60分钟以上的单
+      </div>
+      </el-col>
+    </el-row>
+
     <!-- 分页 -->
     <el-pagination
       layout="total, prev, pager, next, jumper"
@@ -145,10 +163,16 @@
     </el-pagination>
     <!-- 审核通过对话框 -->
   </el-main>
+
+  <transition name="el-zoom-in-center">
+    <interview-detail v-show="detail.show" @on-close="handleClose"></interview-detail>
+  </transition>
   </el-container>
 </template>
 
 <script>
+import interviewDetail from './children/detail'
+
 export default {
     data () {
       return {
@@ -158,6 +182,9 @@ export default {
           role: '',
           area: '',
           dateRange: ''
+        },
+        detail: {
+          show: false
         },
         pickerOptions: '2017-12-26',
         tableData: [{
@@ -313,10 +340,12 @@ export default {
         }]
       }
     },
+    components: {
+      interviewDetail
+    },
     methods: {
       showDetail (row) {
-        console.log(row)
-        return this.$router.push({path: '/appSys/channelMgt/managerDetail', query: {id: row.id}})
+        this.detail.show = true
       },
       handleOff (row) {
         if (row.status === '激活') {
@@ -330,6 +359,12 @@ export default {
       },
       onSubmit () {
         console.log('submit!')
+      },
+      handleClose(){
+        this.detail.show = false
+      },
+      waitTime(time){
+
       }
     }
   }
@@ -345,11 +380,34 @@ export default {
     font-size: 20px;
   }
 }
+.link{
+  color: #2299dd;
+  cursor: pointer;
+}
 
 .filterData {
   text-align: left;
   .input-select {
     width: 100px;
+  }
+}
+
+.tip{
+  text-align: left;
+  margin: 20px 0;
+  span{
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .warning{
+    background: #eb9e05;
+  }
+  .danger{
+    background: #fa5555;
   }
 }
 </style>

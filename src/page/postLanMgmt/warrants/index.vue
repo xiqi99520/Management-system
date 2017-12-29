@@ -117,6 +117,12 @@
         prop="waitTime"
         label="分配累计时间"
         min-width="100">
+        <template slot-scope="scope">
+          <span>{{scope.row.waitTime}}</span>
+          <el-tag type="warning" color="warning">{{scope.row.waitTime}}</el-tag>
+          <el-tag type="danger" color="danger">{{scope.row.waitTime}}</el-tag>
+        </template>
+      </el-table-column>
       </el-table-column>
       <el-table-column
         align="center"
@@ -127,21 +133,27 @@
         align="center"
         prop="manager"
         label="权证专员">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="操作"
-        width="80">
         <template slot-scope="scope">
-          <el-button
-            type="primary"
-            icon="el-icon-tickets"
-            title="查看详情"
-            @click="showDetail(scope.row.applyId)">
-        </el-button>
+          <el-form :inline="true">
+            <el-form-item>
+              <el-select placeholder="王小宝">
+                <el-option label="王小宝" value="wang"></el-option>
+                <el-option label="小王宝" value="xiao"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-row>
+      <el-col :span="24" class="tip">
+      <div>
+        注：<span class="warning"></span>代表等待时间为30-60分钟的单  &nbsp;&nbsp;<span class="danger"></span>代表等待时间为60分钟以上的单
+      </div>
+      </el-col>
+    </el-row>
+
     <!-- 分页 -->
     <el-pagination
       layout="total, prev, pager, next, jumper"
@@ -374,6 +386,30 @@ export default {
   text-align: left;
   .input-select {
     width: 100px;
+  }
+}
+
+.link{
+  color: #2299dd;
+  cursor: pointer;
+}
+
+.tip{
+  text-align: left;
+  margin: 20px 0;
+  span{
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .warning{
+    background: #eb9e05;
+  }
+  .danger{
+    background: #fa5555;
   }
 }
 </style>

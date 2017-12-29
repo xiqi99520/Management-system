@@ -61,6 +61,10 @@
         align="center"
         prop="code"
         label="申请编号">
+        <template slot-scope="scope">
+          <span class="link" @click="showDetail(scope.row.id)">{{scope.row.code}}</span>
+        </el-butspanton>
+        </template>
       </el-table-column>
       <el-table-column
         align="center"
@@ -112,11 +116,27 @@
         prop="waitTime"
         label="等待/累计时间"
         min-width="100">
+        <template slot-scope="scope">
+          <span>{{scope.row.waitTime}}</span>
+          <el-tag type="warning" color="warning">{{scope.row.waitTime}}</el-tag>
+          <el-tag type="danger" color="danger">{{scope.row.waitTime}}</el-tag>
+        </template>
+      </el-table-column>
       </el-table-column>
       <el-table-column
         align="center"
         prop="manager"
         label="风控经理">
+        <template slot-scope="scope">
+          <el-form :inline="true">
+            <el-form-item>
+              <el-select placeholder="陈经理">
+                <el-option label="陈经理" value="chen"></el-option>
+                <el-option label="王经理" value="wang"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </template>
       </el-table-column>
       <el-table-column
         align="center"
@@ -132,6 +152,15 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-row>
+      <el-col :span="24" class="tip">
+      <div>
+        注：<span class="warning"></span>代表等待时间为30-60分钟的单  &nbsp;&nbsp;<span class="danger"></span>代表等待时间为60分钟以上的单
+      </div>
+      </el-col>
+    </el-row>
+
     <!-- 分页 -->
     <el-pagination
       layout="total, prev, pager, next, jumper"
@@ -159,7 +188,7 @@ export default {
           area: '',
           dateRange: ''
         },
-        detail: { // 详情数据
+        detail: {
           show: false
         },
         pickerOptions: '2017-12-26',
@@ -322,8 +351,6 @@ export default {
     methods: {
       showDetail (row) {
         this.detail.show = true
-        console.log(row)
-        // return this.$router.push({path: '/appSys/channelMgt/managerDetail', query: {id: row.id}})
       },
       handleOff (row) {
         if (row.status === '激活') {
@@ -339,7 +366,6 @@ export default {
         console.log('submit!')
       },
       handleClose(){
-        console.log(456)
         this.detail.show = false
       }
     }
@@ -357,10 +383,33 @@ export default {
   }
 }
 
+.link{
+  color: #2299dd;
+  cursor: pointer;
+}
+
 .filterData {
   text-align: left;
   .input-select {
     width: 100px;
+  }
+}
+.tip{
+  text-align: left;
+  margin: 20px 0;
+  span{
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .warning{
+    background: #eb9e05;
+  }
+  .danger{
+    background: #fa5555;
   }
 }
 </style>
