@@ -143,7 +143,7 @@
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
           <el-button type="text" size="small">处理</el-button>
-          <el-button type="text" size="small">挂起</el-button>
+          <el-button type="text" size="small" @click="handUp(scope.row.id)">挂起</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -364,6 +364,9 @@ export default {
         this.detail.show = false
       },
       waitTime(time){
+
+      },
+      handUp(id){
 
       }
     }

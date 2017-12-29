@@ -127,7 +127,8 @@
       <el-table-column
         align="center"
         prop="partake"
-        label="客户参与">
+        label="客户参与"
+        min-width="50">
       </el-table-column>
       <el-table-column
         align="center"
