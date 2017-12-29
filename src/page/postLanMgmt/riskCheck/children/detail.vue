@@ -21,29 +21,32 @@
             </el-col>
           </el-row>
         </el-header>
-        <el-main id="detailMain">
+        <el-main id="detailMain" class="detailForm">
           <!-- 详情 -->
-          <el-row class="row-content">
-            <el-col :span="3"><div class="grid-content bg-purple">申请编号</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">姓名</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">姓名</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">张三</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">贷款额</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">1600万元</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">审批额度</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">1500万元</div></el-col>
-          </el-row>
-
-          <el-row class="row-content">
-            <el-col :span="3"><div class="grid-content bg-purple">申请时间</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">2017/12/13 08:56</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">抵押情况</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">一抵</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">贷款期限</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">23个月</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">房产信息</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">朝阳区 北京公园</div></el-col>
-          </el-row>
+          <table>
+            <tbody>
+              <tr>
+                <td>申请编号</td>
+                <td class="input">xxxxx</td>
+                <td>姓名</td>
+                <td>张三</td>
+                <td>贷款额</td>
+                <td>1600万元</td>
+                <td>审批额度</td>
+                <td>1500万元</td>
+              </tr>
+              <tr>
+                <td>申请时间</td>
+                <td>2017/12/13 08:56</td>
+                <td>抵押情况</td>
+                <td>一抵</td>
+                <td>贷款期限</td>
+                <td>23个月</td>
+                <td>房产信息</td>
+                <td>朝阳区 北京公园</td>
+              </tr>
+            </tbody>
+          </table>
 
           <div class="row-title">资料核验</div>
           <p>请点击右上角的选项卡，进入相应流程页面查看详情，检查所有资料是否齐备</p>
@@ -116,7 +119,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import "~@/style/color";
+
+@import "~@/style/lendingApplyDetail";
 
 .detail-full-screnn {
   position: absolute;
@@ -168,9 +172,5 @@ export default {
     }
   }
 }
-.table-input {
-  input {
-    background-color: #eee;
-  }
-}
+
 </style>
