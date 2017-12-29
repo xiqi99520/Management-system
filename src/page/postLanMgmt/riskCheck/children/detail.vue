@@ -11,12 +11,12 @@
       <el-container>
         <el-header>
           <el-row>
-            <el-col :span="24">
+            <el-col :span="12">
               <p class="detail-title">
                 <h3 class="detailForm-title">风控审查详情</h3>
               </p>
             </el-col>
-            <el-col :span="24" class="detail-title-btn">
+            <el-col :span="12" class="detail-title-btn">
               <el-button type="primary" @click="handleClose">返回</el-button>
             </el-col>
           </el-row>
