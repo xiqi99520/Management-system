@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container class="detail-full-screen">
     <el-header>
       <el-row type="flex" justify="space-between">
         <el-col :span="12"><div class="title">初审详情</div></el-col>
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     handleBack () {
-      window.history.go(-1)
+      this.$emit('on-close')
     },
     handleTab (tab, event) {
       console.log(tab, event)
@@ -58,6 +58,17 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
+.detail-full-screen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background: #fff;
+  z-index: 3;
+}
 .el-header {
   text-align: left;
   line-height: 20px;

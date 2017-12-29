@@ -72,7 +72,7 @@ const xhResearch = r => require.ensure([], () => r(require('@/page/postLanMgmt/x
 const xhRecheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhRecheck/index')), 'postLan')
 
 // 风控审批
-const riskApproval = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskApproval/children/list')), 'postLan')
+const riskApproval = r => require.ensure([], () => r(require('@/page/postLanMgmt/riskApproval/index')), 'postLan')
 
 // 合同面签
 const interview = r => require.ensure([], () => r(require('@/page/postLanMgmt/interview/index')), 'postLan')
@@ -191,32 +191,32 @@ const router = new Router({
           }
         }]
       }, {// 渠道管理
-          path: 'channelMgmt',
-          component: channelMgmt,
-          name: 'channelMgmt',
-          children: [{
-            path: 'channelAdd',
-            name: 'channelAdd',
-            component: channelAdd
-          }, {
-            path: 'managerList',
-            name: 'managerList',
-            component: managerList
-          }, {
-            path: 'managerDetail',
-            name: 'managerDetail',
-            component: managerDetail
-          }]
-        }, {// 客户管理
-          path: 'customerMgmt',
-          component: customerMgmt,
-          name: 'customerMgmt',
-          children: [{
-            path: 'view',
-            name: 'customerDetail',
-            component: customerDetail
-          }]
+        path: 'channelMgmt',
+        component: channelMgmt,
+        name: 'channelMgmt',
+        children: [{
+          path: 'channelAdd',
+          name: 'channelAdd',
+          component: channelAdd
+        }, {
+          path: 'managerList',
+          name: 'managerList',
+          component: managerList
+        }, {
+          path: 'managerDetail',
+          name: 'managerDetail',
+          component: managerDetail
         }]
+      }, {// 客户管理
+        path: 'customerMgmt',
+        component: customerMgmt,
+        name: 'customerMgmt',
+        children: [{
+          path: 'view',
+          name: 'customerDetail',
+          component: customerDetail
+        }]
+      }]
     }, { // 业务流程
       path: 'operationFlow',
       name: 'operationFlow',

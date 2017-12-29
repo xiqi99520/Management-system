@@ -1,9 +1,14 @@
 <template>
   <el-container>
-    <el-header>
-      <div>风控审查列表</div>
+   <el-header>
+      <el-row type="flex" justify="space-between">
+        <el-col :span="12"><div class="title">风控审查</div></el-col>
+        <el-col :span="12" align="right">
+          <el-button type="primary" class="allian-btn-default" @click="handleBack()">返回</el-button>
+        </el-col>
+      </el-row>
     </el-header>
-    <el-main>
+    <el-main class="view-container">
     <!-- form search 表单 -->
     <el-form :inline="true" :model="filterData" class="form">
       <el-form-item>
@@ -354,9 +359,9 @@ export default {
       },
       handleOff (row) {
         if (row.status === '激活') {
-          // 调用接口变更状态
+          row.tatus = '禁用'
         } else {
-          // 调用接口变更状态
+          row.tatus = '激活'
         }
       },
       handleEdit (row) {
@@ -372,27 +377,41 @@ export default {
   }
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
 .el-header {
   text-align: left;
   line-height: 20px;
   height: 20px !important;
-  div {
+  .title {
+    margin: 5px;
     text-indent: 10px;
-    border-left: 5px solid #2299dd;
+    border-left: 5px solid @blue;
     font-size: 20px;
+    vertical-align: middle
+  }
+  .allian-btn-default {
+    line-height:20px;
+    padding:5px 20px;
+  }
+}
+.view-container {
+  margin-top:20px;
+  padding-top:30px;
+  border-top:1px solid @blue;
+  .link-active {
+    color: @blue;
+    cursor: pointer;
   }
 }
 
-.link{
-  color: #2299dd;
-  cursor: pointer;
-}
-
-.filterData {
+.view-filterData{
   text-align: left;
   .input-select {
     width: 100px;
   }
+}
+.pagination {
+  padding:15px 0;
 }
 .tip{
   text-align: left;

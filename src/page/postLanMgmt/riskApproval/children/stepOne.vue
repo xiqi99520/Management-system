@@ -309,6 +309,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
 @import url('//at.alicdn.com/t/font_525204_u1yy790eizmvaemi.css');
 .view-container {
   padding-top:5px;

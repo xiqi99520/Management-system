@@ -135,7 +135,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="11" align="left">
-
+                查询结果截图
               </el-col>
             </el-row>
             <h3 class="creditTitle">法海风控查询</h3>
@@ -149,7 +149,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="11" align="left">
-
+                  查询结果截图
               </el-col>
             </el-row>
             <h3 class="creditTitle">全国法院被执行人信息查询</h3>
@@ -163,7 +163,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="11" align="left">
-
+                    查询结果截图
               </el-col>
             </el-row>
             <h3 class="creditTitle">国家企业信用信息公示系统查询</h3>
@@ -177,7 +177,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="11" align="left">
-
+                  查询结果截图
               </el-col>
             </el-row>
             <h3 class="creditTitle">启信宝企业信用查询</h3>
@@ -191,7 +191,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="11" align="left">
-
+                 查询结果截图
               </el-col>
             </el-row>
             <h3 class="creditTitle">天眼查企业信息查询</h3>
@@ -205,7 +205,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="11" align="left">
-
+                查询结果截图
               </el-col>
             </el-row>
             <h3 class="creditTitle">百度搜索负面信息查询</h3>
@@ -219,7 +219,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="11" align="left">
-
+                查询结果截图
               </el-col>
             </el-row>
           </div>
@@ -449,6 +449,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
 @import url('//at.alicdn.com/t/font_525204_u1yy790eizmvaemi.css');
 .view-container {
   padding-top:5px;
