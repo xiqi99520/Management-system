@@ -3,9 +3,6 @@
     <el-header>
       <el-row type="flex" justify="space-between">
         <el-col :span="12"><div class="title">下户资料复核</div></el-col>
-        <el-col :span="12" align="right">
-          <el-button type="primary" class="allian-btn-default" @click="handleBack()">返回</el-button>
-        </el-col>
       </el-row>
     </el-header>
     <el-main class="view-container">
@@ -14,14 +11,24 @@
         <el-row type="flex" justify="space-between">
           <el-col align="left">
             <el-form-item>
-              <el-input v-model="filterData.user" placeholder="手机号/姓名/营销代号"></el-input>
+              <el-input v-model="filterData.user" placeholder="申请人姓名/手机号/申请编号" style="width:100%"></el-input>
             </el-form-item>
+          </el-col>
+          <el-col align="left">
             <el-form-item>
-              <el-select v-model="filterData.status" placeholder="全部状态">
-                <el-option label="禁用" value="0"></el-option>
-                <el-option label="激活" value="1"></el-option>
+              <el-select v-model="filterData.investigator" placeholder="请选择下户专员">
+                <el-option v-for="item in filterData.investigatorOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
+          </el-col>
+          <el-col align="left">
+            <el-form-item>
+              <el-select v-model="filterData.area" placeholder="请选择所属区">
+                <el-option v-for="item in filterData.areaOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col align="left">
             <el-form-item>
               <el-date-picker
                 v-model="filterData.dateRange"
@@ -34,266 +41,286 @@
                 :picker-options="pickerOptions">
               </el-date-picker>
             </el-form-item>
+          </el-col>
+          <el-col align="left">
             <el-form-item>
-              <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="handleSearch">查询</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="8" align="right">
+          <el-col align="right">
             <el-form-item>
-              <el-button type="primary">导入模板</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary">批量导入</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary">创建客户经理</el-button>
+              <el-button type="primary">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <!-- 表格 -->
-      <el-table :data="tableData" stripe border  ref="table" style="width: 100%">
+      <el-table :data="tableData" stripe border size="mini" ref="table" style="width: 100%">
           <el-table-column
-          fixed
-          label="ID"
-          type="index"
-          align="center"
-          width="50">
-        </el-table-column>
-        <el-table-column
-          prop="noID"
-          label="编号"
-          type="index"
-          align="center"
-          width="50">
-        </el-table-column>
-          <el-table-column
-            prop="name"
-            label="客户经理姓名"
+            fixed
+            label="ID"
             align="center"
-            width="150">
+            type="index"
+            width="60">
+          </el-table-column>
+          <el-table-column
+            prop="applyId"
+            label="申请编号"
+            align="center"
+            width="120">
             <template slot-scope="scope">
-              <span class="link-active" @click="handleView(scope.row)">{{ scope.row.name }}</span>
+              <el-button type="text" @click="handleView(scope.row)">{{scope.row.applyId}}</el-button>
             </template>
           </el-table-column>
           <el-table-column
-            prop="code"
-            label="营销代码"
+            prop="applyUser"
+            label="申请人"
             align="center"
             width="100">
           </el-table-column>
           <el-table-column
-            prop="telnum"
+            prop="sex"
+            label="性别"
+            align="center"
+            width="60">
+          </el-table-column>
+          <el-table-column
+            prop="telNum"
             label="手机号码"
             align="center"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="subBranch"
-            label="所属支行"
+            prop="recheckTime"
+            label="尽调提交时间"
             align="center"
             width="150">
           </el-table-column>
           <el-table-column
-            prop="lattice"
-            label="所在网点"
+            prop="loanMoney"
+            label="贷款额（万）"
             align="center"
             width="100">
           </el-table-column>
           <el-table-column
-            prop="status"
-            label="当前状态"
+            prop="loanDeadline"
+            label="贷款期限"
             align="center"
-            width="120">
+            width="100">
           </el-table-column>
           <el-table-column
-            prop="createTime"
-            label="创建时间"
-            align="center"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="total"
-            label="累计进件数"
+            prop="address"
+            label="房屋地址"
             align="center"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="amount"
-            label="累计放款额"
+            prop="recheckEndtime"
+            label="复核完成时间"
             align="center"
-            width="180">
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="awaitTime"
+            label="等待/用时"
+            align="center"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="investigator"
+            label="下户专员"
+            align="center"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            prop="isAdditionalRecording"
+            label="客户补传"
+            align="center"
+            width="100">
           </el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
             align="center"
-            width="180">
+            width="150">
             <template slot-scope="scope">
-              <el-button @click="handleView(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button @click="handleEdit(scope.row)" type="text" size="small">删除</el-button>
-              <el-button @click="handleOff(scope.row)" type="text" size="small">{{scope.row.status}}</el-button>
+              <el-button type="text" @click="handleCheckDone">复核|查看</el-button>
             </template>
           </el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
           layout="total, prev, pager, next, jumper"
-          class="pagination">
+          class="pagination" :total="100">
         </el-pagination>
     </el-main>
+    <transition  name="el-zoom-in-center">
+      <task-view  :id="appId" v-show="detailShow" @on-close="handleCloseDetail"></task-view>
+    </transition>
   </el-container>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        detailShow: false,
-        filterData: {
-          user: '',
-          department: '',
-          role: '',
-          area: '',
-          dateRange: ''
-        },
-        pickerOptions: '2017-12-26',
-        tableData: [{
-          noID:1,
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '35',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '68',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '20',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '251',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '110',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '035',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '032',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '040',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }, {
-          noID: '005',
-          name: '王力宏',
-          code: 'XC083802',
-          telnum: '134xxxx7123',
-          subBranch: '北京三元桥支行',
-          lattice: '燕莎网点支行',
-          status: '激活',
-          createTime: '2017/10/12 11:00',
-          total: 2365,
-          amount: '2272W'
-        }]
-      }
-    },
-    methods: {
-      handleView (row) {
-        this.appId = row.applyId
-        this.detailShow = true
+import taskView from './children/taskView'
+export default {
+  data () {
+    return {
+      appId: '',
+      detailShow: false,
+      filterData: {
+        user: '',
+        investigator: '',
+        investigatorOptions: [
+          {label: '小刘', value: "小刘"},
+          {label: '大张', value: "大张"},
+          {label: '黎明', value: "黎明"},
+        ],
+        area: '',
+        areaOptions: [
+          {label: '全部', value: "全部"},
+          {label: '朝阳区', value: "朝阳区"},
+          {label: '东城区', value: "东城区"}
+        ],
+        dateRange: ''
       },
-      handleOff (row) {
-        if (row.status === '激活') {
-          row.tatus = '禁用'
-        } else {
-          row.tatus = '激活'
-        }
-      },
-      handleEdit (row) {
-        return this.$router.push({path: '/system/userMgt/add', query: {id: row.id}})
-      },
-      onSubmit () {
-        console.log('submit!')
-      }
+      pickerOptions: '2017-12-26',
+      investigatorOptions: [
+        {label: '晓峰', value: "晓峰"},
+        {label: '刘晓飞', value: "刘晓飞"},
+        {label: '张大千', value: "张大千"},
+      ],
+      tableData: [{
+        applyId: 'XXXXXXX1',
+        applyUser: '王力宏',
+        sex: '男',
+        telNum: '134xxxx7123',
+        recheckTime: '2017/10/12 10:00',
+        loanMoney: '1600',
+        loanDeadline: '24个月',
+        address: '朝阳区霄云路66号霞光里8栋603号',
+        recheckEndtime: '2017/10/12 11:00',
+        awaitTime: '1小时0分钟',
+        isAdditionalRecording: '是',
+        investigator: '小刘'
+      }, {
+        applyId: 'XXXXXXX1',
+        applyUser: '王力宏',
+        sex: '男',
+        telNum: '134xxxx7123',
+        recheckTime: '2017/10/12 10:00',
+        loanMoney: '1600',
+        loanDeadline: '24个月',
+        address: '朝阳区霄云路66号霞光里8栋603号',
+        recheckEndtime: '2017/10/12 11:00',
+        awaitTime: '1小时0分钟',
+        isAdditionalRecording: '--',
+        investigator: '小刘'
+      }, {
+        applyId: 'XXXXXXX1',
+        applyUser: '王力宏',
+        sex: '男',
+        telNum: '134xxxx7123',
+        recheckTime: '2017/10/12 10:00',
+        loanMoney: '1600',
+        loanDeadline: '24个月',
+        address: '朝阳区霄云路66号霞光里8栋603号',
+        recheckEndtime: '2017/10/12 11:00',
+        awaitTime: '1小时0分钟',
+        isAdditionalRecording: '否',
+        investigator: '小刘'
+      }, {
+        applyId: 'XXXXXXX1',
+        applyUser: '王力宏',
+        sex: '男',
+        telNum: '134xxxx7123',
+        recheckTime: '2017/10/12 10:00',
+        loanMoney: '1600',
+        loanDeadline: '24个月',
+        address: '朝阳区霄云路66号霞光里8栋603号',
+        recheckEndtime: '2017/10/12 11:00',
+        awaitTime: '1小时0分钟',
+        isAdditionalRecording: '否',
+        investigator: '小刘'
+      }, {
+        applyId: 'XXXXXXX1',
+        applyUser: '王力宏',
+        sex: '男',
+        telNum: '134xxxx7123',
+        recheckTime: '2017/10/12 10:00',
+        loanMoney: '1600',
+        loanDeadline: '24个月',
+        address: '朝阳区霄云路66号霞光里8栋603号',
+        recheckEndtime: '2017/10/12 11:00',
+        awaitTime: '1小时0分钟',
+        isAdditionalRecording: '是',
+        investigator: '小刘'
+      }]
     }
+  },
+  components: {
+    taskView
+  },
+  beforeMount () {
+    // 渲染表格数据
+    this.getTabelData()
+  },
+  methods: {
+    // 变更下户专员
+    selectInvestigator (row) {
+      let value = row.investigator
+      let $appid = row.applyId
+      this.$confirm(`您确定要重新指定编号【${$appid}】申请记录的下户专员?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 请求接口变更数据
+
+        this.$message({
+          type: 'success',
+          message: '您已重新指定【' + row.investigator + '】为该申请记录的下户专员!'
+        });
+      }).catch(() => {
+        //重置下拉选项
+
+        this.$message({
+          type: 'info',
+          message: '已取消修改'
+        })
+      })
+    },
+    // 获取表格数据
+    getTabelData () {
+
+    },
+    // 查看下户调查信息
+    handleView (row) {
+      let $id = row.applyId
+      console.log($id)
+    },
+    // 复核操作
+    handleCheckDone () {
+
+    },
+    // 查询
+    handleSearch () {
+      console.log('searching!')
+    },
+    handleView (row) {
+      console.log(row.applyId)
+      this.appId = row.applyId
+      this.detailShow = true
+    },
+    handleCloseDetail () {
+      this.detailShow = false
+      console.log(this.detailShow)
+    },
   }
+}
 </script>
 <style lang="less" scoped>
 @import "~@/style/color";
 .el-header {
+  margin-top: 15px;
   text-align: left;
   line-height: 20px;
   height: 20px !important;
@@ -313,10 +340,6 @@
   margin-top:20px;
   padding-top:30px;
   border-top:1px solid @blue;
-  .link-active {
-    color: @blue;
-    cursor: pointer;
-  }
 }
 
 .view-filterData{

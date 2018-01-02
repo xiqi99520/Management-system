@@ -248,6 +248,7 @@
   }
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
 .el-header {
   text-align: left;
   line-height: 20px;

@@ -68,7 +68,6 @@
         label="申请编号">
         <template slot-scope="scope">
           <span class="link" @click="showDetail(scope.row.id)">{{scope.row.code}}</span>
-        </el-butspanton>
         </template>
       </el-table-column>
       <el-table-column

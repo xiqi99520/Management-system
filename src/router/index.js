@@ -67,6 +67,7 @@ const evaluation = r => require.ensure([], () => r(require('@/page/postLanMgmt/v
 
 // 下户尽调
 const xhResearch = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhResearch/index')), 'postLan')
+const xhTaskList = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhResearch/children/taskList')), 'postLan')
 
 // 下户复核
 const xhRecheck = r => require.ensure([], () => r(require('@/page/postLanMgmt/xhRecheck/index')), 'postLan')
@@ -258,7 +259,12 @@ const router = new Router({
         component: xhResearch,
         meta: {
           requireAuth: true
-        }
+        },
+        children: [{
+          path: 'list',
+          name: 'xhTaskList',
+          component: xhTaskList
+        }]
       }, { // 下户复核
         path: 'xhRecheck',
         name: 'xhRecheck',

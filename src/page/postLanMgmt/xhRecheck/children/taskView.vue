@@ -1,10 +1,10 @@
 <template>
-  <el-container>
+  <el-container class="detail-full-screen">
      <el-header>
       <el-row type="flex" justify="space-between">
         <el-col :span="12"><div class="title">下户调查信息</div></el-col>
         <el-col :span="12" align="right">
-          <el-button type="primary" class="allian-btn-default" @click="handleBack()">返回</el-button>
+          <el-button type="primary" class="allian-btn-default" @click="handleBack">返回</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -445,79 +445,88 @@
   </el-container>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        currentRow: '',
-        reviewForm: {
-          surroundingEnv: '',
-          plotEnv: '',
-          isUpdateInfo: '',
-          infoDesc: ''
-        },
-        isUpdateInfoOptions: [
-          {label: '否', value: '0'},
-          {label: '是', value: '1'}
-        ],
-        taskForm: {
-          riskManager: ''
-        },
-        data: [ ],
-        tableData: [{
-          applyId: 'FC0001',
-          realName: '刘宝',
-          sex: '男',
-          telnum: '134xxxx7123',
-          submitTime: '2017/10/12 10:00',
-          loanMoney: '120',
-          loanDeadline: '12个月',
-          address: '朝阳区肖云路66号霞光里8栋803',
-          recheckTime: '2017/10/12 11:00',
-          burningTime: '1小时0分钟',
-          customRecorded: '是',
-          riskManager: '小刘'
-        }, {
-          applyId: 'FC0001',
-          realName: '刘宝',
-          sex: '男',
-          telnum: '134xxxx7123',
-          submitTime: '2017/10/12 10:00',
-          loanMoney: '120',
-          loanDeadline: '12个月',
-          address: '朝阳区肖云路66号霞光里8栋803',
-          recheckTime: '2017/10/12 11:00',
-          burningTime: '1小时0分钟',
-          customRecorded: '是',
-          riskManager: '小刘'
-        }]
-      }
+export default {
+  data () {
+    return {
+      currentRow: '',
+      reviewForm: {
+        surroundingEnv: '',
+        plotEnv: '',
+        isUpdateInfo: '',
+        infoDesc: ''
+      },
+      isUpdateInfoOptions: [
+        {label: '否', value: '0'},
+        {label: '是', value: '1'}
+      ],
+      taskForm: {
+        riskManager: ''
+      },
+      data: [ ],
+      tableData: [{
+        applyId: 'FC0001',
+        realName: '刘宝',
+        sex: '男',
+        telnum: '134xxxx7123',
+        submitTime: '2017/10/12 10:00',
+        loanMoney: '120',
+        loanDeadline: '12个月',
+        address: '朝阳区肖云路66号霞光里8栋803',
+        recheckTime: '2017/10/12 11:00',
+        burningTime: '1小时0分钟',
+        customRecorded: '是',
+        riskManager: '小刘'
+      }, {
+        applyId: 'FC0001',
+        realName: '刘宝',
+        sex: '男',
+        telnum: '134xxxx7123',
+        submitTime: '2017/10/12 10:00',
+        loanMoney: '120',
+        loanDeadline: '12个月',
+        address: '朝阳区肖云路66号霞光里8栋803',
+        recheckTime: '2017/10/12 11:00',
+        burningTime: '1小时0分钟',
+        customRecorded: '是',
+        riskManager: '小刘'
+      }]
+    }
+  },
+  methods: {
+    handleBack () {
+      this.$emit('on-close')
     },
-    methods: {
-      handView () {
+    handleSelect (row) {
+      this.taskSelectVisible = true
+      this.currentRow = row
+      // this.$message({
+      //   type: 'success',
+      //   message: row.riskManager
+      // })
+    },
+    handleSubmit () {
+      console.log('submit!')
+    },
+    handleCancel () {
 
-      },
-      handleSelect (row) {
-        this.taskSelectVisible = true
-        this.currentRow = row
-        // this.$message({
-        //   type: 'success',
-        //   message: row.riskManager
-        // })
-      },
-      handleBack () {
-        window.history.go(-1)
-      },
-      handleSubmit () {
-        console.log('submit!')
-      },
-      handleCancel () {
-
-      }
     }
   }
+}
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
+.detail-full-screen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background: #fff;
+  z-index: 3;
+}
 .el-header {
+  margin-top: 15px;
   text-align: left;
   line-height: 20px;
   height: 20px !important;

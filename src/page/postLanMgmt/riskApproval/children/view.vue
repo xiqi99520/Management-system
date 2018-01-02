@@ -70,6 +70,7 @@ export default {
   z-index: 3;
 }
 .el-header {
+  margin-top: 15px;
   text-align: left;
   line-height: 20px;
   height: 20px !important;
