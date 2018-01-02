@@ -25,19 +25,19 @@
         <el-main id="detailMain" class="detailForm">
           <el-row>
             <el-col :span="24">
-              <el-tabs type="card">
+              <el-tabs type="card" v-model="activeTab">
                 <el-tab-pane label="放款确认" name="first">
                   <!-- 放款确认 详情 -->
                   <product-table></product-table>
                 </el-tab-pane>
                 <el-tab-pane label="房产评估" name="second">
-                  房产评估
+                  <step-one></step-one>
                 </el-tab-pane>
                 <el-tab-pane label="下户尽调" name="third">
-                  下户尽调
+                  <step-two></step-two>
                 </el-tab-pane>
                 <el-tab-pane label="初审评定" name="fourth">
-                  初审评定
+                  <step-three></step-three>
                 </el-tab-pane>
                 <el-tab-pane label="终审评定" name="five">
                   终审评定
@@ -61,15 +61,21 @@
 </template>
 <script>
 import productTable from './productTable'
+import stepOne from '../../riskApproval/children/stepOne'
+import stepTwo from '../../riskApproval/children/stepTwo'
+import stepThree from '../../riskApproval/children/stepThree'
 
 export default {
   name: 'lendingApplyDetail',
   components: {
-    productTable
+    productTable,
+    stepOne,
+    stepTwo,
+    stepThree
   },
   data () {
     return {
-
+      activeTab: 'first',
     }
   },
   watch: {
