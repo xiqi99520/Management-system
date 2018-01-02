@@ -23,7 +23,22 @@
           </el-row>
         </el-header>
         <el-main id="detailMain" class="detailForm">
-          <!-- 详情 -->
+          <el-row>
+            <el-col :span="24">
+              <el-tabs type="card" @tab-click="handleClick">
+                <el-tab-pane label="放款确认" name="first">放款确认</el-tab-pane>
+                <el-tab-pane label="房产评估" name="second">房产评估</el-tab-pane>
+                <el-tab-pane label="下户尽调" name="third">下户尽调</el-tab-pane>
+                <el-tab-pane label="初审评定" name="fourth">初审评定</el-tab-pane>
+                <el-tab-pane label="终审评定" name="five">终审评定</el-tab-pane>
+                <el-tab-pane label="风控稽核" name="six">风控稽核</el-tab-pane>
+                <el-tab-pane label="面签公证" name="seven">面签公证</el-tab-pane>
+                <el-tab-pane label="权证上抵" name="eight">权证上抵</el-tab-pane>
+              </el-tabs>
+            </el-col>
+          </el-row>
+
+          <!-- 放款确认 详情 -->
           <product-table></product-table>
         </el-main>
       </el-container>
