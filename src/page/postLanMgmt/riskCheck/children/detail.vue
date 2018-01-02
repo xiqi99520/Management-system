@@ -8,12 +8,13 @@
           <el-col>放款确认</el-col>
         </el-row>
       </el-aside>
+
       <el-container>
         <el-header>
           <el-row>
             <el-col :span="12">
               <p class="detail-title">
-                <h3 class="detailForm-title">风控审查详情</h3>
+                <span>风控审查详情</span>
               </p>
             </el-col>
             <el-col :span="12" class="detail-title-btn">
