@@ -379,7 +379,7 @@
                 </el-row>
                 <el-row type="flex" class="row-bg" justify="space-between">
                   <el-col :span="24" align="left">
-                    <el-form-item label="判定结果" class="form-item">
+                    <el-form-item class="form-item">
                       <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注信息" :model="reviewForm.iSBigMoneyOpinionNote"></el-input>
                     </el-form-item>
                   </el-col>
@@ -389,7 +389,120 @@
             <h3>婚史执行及其他</h3>
             <el-row type="flex" class="row-bg" justify="space-between">
               <el-col :span="24" align="left">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="备注信息" :model="reviewForm.iSBigMoneyOpinionNote"></el-input>
+                <el-form-item label="请判定是否需要下户核查婚史执行等特殊情况" class="form-item">
+                  <el-select v-model="reviewForm.isCheckMarriage" placeholder="是/否" style="width:100%">
+                      <el-option v-for="item in reviewForm.selectOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="24" align="left">
+                <el-form-item label="高层审核意见" class="form-item">
+                  <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入需要核实的情况" :model="reviewForm.isCheckMarriageNote"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <h3>初审结果</h3>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="11" align="left">
+                <el-form-item label="选择初审结果" class="form-item">
+                  <el-select v-model="reviewForm.checkOneResult" placeholder="打回/通过/拒绝" style="width:100%">
+                    <el-option v-for="item in reviewForm.checkResultOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11" align="left">
+                <!-- 选择初审结果为【打回】情况 -->
+                <el-form-item label="选择打回的步骤" class="form-item" v-if="reviewForm.checkOneResult === '0'">
+                  <el-select v-model="reviewForm.sendBack" placeholder="尽职调查/风控初审" style="width:100%">
+                      <el-option v-for="item in reviewForm.sendBackOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+                <!-- 选择初审结果为【通过】情况 -->
+                <el-form-item label="请输入初审额度（万元）" class="form-item" v-if="reviewForm.checkOneResult === '1'">
+                    <el-input :model="reviewForm.checkOneLoanMoney" placeholder="请输入"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <!-- 选择初审结果为【打回】情况 -->
+            <el-row type="flex" class="row-bg" justify="space-between" v-if="reviewForm.checkOneResult === '0'">
+              <el-col :span="24" align="left">
+                <el-form-item label="打回原因：选择缺少影响出值的资料" class="form-item">
+                  <el-checkbox-group v-model="reviewForm.sendBackReason">
+                    <el-checkbox label="备用房房本原件"></el-checkbox>
+                    <el-checkbox label="一抵抵押证明"></el-checkbox>
+                    <el-checkbox label="老人居住情况"></el-checkbox>
+                    <el-checkbox label="客户征信资质"></el-checkbox>
+                    <el-checkbox label="点位上浮条件"></el-checkbox>
+                    <el-checkbox label="房产查封状态"></el-checkbox>
+                    <el-checkbox label="借款人其他房本"></el-checkbox>
+                    <el-checkbox label="财产证明"></el-checkbox>
+                    <el-checkbox label="银行流水"></el-checkbox>
+                    <el-checkbox label="企业经营执照"></el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="11" align="left">
+                <!-- 选择初审结果为【通过】情况 -->
+                <el-form-item label="请确定贷款期限" class="form-item"  v-if="reviewForm.checkOneResult === '1'">
+                  <el-select v-model="reviewForm.checkOneLoanDeadline" placeholder="6个月/12个月/24个月/36个月" style="width:100%">
+                      <el-option v-for="item in reviewForm.checkOneLoanDeadlineOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+                <!-- 选择初审结果为【拒贷】情况 -->
+                <el-form-item label="问题分类" class="form-item" v-if="reviewForm.checkOneResult === '2'">
+                  <el-select v-model="reviewForm.checkOneDenyClassification" placeholder="请选择" style="width:100%">
+                      <el-option v-for="item in reviewForm.checkOneClassificationOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11" align="left">
+                <!-- 选择初审结果为【通过】情况 -->
+                <el-form-item label="请输入贷款点位" class="form-item" v-if="reviewForm.checkOneResult === '1'">
+                  <el-input :model="reviewForm.checkOneLoanRate" placeholder="请输入"></el-input>
+                </el-form-item>
+                <!-- 选择初审结果为【拒贷】情况 -->
+                <el-form-item label="问题描述" class="form-item" v-if="reviewForm.checkOneResult === '2'">
+                  <el-select v-model="reviewForm.classificationQuestion" placeholder="请选择" style="width:100%">
+                      <el-option v-for="item in reviewForm.classificationQuestionOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <!-- 选择初审结果为【通过】情况 -->
+            <el-row type="flex" class="row-bg" justify="space-between"  v-if="reviewForm.checkOneResult === '1'">
+              <el-col :span="11" align="left">
+                <el-form-item label="是否需要提点" class="form-item">
+                  <el-select v-model="reviewForm.checkOneRateIncrease" placeholder="是/否" style="width:100%">
+                      <el-option v-for="item in reviewForm.selectOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="11" align="left">
+                <el-form-item label="请输入涨点幅度（%）" class="form-item">
+                  <el-input :model="reviewForm.checkOneRateExt" placeholder="请输入"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between" v-if="reviewForm.checkOneResult === '1'">
+              <el-col :span="24" align="left">
+                <el-form-item label="请填写面签时客户需要携带的其他资料" class="form-item">
+                  <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="注：身份证，户口本，结婚证（离婚证），房本原件，征信，原始购房合同为必备件，请填写除这些证件外的其他面签所需资料" :model="reviewForm.checkOneNote"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between" v-if="reviewForm.checkOneResult === '2'">
+              <el-col :span="24" align="left">
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入详细意见说明" :model="reviewForm.checkOneDenyNote"></el-input>
+              </el-col>
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="24" align="left">
+                <el-button type="primary">提交</el-button>
+                <el-button type="info" plain>取消</el-button>
               </el-col>
             </el-row>
           </div>
@@ -419,6 +532,29 @@ export default {
           {label: '正常', value: '0'},
           {label: '异常', value: '1'}
         ],
+        checkResultOpt: [ // 初审结果
+          {label: '打回', value: '0'},
+          {label: '通过', value: '1'},
+          {label: '拒绝', value: '2'},
+        ],
+        sendBackOpt: [ // 选择打回的步骤
+          {label: '尽职调查', value: '0'},
+          {label: '风控初审', value: '1'}
+        ],
+        loanDeadlineOpt: [ // 确定贷款期限
+          {label: '6个月', value: '0'},
+          {label: '12个月', value: '1'},
+          {label: '24个月', value: '2'},
+          {label: '36个月', value: '3'},
+        ],
+        checkOneClassificationOpt: [ // 拒贷问题分类
+          {label: '抵押房产信息', value: '0'},
+          {label: '贷款人信息', value: '1'},
+          {label: '贷款人影像信息', value: '2'},
+        ],
+        classificationQuestionOpt: [ // 拒贷问题描述
+          {label: '房产信息', value: '0'}
+        ],
         romeNote: '',
         creditNote: '',
         abnormalIDcard: '', // 身份证
@@ -442,7 +578,21 @@ export default {
         creditEyeResult: '', // 描述天眼查企业信息查询负面结果
         creditEyeDesc: '', // 描述天眼查企业信息查询负面结果备注
         creditBdResult: '', // 描述百度搜索查询负面结果
-        creditBdDesc: '' // 描述百度搜索查询负面结果备注
+        creditBdDesc: '', // 描述百度搜索查询负面结果备注
+        isCheckMarriage: '', // 判断是否需要下户核查婚史执行等特殊情况
+        isCheckMarriageNote: '', //下户核查婚史执行需要核实的情况
+        checkOneResult: '', // 初审选择结果
+        sendBack: '', // 初审打回的步骤
+        sendBackReason: [], //初审打回原因
+        checkOneLoanMoney: '', // 初审通过贷款金额
+        checkOneLoanDeadline: '', // 初审通过贷款期限
+        checkOneDenyClassification: '', // 拒贷问题分类
+        checkOneLoanRate: '', // 初审通过贷款点位
+        classificationQuestion: '', // 拒贷问题描述
+        checkOneRateIncrease: '', // 是否需要提点
+        checkOneRateExt: '', // 输入涨点幅度（%）
+        checkOneNote: '', // 初审通过备注资料
+        checkOneDenyNote: '' // 初审拒贷意见
       }
     }
   }
