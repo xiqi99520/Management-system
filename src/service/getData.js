@@ -66,6 +66,12 @@ const overdueInterface = `${context}/overdue`
 // 还款入账
 const repayInterface = `${context}/repay`
 
+// 权证上抵
+const warrantsInterface = `${context}/warrants`
+
+// 风控审查
+const riskInvestigateInterface = `${context}/riskInvestigate`
+
 /**
  * 详细接口URL
  */
@@ -261,6 +267,16 @@ const overdueListUrl = `${overdueInterface}/findOverdues`
 
 // 还款入账列表
 const repayListUrl = `${repayInterface}/findRepays`
+
+// 权证任务列表
+const warrantsTaskListUrl = `${warrantsInterface}/getWarrantsTaskList`
+
+// 权证专员权证任务列表
+const warrantsUserListUrl = `${warrantsInterface}/getWarrantsListByUserId`
+
+// 风控审查列表
+const findLoanCheckListUrl = `${riskInvestigateInterface}/findLoanCheckList`
+
 
 /**
  * 接口实现
@@ -586,3 +602,10 @@ export const bohaiDocAudit = (form) => fetch(bohaiDocAuditUrl, form)
 
 // 查询渤海对接文档列表
 export const getBohaiDocuments = (form) => fetch(getBohaiDocumentsUrl, form)
+
+// 权证上抵列表
+export const getWarrantsData = (form) => fetch(warrantsTaskListUrl, form)
+
+// 风控审核列表
+export const findLoanCheckList = (form) => fetch(findLoanCheckListUrl, form, 'post')
+
