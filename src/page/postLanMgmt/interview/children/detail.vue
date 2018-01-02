@@ -1,6 +1,6 @@
 <template>
   <el-container class="detail-full-screnn">
-    <el-container>
+    <el-container class="detailForm">
       <el-aside>
         <el-row>
           <el-col>征信报告（详版）</el-col>
@@ -11,6 +11,7 @@
           <el-col>是否陪同上抵</el-col>
         </el-row>
       </el-aside>
+
       <el-container>
         <el-header>
           <el-row>
@@ -24,19 +25,21 @@
             </el-col>
           </el-row>
         </el-header>
-        <el-main id="detailMain">
-          面签详情
+        <el-main id="detailMain" class="detailForm">
+          <!-- 详情 -->
+          <product-table></product-table>
         </el-main>
       </el-container>
     </el-container>
 </el-container>
 </template>
 <script>
+import productTable from './productTable'
 
 export default {
   name: 'lendingApplyDetail',
   components: {
-
+    productTable
   },
   data () {
     return {
@@ -48,7 +51,6 @@ export default {
   },
   methods: {
     handleClose () { // 预上传图片
-      console.log(123)
       this.$emit('on-close')
     }
   }
@@ -56,6 +58,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@/style/color";
+
 .detail-full-screnn {
   position: absolute;
   top: 0;
@@ -106,9 +109,5 @@ export default {
     }
   }
 }
-.table-input {
-  input {
-    background-color: #eee;
-  }
-}
+
 </style>

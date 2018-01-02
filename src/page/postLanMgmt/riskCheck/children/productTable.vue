@@ -1,8 +1,5 @@
 <template>
   <el-form :model="filterData" class="detailForm" ref="form">
-    <el-form-item>
-      <h3 class="detailForm-title">资料核验</h3>
-    </el-form-item>
 
     <el-form-item class="detailForm-item">
       <table class="" cellspacing="0" cellpadding="10">
@@ -43,8 +40,8 @@
     <el-form-item>
         <p>请点击右上角的选项卡，进入相应流程页面查看详情，检查所有资料是否齐备</p>
 
-        <el-row>
-          <el-col :span="11">
+        <el-row :gutter="50">
+          <el-col :span="12">
             <p>请确定所有流程步骤的资料是否齐备</p>
             <el-form-item>
               <el-select v-model="filterData.awaitTime" placeholder="是/否" style="width:100%;">
@@ -65,9 +62,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="2">&nbsp;</el-col>
-
-          <el-col :span="11">
+          <el-col :span="12">
             <p>备注说明</p>
             <el-input
               type="textarea"
@@ -106,8 +101,8 @@
     </el-form-item>
 
     <el-form-item>
-        <el-row class="row-content">
-          <el-col :span="11">
+        <el-row class="row-content" :gutter="50">
+          <el-col :span="12">
             <p>放款意见</p>
             <el-form-item>
               <el-select v-model="filterData.awaitTime" placeholder="批准放款/订单终止" style="width:100%;">
@@ -116,9 +111,8 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="2">&nbsp;</el-col>
 
-          <el-col :span="11">
+          <el-col :span="12">
             <p>订单终止原因</p>
             <el-form-item>
               <el-select v-model="filterData.awaitTime" placeholder="请选择" style="width:100%;">
