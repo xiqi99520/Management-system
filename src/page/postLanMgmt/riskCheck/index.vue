@@ -3,9 +3,6 @@
    <el-header>
       <el-row type="flex" justify="space-between">
         <el-col :span="12"><div class="title">风控审查</div></el-col>
-        <el-col :span="12" align="right">
-          <el-button type="primary" class="allian-btn-default" @click="handleBack()">返回</el-button>
-        </el-col>
       </el-row>
     </el-header>
     <el-main class="view-container">
@@ -375,7 +372,9 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@/style/color";
+
 .el-header {
+  margin-top: 15px;
   text-align: left;
   line-height: 20px;
   height: 20px !important;

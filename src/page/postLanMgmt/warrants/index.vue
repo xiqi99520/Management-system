@@ -1,9 +1,11 @@
 <template>
   <el-container>
     <el-header>
-      <div>权证上抵列表</div>
+      <el-row type="flex" justify="space-between">
+        <el-col :span="12"><div class="title">权证上抵列表</div></el-col>
+      </el-row>
     </el-header>
-    <el-main>
+    <el-main class="view-container">
     <!-- form search 表单 -->
     <el-form :inline="true" :model="filterData" class="form">
       <el-form-item>
@@ -372,14 +374,32 @@ export default {
   }
 </script>
 <style lang="less" scoped>
+@import "~@/style/color";
 .el-header {
+  margin-top: 15px;
   text-align: left;
   line-height: 20px;
   height: 20px !important;
-  div {
+  .title {
+    margin: 5px;
     text-indent: 10px;
-    border-left: 5px solid #2299dd;
+    border-left: 5px solid @blue;
     font-size: 20px;
+    vertical-align: middle
+  }
+  .allian-btn-default {
+    line-height:20px;
+    padding:5px 20px;
+  }
+}
+
+.view-container {
+  margin-top:20px;
+  padding-top:30px;
+  border-top:1px solid @blue;
+  .link-active {
+    color: @blue;
+    cursor: pointer;
   }
 }
 
