@@ -346,16 +346,17 @@ export default {
         }
       })
 
-      this.bigDataResult.houseValuation.map(item => {
-        if (item.source === '链家') {
-          this.lianjia = item.houseTotalValue
-        } else if (item.source === '世联') {
-          this.shilian = item.houseTotalValue
-        } else if (item.source === '仁达') {
-          this.renda = item.houseTotalValue
-        }
-      })
-
+      if (this.bigDataResult.houseValuation) {
+        this.bigDataResult.houseValuation.map(item => {
+          if (item.source === '链家') {
+            this.lianjia = item.houseTotalValue
+          } else if (item.source === '世联') {
+            this.shilian = item.houseTotalValue
+          } else if (item.source === '仁达') {
+            this.renda = item.houseTotalValue
+          }
+        })
+      }
       // this.lianjia = this.bigDataResult.houseValuation[0].houseTotalValue
       // this.shilian = this.bigDataResult.houseValuation[1].houseTotalValue
       // this.renda = this.bigDataResult.houseValuation[2].houseTotalValue

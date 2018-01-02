@@ -7,7 +7,6 @@ const state = {
   },
   menus: {
     active: 0,
-    openeds: [],
     data: null
   },
   btns: [],
@@ -38,6 +37,13 @@ const state = {
   },
   allOperations: {
     C2000: '运营总监分配'
+  },
+  production: {
+    showDialog: false
+  },
+  productDetail: {
+    showDialog: false,
+    productId: ''
   }
 }
 

@@ -95,7 +95,7 @@
         align="center"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" title="查看详情"></el-button>
+          <el-button type="primary" title="查看详情" @click="handleShowDetail"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -108,21 +108,16 @@
       :total="total"
       class="pagination">
     </el-pagination>
-    <!-- 新增客户经理对话框 -->
-    <!-- <manager-dialog
-      title="新增客户经理"
-      :show="showNewManager"
-      :org-data="orgData"
-      :city-data="areaData"
-      @on-close="closeDialog"></manager-dialog> -->
-    <!-- 新增客户经理对话框 -->
-    <!-- <manager-dialog
-      title="编辑客户经理"
-      :show="showUpdateManager"
-      :org-data="orgData"
-      :manager-data="selectRow"
-      :city-data="areaData"
-      @on-close="closeDialog"></manager-dialog> -->
+    <!-- 绝对定位层 -->
+    <transition name="el-zoom-in-center">
+      <!-- 放款详情 -->
+      <detail-page
+        ref="detail"
+        v-show="detail.show"
+        :data="detail"
+        @on-close="handleCloseDetail">
+      </detail-page>
+    </transition>
   </div>
 </template>
 
@@ -133,8 +128,12 @@ import {
   getstandingBook
 } from '../../../service/getData'
 // import managerDialog from './children/dialog'
+import detailPage from '@/page/postLanMgmt/Lending/apply/children/detail'
 export default {
   name: 'standingBook-manager',
+  components: {
+    detailPage
+  },
   // computed: {
   //   ...mapState(['btns', 'userInfo'])
   // },
@@ -149,6 +148,31 @@ export default {
         input: '',
         state: '',
         dateRange: ''
+      },
+      detail: { // 详情数据
+        show: false,
+        other: {
+          detail: true
+        },
+        steps: [
+          '产品信息',
+          '服务人员信息',
+          '进件详情',
+          '主借款人基本信息',
+          '共同借款人基本信息',
+          '担保人基本信息',
+          '放还款信息',
+          '影像资料',
+          '放款流水记录',
+          '还款计划表',
+          '还款台账表',
+          '还款流水表',
+          '还款详情表',
+          '减免详情记录表',
+          '退款详情记录表',
+          '其他暂收款记录表',
+          '操作历史记录'
+        ]
       },
       keydownSubmit: keydownSubmit
     }
@@ -192,12 +216,11 @@ export default {
     indexMethod (index) {
       return index + 1 + (this.currentPage - 1) * this.pageSize
     },
-    closeDialog (update, refresh) {      // 关闭对话框, 刷新数据
-      if (update) {
-        this.showUpdateManager = false
-      } else {
-        this.showNewManager = false
-      }
+    handleShowDetail () {
+      this.detail.show = true
+    },
+    handleCloseDetail (refresh) {      // 关闭对话框, 刷新数据
+      this.detail.show = false
 
       if (refresh) {
         this.searchSubmit()

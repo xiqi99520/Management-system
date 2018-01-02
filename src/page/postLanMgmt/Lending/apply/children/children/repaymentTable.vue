@@ -17,16 +17,16 @@
             <tr>
               <td :class="{ needs:other.write}">合同编号</td>
               <td class="input">
-                <el-form-item v-if="other.write" prop="contractNo">
+                <el-form-item v-if="other.write" prop="contractCode">
                   <el-input
                     class="table-input"
                     size="mini"
                     placeholder="请输入"
-                    v-model="Data.contractNo"
-                    @blur="handlerBlur('contractNo')">
+                    v-model="Data.contractCode"
+                    @blur="handlerBlur('contractCode')">
                   </el-input>
                 </el-form-item>
-                <span v-else>{{Data.contractNo}}</span>
+                <span v-else>{{Data.contractCode}}</span>
               </td>
               <td :class="{ needs:other.write}">申请地点</td>
               <td class="input">
@@ -206,8 +206,6 @@
                 </el-form-item>
                 <span v-else>{{ formatter.changeMoney(Data.contractMoney, 1, '￥') }}</span>
               </td>
-
-
               <td :class="{ needs:other.write}">风控审批金额</td>
               <td class="input">
                 <el-form-item v-if="other.write" prop="examineMoney">
@@ -222,8 +220,6 @@
                 </el-form-item>
                 <span v-else>{{ formatter.changeMoney(Data.examineMoney, 1, '￥') }}</span>
               </td>
-
-
               <td :class="{ needs:other.write}">放款类型</td>
               <td class="input">
                 <el-form-item v-if="other.write" prop="payType">
@@ -483,11 +479,11 @@ export default {
       options: {},
       Data: this.data,
       address: [],
-      fixedInterestRate_maxLength: 100,
-      floatInterestRate_maxLength: 100,
-      riseInterestRate_maxLength: 100,
+//      fixedInterestRate_maxLength: 100,
+//      floatInterestRate_maxLength: 100,
+//      riseInterestRate_maxLength: 100,
       rules: {   // 表单验证规则
-        contractNo: [
+        contractCode: [
           { required: true, message: '请输入合同编号', trigger: 'blur' },
           { validator: valiData.onlyString, trigger: 'blur' },
           { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
@@ -664,7 +660,7 @@ export default {
         }
       }
     },
-    getTime (dateString) {
+    getTimes (dateString) {
       if (dateString) {
         let date = new Date(dateString.replace(/-/, '/'))
         return date
@@ -675,6 +671,7 @@ export default {
       this.getCityName(this.city, this.address, name)
       name.map((item, idx) => {
         const entity = {
+          contractId: this.other.contractId,
           fieldKey: idx === 0 ? 'accountBankProvince' : 'accountBankCity',
           fieldValue: item
         }
@@ -731,11 +728,13 @@ export default {
       this.Data[key] = value
       if (expectPayDate) {
         entity = {
+          contractId: this.other.contractId,
           fieldKey: key,
           fieldValue: expectPayDate
         }
       } else {
         entity = {
+          contractId: this.other.contractId,
           fieldKey: key,
           fieldValue: String(this.Data[key])
         }
@@ -766,7 +765,8 @@ export default {
       this.getCityName(this.city, arr, this.address, 'name', 'locationId')
       this.Data.address = this.address
       if (this.other.write) {
-        this.Data.expectPayDate = this.expectPayDate = this.getTime(value.expectPayDate)
+//        this.Data.expectPayDate = this.expectPayDate = this.getTimes(value.expectPayDate)
+        this.Data.expectPayDate = this.expectPayDate = (typeof (value.expectPayDate) === 'object' ? value.expectPayDate : this.getTimes(value.expectPayDate))
       } else {
         if (!this.Data.expectPayDate) {
           this.Data.expectPayDate = ''

@@ -6,7 +6,8 @@ import {
   SET_BTN,
   LOG_OUT,
   SET_IMG_DIALOG,
-  SET_BIGIMG
+  SET_BIGIMG,
+  SET_DETAIL_DIALOG
 } from './mutation-types'
 
 import {
@@ -56,5 +57,9 @@ export default {
   [SET_BIGIMG] (state, bigImg) {
     state.bigImg = bigImg
     setStore('bigImg', bigImg)
+  },
+  [SET_DETAIL_DIALOG] (state, productDetail) {
+    state.productDetail = productDetail
+    setStore('productDetail', productDetail)
   }
 }

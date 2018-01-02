@@ -8,74 +8,180 @@
     element-loading-text="拼命加载中"
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.7)"
-    width="40%">
+    width="50%">
     <el-form
       :model="form"
       :rules="rules"
       status-icon
-      label-position="right"
-      label-width="110px"
+      label-position="left"
+      label-width="140px"
       ref="form">
-      <!-- 手机号 -->
-      <el-form-item label="手机号码" prop="phoneNo">
-        <el-input
-          placeholder="请输入手机号"
-          type="text"
-          auto-complete="off"
-          :maxlength="11"
-          v-model="form.phoneNo"
-          :readonly="update">
-        </el-input>
-      </el-form-item>
-      <!-- 工行营销代码 -->
-      <el-form-item label="工行营销代码" prop="operateNo">
-        <el-input
-          placeholder="请输入工行营销代码"
-          type="text"
-          auto-complete="off"
-          v-model="form.operateNo">
-        </el-input>
-      </el-form-item>
-      <!-- 用户名 -->
-      <el-form-item label="姓名" prop="username">
-        <el-input
-          placeholder="请输入用户名"
-          type="text"
-          auto-complete="off"
-          v-model="form.username">
-        </el-input>
-      </el-form-item>
-      <!-- 地区 -->
-      <el-form-item label="所属地区" prop="areaName">
-        <el-select v-model="form.areaName" filterable placeholder="地区名称" style="width:100%;" @change="bankSearch">
-          <!--<el-option label="所有地区" value=""></el-option>-->
-          <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
-        </el-select>
-      </el-form-item>
-      <!-- 支行 -->
-      <el-form-item label="支行" prop="orgName">
-        <el-select v-model="form.orgName" filterable placeholder="请选择支行" style="width:100%;" @change="netSearch">
-          <el-option
-            v-for="(option, index) in bankData"
-            v-if="option.type === '支行'"
-            :key="index"
-            :label="option.name"
-            :value="option.organizationId">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <!-- 网点 -->
-      <el-form-item label="网点" prop="organizationId">
-        <el-select v-model="form.organizationId" filterable placeholder="请选择网点" style="width:100%;">
-          <el-option
-            v-for="(option, index) in netData"
-            v-if="option.type === '网点'"
-            :key="index"
-            :label="option.name"
-            :value="option.organizationId">
-          </el-option>
-        </el-select>
-      </el-form-item>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <el-form-item label="手机号码" prop="phoneNo">
+              <el-input
+                placeholder="请输入手机号"
+                type="text"
+                auto-complete="off"
+                :maxlength="11"
+                v-model="form.phoneNo"
+                :readonly="update">
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <el-form-item label="资金项目编码" prop="phoneNo">
+              <el-input
+                placeholder="请输入手机号"
+                type="text"
+                auto-complete="off"
+                :maxlength="11"
+                v-model="form.phoneNo"
+                :readonly="update">
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <el-form-item label="资金项目名称" prop="phoneNo">
+              <el-input
+                placeholder="请输入手机号"
+                type="text"
+                auto-complete="off"
+                :maxlength="11"
+                v-model="form.phoneNo"
+                :readonly="update">
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <!-- 地区 -->
+            <el-form-item label="资金项目金融机构" prop="areaName">
+              <el-select v-model="form.areaName" filterable placeholder="地区名称" style="width:100%;" @change="bankSearch">
+                <!--<el-option label="所有地区" value=""></el-option>-->
+                <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <!-- 地区 -->
+            <el-form-item label="状态" prop="areaName">
+              <el-select v-model="form.areaName" filterable placeholder="地区名称" style="width:100%;" @change="bankSearch">
+                <!--<el-option label="所有地区" value=""></el-option>-->
+                <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <el-form-item label="备注" prop="phoneNo">
+              <el-input
+                placeholder="请输入手机号"
+                type="text"
+                auto-complete="off"
+                :maxlength="11"
+                v-model="form.phoneNo"
+                :readonly="update">
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            收益情况设置
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <el-form-item>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click=""></el-button>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <table style="width: 100%">
+        <thead style="background-color: #3a8ee6; text-align: center; color: #eeeeee">
+          <tr>
+            <el-row :gutter="20">
+              <el-col :span="5"><div class="grid-content bg-purple"><td>收益科目名称</td></div></el-col>
+              <el-col :span="4"><div class="grid-content bg-purple"><td>收益机构</td></div></el-col>
+              <el-col :span="3"><div class="grid-content bg-purple"><td>计算方式</td></div></el-col>
+              <el-col :span="3"><div class="grid-content bg-purple"><td>结算频率</td></div></el-col>
+              <el-col :span="3"><div class="grid-content bg-purple"><td>计算基数</td></div></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple"><td>收益利率（年华）</td></div></el-col>
+            </el-row>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <el-row :gutter="20">
+            <el-col :span="5"><div class="grid-content bg-purple"><td>
+              <el-input
+                placeholder="请输入手机号"
+                type="text"
+                auto-complete="off"
+                :maxlength="11"
+                v-model="form.phoneNo"
+                :readonly="update">
+              </el-input>
+            </td></div></el-col>
+            <el-col :span="4"><div class="grid-content bg-purple"><td>
+              <el-input
+                placeholder="请输入手机号"
+                type="text"
+                auto-complete="off"
+                :maxlength="11"
+                v-model="form.phoneNo"
+                :readonly="update">
+              </el-input>
+            </td></div></el-col>
+            <el-col :span="3"><div class="grid-content bg-purple"><td>
+              <el-select v-model="form.areaName" filterable placeholder="地区名称" style="width:100%;" @change="bankSearch">
+                <!--<el-option label="所有地区" value=""></el-option>-->
+                <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
+              </el-select>
+            </td></div></el-col>
+            <el-col :span="3"><div class="grid-content bg-purple"><td>
+              <el-select v-model="form.areaName" filterable placeholder="地区名称" style="width:100%;" @change="bankSearch">
+                <!--<el-option label="所有地区" value=""></el-option>-->
+                <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
+              </el-select>
+            </td></div></el-col>
+            <el-col :span="3"><div class="grid-content bg-purple"><td>
+              <el-select v-model="form.areaName" filterable placeholder="地区名称" style="width:100%;" @change="bankSearch">
+                <!--<el-option label="所有地区" value=""></el-option>-->
+                <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
+              </el-select>
+            </td></div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple"><td>
+              <el-input
+                placeholder="请输入手机号"
+                type="text"
+                auto-complete="off"
+                :maxlength="11"
+                v-model="form.phoneNo"
+                :readonly="update">
+              </el-input>
+            </td></div></el-col>
+          </el-row>
+        </tr>
+        </tbody>
+      </table>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="Show = false">取 消</el-button>

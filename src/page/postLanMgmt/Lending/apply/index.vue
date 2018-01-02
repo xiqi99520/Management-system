@@ -193,6 +193,8 @@
     </under-cost-dialog>
     <!--展示大图-->
     <big-img></big-img>
+    <!--产品详情模态框-->
+    <detail-dialog></detail-dialog>
   </el-container>
 </template>
 <script>
@@ -208,6 +210,7 @@ import lendingApplyDetail from './children/detail'
 import loanApplyDialog from './children/applyDialog'
 import imgDialog from './children/imgDialog'
 import underCostDialog from './children/underCostDialog'
+import detailDialog from './children/children/children/dialog'
 import bigImg from '../../../../components/bigImg'
 import { formatter, keydownSubmit } from '@/util/utils'
 export default {
@@ -263,7 +266,8 @@ export default {
         }]
       },
       detail: { // 详情数据
-        show: false
+        show: false,
+        steps: ['产品信息', '服务人员信息', '进件详情', '主借款人基本信息', '共同借款人基本信息', '担保人基本信息', '放还款信息', '影像资料']
       },
       dialogTable: {}, // 详情对话框
       refuse: { // 拒绝数据
@@ -316,7 +320,9 @@ export default {
     // 下户费
     underCostDialog,
     // 展示大图
-    bigImg
+    bigImg,
+    // 产品详情
+    detailDialog
   },
   beforeMount () {
     // 预加载表格数据
@@ -404,7 +410,7 @@ export default {
       return formatter.renderBtn('APPLY_RISK_AUDIT') && row.state === '待放款审核'
     },
     handleDetail (row, write = false, detail = false, check = false) { // 查看详情
-      applyDetail(row.applyId)
+      applyDetail(row.applyId, row.contractId)
         .then(resp => {
           if (resp.success) {
             // 详情数据初始化
@@ -423,6 +429,7 @@ export default {
             // 初始化附加信息
             data.other = {
               applyId: row.applyId,
+              contractId: row.contractId,
               //              state: formatter.intoPieceState(row),
               state: row.state,
               lastOperation: row.lastOperationTime,
@@ -436,9 +443,10 @@ export default {
             // 详情对话框表格数据
             this.dialogTable = {
               name: data.mainBorrower ? data.mainBorrower.name : '',
-              contractNo: data.loanDetail ? data.loanDetail.contractNo : '',
+              contractCode: data.loanDetail ? data.loanDetail.contractCode : '',
               contractMoney: data.loanDetail ? data.loanDetail.contractMoney : 0,
-              applyId: row.applyId
+              applyId: row.applyId,
+              contractId: row.contractId
             }
           } else {
             throw (new Error(resp.message))

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title">客户经理管理</h1>
+    <h3 class="main-content-title">客户经理管理</h3>
     <!-- form search 表单 -->
     <el-form :inline="true" :model="formSearch" class="form">
       <el-form-item>
@@ -300,6 +300,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~@/style/public";
+// .el-header {
+//     text-align: left;
+//     line-height: 20px;
+//     height: 20px !important;
+//   div {
+//     text-indent: 10px;
+//     border-left: 5px solid @blue;
+//     font-size: 20px;
+//   }
+// }
 .form {
   text-align: left;
 
@@ -320,7 +331,7 @@ export default {
   margin-top: 20px;
 }
 
-.title {
-  text-align: left;
-}
+// .title {
+//   text-align: left;
+// }
 </style>

@@ -177,6 +177,7 @@ export default {
         }
       }
       const entity = {
+        contractId: this.other.contractId,
         fieldKey: key,
         fieldValue: this.Data[key]
       }

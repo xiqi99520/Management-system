@@ -20,7 +20,7 @@
           </tr>
           <tr>
             <td>合同编号</td>
-            <td>{{table.contractNo}}</td>
+            <td>{{table.contractCode}}</td>
           </tr>
           <tr>
             <td>合同金额</td>
@@ -71,6 +71,7 @@ export default {
       options: {},
       form: {
         applyId: this.table.applyId,
+        contractId: this.table.contractId,
         note: '',
         reason: ''
       },
@@ -97,6 +98,7 @@ export default {
     },
     table (value) {
       this.form.applyId = value.applyId
+      this.form.contractId = value.contractId
     }
   },
   methods: {

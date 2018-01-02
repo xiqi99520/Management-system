@@ -2,12 +2,12 @@
   <div>
     <h1 class="title">减免管理</h1>
     <!-- form search 表单 -->
-    <el-form :inline="true" :model="formSearch" class="form">
+    <el-form :inline="true" :model="form" class="form">
       <el-form-item label="查询条件">
-        <el-input class="search-input" v-model="formSearch.input"></el-input>
+        <el-input class="search-input" v-model="form.input" placeholder="姓名/合同编号/申请编号" clearable></el-input>
       </el-form-item>
       <el-form-item label="状态">
-        <el-select v-model="formSearch.state">
+        <el-select v-model="form.state">
           <el-option label="全部" value=""></el-option>
           <el-option label="待审核" value=""></el-option>
           <el-option label="审核通过" value=""></el-option>
@@ -16,7 +16,7 @@
       </el-form-item>
       <el-form-item label="放款时间">
         <el-date-picker
-          v-model="formSearch.dateRange"
+          v-model="form.dateRange"
           type="daterange"
           align="right"
           unlink-panels
@@ -156,7 +156,8 @@ export default {
       currentPage: 1,             // 默认页面
       pageSize: 15,               // 每页数据条数
       data: [],                   // 台账数据
-      formSearch: {               // 查询客户经理配置项
+      dateRange: null,
+      form: {               // 查询客户经理配置项
         input: '',
         day: '',
         dateRange: ''
@@ -164,14 +165,14 @@ export default {
     }
   },
   methods: {
-    handleCurrentPageChange (currentPage) {       // 切换页面重新加载远程数据
-      return this.doGetStandingBook(this.formSearch.input, this.formSearch.city, this.pageSize * (currentPage - 1))
-    },
-    searchSubmit () {               // form 表单提交
-      this.doGetStandingBook(this.formSearch.input, this.formSearch.city)
-        .then(() => {
-        })
-    },
+    // handleCurrentPageChange (currentPage) {       // 切换页面重新加载远程数据
+    //   return this.doGetStandingBook(this.formSearch.input, this.formSearch.city, this.pageSize * (currentPage - 1))
+    // },
+    // searchSubmit () {               // form 表单提交
+    //   this.doGetStandingBook(this.formSearch.input, this.formSearch.city)
+    //     .then(() => {
+    //     })
+    // },
     indexMethod (index) {
       return index + 1 + (this.currentPage - 1) * this.pageSize
     }

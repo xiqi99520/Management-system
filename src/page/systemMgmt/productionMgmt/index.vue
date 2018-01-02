@@ -1,136 +1,153 @@
 <template>
-  <div>
-    <h1 class="title">客户经理管理</h1>
-    <!-- form search 表单 -->
-    <el-form :inline="true" :model="formSearch" class="form">
-      <el-form-item>
-          <el-input class="search-input" v-model="formSearch.input" placeholder="客户经理手机号/姓名/支行"></el-input>
-      </el-form-item>
-      <el-form-item label="所属地区">
-        <el-select v-model="formSearch.city" placeholder="地区名称">
-          <el-option label="所有地区" value=""></el-option>
-          <el-option v-for="(option, index) in areaData" :key="index" :label="option" :value="option"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          @click="searchSubmit"
-          :loading="btnLoading"
-          type="primary"
-          icon="el-icon-search"
-          title="搜索">
-        </el-button>
-      </el-form-item>
-      <el-form-item class="table-btn-ctl">
-        <a :href="templateUrl" download="导入客户经理模板.xlsx">
-          <el-button type="primary" icon="el-icon-download" title="下载导入模板">批量导入模板</el-button>
-        </a>
-        <el-upload
-          class="upload"
-          :action="uploadUrl"
-          :show-file-list="false"
-          :file-list="fileList"
-          :on-success="uploadSuccess"
-          :on-error="uploadError">
-          <el-button type="primary" icon="el-icon-upload2" title="上传导入文件">批量导入</el-button>
-        </el-upload>
-        <el-button
-          @click="showNewManager = true"
-          type="primary"
-          icon="el-icon-circle-plus-outline" title="新增客户经理">
-        </el-button>
-        <!--<el-button-->
-          <!--type="primary"-->
-          <!--icon="el-icon-edit"-->
-          <!--:disabled="btnDisabled"-->
-          <!--@click="showUpdateManager = true"-->
-          <!--title="编辑客户经理">-->
-        <!--</el-button>-->
-      </el-form-item>
-    </el-form>
-    <!-- table 表格 -->
-    <el-table
-      :data="data"
-      stripe
-      border
-      highlight-current-row
-      @row-click="handleRowClick"
-      ref="table"
-      style="width: 100%">
-      <el-table-column
-        align="center"
-        type="index"
-        :index="indexMethod"
-        label="序号">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="username"
-        label="姓名">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="operateNo"
-        label="工行营销代码">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="city"
-        label="地区">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="orgName"
-        label="支行">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="branch"
-        label="网点">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="phoneNo"
-        label="客户经理手机号">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="createTime"
-        label="创建时间">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" @click="showUpdateManager = true" title="编辑客户经理"></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <el-pagination
-      @current-change="handleCurrentPageChange"
-      :current-page.sync="currentPage"
-      :page-size="pageSize"
-      layout="total, prev, pager, next, jumper"
-      :total="total"
-      class="pagination">
-    </el-pagination>
-    <!-- 新增客户经理对话框 -->
-    <manager-dialog
-      title="新增客户经理"
-      :show="showNewManager"
-      :org-data="orgData"
-      :city-data="areaData"
-      @on-close="closeDialog"></manager-dialog>
-    <!-- 新增客户经理对话框 -->
-    <manager-dialog
-      title="编辑客户经理"
-      :show="showUpdateManager"
+  <el-container>
+    <el-header>
+      <div>产品管理</div>
+    </el-header>
+    <el-main>
+      <!-- form search 表单 -->
+      <el-form :inline="true" :model="formSearch" class="form">
+        <el-form-item label="适用城市">
+          <el-select v-model="formSearch.city" placeholder="地区名称">
+            <el-option label="所有地区" value=""></el-option>
+            <el-option v-for="(option, index) in areaData" :key="index" :label="option" :value="option"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            @click="searchSubmit"
+            :loading="btnLoading"
+            type="primary"
+            icon="el-icon-search"
+            title="搜索">
+          </el-button>
+        </el-form-item>
+        <el-form-item class="table-btn-ctl">
+          <el-button
+            @click="productionDetail = true"
+            type="primary"
+            icon="el-icon-circle-plus-outline" title="新增产品">
+          </el-button>
+          <!--<el-button-->
+            <!--type="primary"-->
+            <!--icon="el-icon-edit"-->
+            <!--:disabled="btnDisabled"-->
+            <!--@click="showUpdateManager = true"-->
+            <!--title="编辑客户经理">-->
+          <!--</el-button>-->
+        </el-form-item>
+      </el-form>
+      <!-- table 表格 -->
+      <el-table
+        :data="data"
+        stripe
+        border
+        highlight-current-row
+        @row-click="handleRowClick"
+        ref="table"
+        style="width: 100%">
+        <el-table-column
+          align="center"
+          type="index"
+          :index="indexMethod"
+          label="产品编号">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="username"
+          label="产品名称">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="operateNo"
+          label="适用城市">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="city"
+          label="本金范围（万元）">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="orgName"
+          label="期限">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="branch"
+          label="资金项目编码">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="phoneNo"
+          label="创建人">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="createTime"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="createTime"
+          label="最近更新时间">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" icon="el-icon-edit" @click="editor" title="编辑产品信息"></el-button>
+            <el-button type="primary" icon="el-icon-tickets" @click="productionDetail = true" title="查看产品详情"></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination
+        @current-change="handleCurrentPageChange"
+        :current-page.sync="currentPage"
+        :page-size="pageSize"
+        layout="total, prev, pager, next, jumper"
+        :total="total"
+        class="pagination">
+      </el-pagination>
+    </el-main>
+     <!--绝对定位层-->
+    <transition name="el-zoom-in-center">
+      <!-- 产品详情 -->
+      <production-detail
+        ref="detail"
+        v-show="productionDetail"
+        :data="detail"
+        :editorState="stateOff"
+        @on-add="addPayment"
+        @on-close="closeDetail"
+        @on-update="updatePayment"
+        @on-copy="copyDialog">
+      </production-detail>
+    </transition>
+    <!-- 新增还款科目对话框 -->
+    <productioncourse-dialog
+    title="新增还款科目"
+    :show="showNewProduction"
+    :org-data="orgData"
+    :city-data="areaData"
+    @on-close="closeDialog"></productioncourse-dialog>
+    <!-- 编辑还款科目对话框 -->
+    <productioncourse-dialog
+    title="编辑还款科目"
+    :show="showUpdateProduction"
+    :org-data="orgData"
+    :manager-data="selectRow"
+    :city-data="areaData"
+    @on-close="closeDialog"></productioncourse-dialog>
+    <!-- 复制产品对话框 -->
+    <copyproduction-dialog
+      title="复制新增当前产品"
+      :show="copyProduction"
       :org-data="orgData"
       :manager-data="selectRow"
       :city-data="areaData"
-      @on-close="closeDialog"></manager-dialog>
-  </div>
+      @on-close="closeCopyDialog"></copyproduction-dialog>
+  </el-container>
 </template>
 
 <script>
@@ -143,17 +160,24 @@ import {
   getOrganizations,
   getDict
 } from '../../../service/getData'
-import managerDialog from './children/dialog'
+import productionDetail from '../../../components/detail'
+import productioncourseDialog from './children/dialog'
+import copyproductionDialog from './children/copyDialog'
 export default {
   name: 'customer-manager',
   computed: {
-    ...mapState(['btns', 'userInfo'])
+    ...mapState(['btns', 'userInfo','production'])
   },
   data () {
     return {
+      detail: [],
+      stateOff: false,
       areaData: [],
-      showNewManager: false,      // 显示新增客户经理对话框
-      showUpdateManager: false,   // 显示编辑客户经理对话框
+      copyProduction: false,
+      productionDetail: false,
+      productionDetailupdate: false,
+      showNewProduction: false,      // 显示新增客户经理对话框
+      showUpdateProduction: false,   // 显示编辑客户经理对话框
       btnLoading: false,          // 加载服务器数据中
       btnDisabled: true,          // 编辑客户经理按钮禁用
       total: 0,                   // 管理员数据总条数
@@ -171,11 +195,13 @@ export default {
         opencity: ['OpenCity'],
         roleId: ''
       },
-      keydownSubmit: keydownSubmit
+      keydownSubmit: keydownSubmit,
     }
   },
   components: {
-    managerDialog
+    productionDetail,
+    productioncourseDialog,
+    copyproductionDialog
   },
   beforeMount () {
     this.doGetManagers()
@@ -224,6 +250,25 @@ export default {
     }
   },
   methods: {
+    addPayment () {
+      this.showNewProduction = true
+    },
+    updatePayment () {
+      this.showUpdateProduction = true
+    },
+    editor () {
+       this.stateOff = true
+       this.productionDetail = true
+    },
+    copyDialog () {
+      this.copyProduction = true
+    },
+    closeCopyDialog () {
+      this.copyProduction = false
+    },
+    closeDetail () {
+      this.productionDetail = false
+    },
     handleRowClick (currentRow, oldCurrentRow) {  // 点击表格解禁修改按钮
       this.btnDisabled = false
       this.selectRow = currentRow
@@ -286,9 +331,9 @@ export default {
     },
     closeDialog (update, refresh) {      // 关闭对话框, 刷新数据
       if (update) {
-        this.showUpdateManager = false
+        this.showUpdateProduction = false
       } else {
-        this.showNewManager = false
+        this.showNewProduction = false
       }
 
       if (refresh) {
@@ -300,6 +345,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~@/style/color";
+.el-header {
+    text-align: left;
+    line-height: 20px;
+    height: 20px !important;
+  div {
+    text-indent: 10px;
+    border-left: 5px solid @blue;
+    font-size: 20px;
+  }
+}
+
 .form {
   text-align: left;
 

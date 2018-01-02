@@ -2,12 +2,12 @@
   <div>
     <h1 class="title">待放款</h1>
     <!-- form search 表单 -->
-    <el-form :inline="true" :model="formSearch" class="form">
+    <el-form :inline="true" :model="form" class="form">
       <el-form-item label="查询条件">
-        <el-input class="search-input" v-model="formSearch.input"></el-input>
+        <el-input class="search-input" v-model="form.input" placeholder="姓名/合同编号/申请编号" clearable></el-input>
       </el-form-item>
       <el-form-item label="当前状态">
-        <el-select v-model="formSearch.state" placeholder="当前状态">
+        <el-select v-model="form.state" placeholder="当前状态">
           <el-option label="全部" value=""></el-option>
           <el-option label="待放款" value=""></el-option>
           <el-option label="代付放款待复审" value=""></el-option>
@@ -15,13 +15,15 @@
       </el-form-item>
       <el-form-item label="风控终审通过时间">
         <el-date-picker
-          v-model="formSearch.dateRange"
+          v-model="dateRange"
           type="daterange"
           align="right"
           unlink-panels
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="formatter.dateRangeChange(dateRange, form)">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -49,52 +51,52 @@
       </el-table-column>
       <el-table-column
         align="center"
-        prop="username"
+        prop="contractCode"
         label="合同编号">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="operateNo"
+        prop="lenderName"
         label="主借款人姓名">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="city"
+        prop="contractMoney"
         label="合同金额">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="orgName"
+        prop="accountNo"
         label="放款账号">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="branch"
+        prop="term"
         label="合同期限">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="phoneNo"
+        prop="productName"
         label="产品编号">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="createTime"
+        prop="expectPayDate"
         label="期望放款时间">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="createTime"
+        prop="createDate"
         label="风控终审通过时间">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="createTime"
+        prop="auditName"
         label="风控终审人">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="createTime"
+        prop="auditorStatus"
         label="当前状态">
       </el-table-column>
       <el-table-column
@@ -111,7 +113,7 @@
       :current-page.sync="currentPage"
       :page-size="pageSize"
       layout="total, prev, pager, next, jumper"
-      :total="total"
+      :total="totalPage"
       class="pagination">
     </el-pagination>
     <!-- 查看详情对话框 -->
@@ -123,10 +125,18 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex'
+import {
+  pickerOptions,
+  // initSelectOptions,
+  formatter,
+  initTable
+} from '@/util/utils'
+import {
+  ledgerList
+} from '@/service/getData'
 // import managerDialog from './children/dialog'
 export default {
-  name: 'predialing-manager',
+  name: 'lending-manager',
   // computed: {
   //   ...mapState(['btns', 'userInfo'])
   // },
@@ -135,24 +145,37 @@ export default {
       areaData: [],
       showDetail: false,      // 显示预拨申请详情对话框
       // btnLoading: false,          // 加载服务器数据中
-      btnDisabled: true,          // 编辑客户经理按钮禁用
-      total: 0,                   // 数据总条数
+      totalPage: 0,                   // 数据总条数
       currentPage: 1,             // 默认页面
       pageSize: 15,               // 每页数据条数
       data: [],                   // 预拨申请数据
-      formSearch: {               // 查询客户经理配置项
+      dateRange: null,
+      selectRow: [],
+      form: {               // 查询客户经理配置项
         input: '',
         state: '',
-        dateRange: ''
-      }
+        startDate: '',
+        endDate: ''
+      },
+      pickerOptions: pickerOptions,
+      formatter: formatter
     }
   },
+  created () {
+    // initSelectOptions(this.selects, this.options)
+    //   .then(() => {
+    //     return this.getTableData()
+    //   })
+    this._getTableData()
+  },
   methods: {
+    _getTableData () {
+      initTable(ledgerList, this)
+    },
     indexMethod (index) {
       return index + 1 + (this.currentPage - 1) * this.pageSize
     },
     handleRowClick (currentRow, oldCurrentRow) {  // 点击表格解禁修改按钮
-      this.btnDisabled = false
       this.selectRow = currentRow
     },
     handleCurrentPageChange (currentPage) {       // 切换页面重新加载远程数据

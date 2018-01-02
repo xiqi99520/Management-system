@@ -1,5 +1,5 @@
 <template>
-  <!-- 用户信息 -->
+  <!-- 账户信息 -->
   <el-dialog
     :title="title"
     :visible.sync="Show"
@@ -14,12 +14,12 @@
       :rules="rules"
       status-icon
       label-position="right"
-      label-width="110px"
+      label-width="148px"
       ref="form">
-      <!-- 手机号 -->
-      <el-form-item label="手机号码" prop="phoneNo">
+      <!-- 账户编号 -->
+      <el-form-item label="账户编号" prop="phoneNo">
         <el-input
-          placeholder="请输入手机号"
+          placeholder="请输入账户编号"
           type="text"
           auto-complete="off"
           :maxlength="11"
@@ -27,54 +27,73 @@
           :readonly="update">
         </el-input>
       </el-form-item>
-      <!-- 工行营销代码 -->
-      <el-form-item label="工行营销代码" prop="operateNo">
+      <!-- 账户号 -->
+      <el-form-item label="账户号" prop="operateNo">
         <el-input
-          placeholder="请输入工行营销代码"
+          placeholder="请输入账户号"
           type="text"
           auto-complete="off"
           v-model="form.operateNo">
         </el-input>
       </el-form-item>
-      <!-- 用户名 -->
-      <el-form-item label="姓名" prop="username">
-        <el-input
-          placeholder="请输入用户名"
-          type="text"
-          auto-complete="off"
-          v-model="form.username">
-        </el-input>
-      </el-form-item>
-      <!-- 地区 -->
-      <el-form-item label="所属地区" prop="areaName">
-        <el-select v-model="form.areaName" filterable placeholder="地区名称" style="width:100%;" @change="bankSearch">
+      <!-- 账户所属资金项目 -->
+      <el-form-item label="账户所属资金项目" prop="areaName">
+        <el-select v-model="form.areaName" filterable placeholder="资金项目" style="width:100%;" @change="bankSearch">
           <!--<el-option label="所有地区" value=""></el-option>-->
           <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
         </el-select>
       </el-form-item>
-      <!-- 支行 -->
-      <el-form-item label="支行" prop="orgName">
-        <el-select v-model="form.orgName" filterable placeholder="请选择支行" style="width:100%;" @change="netSearch">
-          <el-option
-            v-for="(option, index) in bankData"
-            v-if="option.type === '支行'"
-            :key="index"
-            :label="option.name"
-            :value="option.organizationId">
-          </el-option>
+      <!-- 账户所属资金项目 -->
+      <el-form-item label="账户所属资金项目" prop="areaName">
+        <el-select v-model="form.areaName" filterable placeholder="资金项目" style="width:100%;" @change="bankSearch">
+          <!--<el-option label="所有地区" value=""></el-option>-->
+          <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
         </el-select>
       </el-form-item>
-      <!-- 网点 -->
-      <el-form-item label="网点" prop="organizationId">
-        <el-select v-model="form.organizationId" filterable placeholder="请选择网点" style="width:100%;">
-          <el-option
-            v-for="(option, index) in netData"
-            v-if="option.type === '网点'"
-            :key="index"
-            :label="option.name"
-            :value="option.organizationId">
-          </el-option>
+      <!-- 账户类型 -->
+      <el-form-item label="账户类型" prop="areaName">
+        <el-select v-model="form.areaName" filterable placeholder="账户类型" style="width:100%;" @change="bankSearch">
+          <!--<el-option label="所有地区" value=""></el-option>-->
+          <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
         </el-select>
+      </el-form-item>
+      <!-- 账户所有权归属主体 -->
+      <el-form-item label="账户所有权归属主体" prop="areaName">
+        <el-select v-model="form.areaName" filterable placeholder="资金项目" style="width:100%;" @change="bankSearch">
+          <!--<el-option label="所有地区" value=""></el-option>-->
+          <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- 开具账户机构类型 -->
+      <el-form-item label="开具账户机构类型" prop="areaName">
+        <el-select v-model="form.areaName" filterable placeholder="机构类型" style="width:100%;" @change="bankSearch">
+          <!--<el-option label="所有地区" value=""></el-option>-->
+          <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- 开具账户机构名称 -->
+      <el-form-item label="开具账户机构名称" prop="areaName">
+        <el-select v-model="form.areaName" filterable placeholder="机构名称" style="width:100%;" @change="bankSearch">
+          <!--<el-option label="所有地区" value=""></el-option>-->
+          <el-option v-for="(option, index) in cityData" :key="index" :label="option" :value="option"></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- 账户状态 -->
+      <el-form-item label="账户状态" prop="state">
+        <el-select v-model="form.state" style="width:100%;">
+          <el-option label="启用" value="正常"></el-option>
+          <el-option label="禁用" value="锁定"></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- 备注信息 -->
+      <el-form-item label="备注信息" prop="phoneNo">
+        <el-input
+          placeholder="请输入备注信息"
+          type="text"
+          auto-complete="off"
+          :maxlength="11"
+          v-model="form.phoneNo">
+        </el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

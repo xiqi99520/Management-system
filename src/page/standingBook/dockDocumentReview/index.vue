@@ -7,11 +7,11 @@
       <el-form-item label="文件目录">
         <el-input
           placeholder="可以联想搜索"
-          :model="form.input">
+          :model="form.docDirectory">
         </el-input>
       </el-form-item>
       <el-form-item label="状态">
-        <el-select v-model="form.state" placeholder="选择状态">
+        <el-select v-model="form.status" placeholder="选择状态">
             <el-option
               v-for="(option, idx) in stateOptions"
               :key="idx"
@@ -22,18 +22,19 @@
       </el-form-item>
       <el-form-item label="计划上传时间">
           <el-date-picker
-            v-model="form.dateRange"
+            v-model="dateRange"
             type="daterange"
             align="right"
             unlink-panels
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :picker-options="pickerOptions">
+            :picker-options="pickerOptions"
+            @change="formatter.dateRangeChange(dateRange, form)">
           </el-date-picker>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" title="搜索" @click="handleSubmit"></el-button>
+        <el-button type="primary" icon="el-icon-search" title="搜索" @click="getTableData"></el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -113,7 +114,13 @@
   </div>
 </template>
 <script>
-import { pickerOptions, formatter } from '@/util/utils'
+import {
+  initSelectOptions,
+  pickerOptions,
+  formatter,
+  initTable
+} from '@/util/utils'
+import { getBohaiDocuments } from '@/service/getData'
 import dockDocumentReviewDialog from './children/dialog'
 export default {
   name: 'dockDocumentReview', // 渤海对接文档审核
@@ -125,12 +132,15 @@ export default {
       totalPage: 0,       // 用户数据总量
       currentPage: 1,     // 默认页面
       pageSize: 15,       // 每页数量
+      dateRange: '',
       stateOptions: [{ name: '全部', value: '' }],
       data: [], // 表格数据
       selects: ['s1', 's2'],
       form: { // 搜索表格
-        input: '',
-        dateRange: ''
+        docDirectory: '',
+        status: '',
+        startDate: '',
+        endDate: ''
       },
       dialog: { // 审核意见弹窗
         show: false
@@ -139,7 +149,16 @@ export default {
       formatter: formatter
     }
   },
+  created () {
+    initSelectOptions(this.selects, this.options)
+      .then(() => {
+        return this.getTableData()
+      })
+  },
   methods: {
+    getTableData () {
+      initTable(getBohaiDocuments, this)
+    },
     handleCurrentPageChange () { },
     handleClose (refresh) {
       this.dialog.show = false

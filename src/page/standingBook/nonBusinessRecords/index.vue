@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 标题 -->
-    <h2>专户、待拨户非业务类流水记录</h2>
+    <h3 class="main-content-title">专户、待拨户非业务类流水记录</h3>
     <!-- 表格搜索 -->
     <el-form :inline="true" :model="form">
       <el-form-item label="查询条件">
@@ -11,7 +11,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="资金项目名称">
-        <el-select v-model="form.project" placeholder="选择状态">
+        <el-select v-model="form.fundsProjectId" placeholder="选择状态">
             <el-option
               v-for="(option, idx) in options.project"
               :key="idx"
@@ -21,7 +21,7 @@
           </el-select>
       </el-form-item>
       <el-form-item label="流水方向">
-        <el-select v-model="form.direction" placeholder="选择状态">
+        <el-select v-model="form.busiDirection" placeholder="选择状态">
             <el-option
               v-for="(option, idx) in options.direction"
               :key="idx"
@@ -32,18 +32,19 @@
       </el-form-item>
       <el-form-item label="流水时间">
           <el-date-picker
-            v-model="form.dateRange"
+            v-model="dateRange"
             type="daterange"
             align="right"
             unlink-panels
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :picker-options="pickerOptions">
+            :picker-options="pickerOptions"
+            @change="formatter.dateRangeChange(dateRange, form)">
           </el-date-picker>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" title="搜索"></el-button>
+        <el-button type="primary" icon="el-icon-search" title="搜索" @click="getTableData"></el-button>
       </el-form-item>
       <el-form-item class="table-btn-ctl">
         <el-button type="primary" icon="el-icon-circle-plus-outline" title="新增" @click="confirm.show = true">新增</el-button>
@@ -56,19 +57,41 @@
       :data="data"
       highlight-current-row>
       <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline>
-            <el-form-item label="资金项目名称"></el-form-item>
-            <el-form-item label="流水方向"></el-form-item>
-            <el-form-item label="账户类型"></el-form-item>
-            <el-form-item label="账户开户行"></el-form-item>
-            <el-form-item label="账户号"></el-form-item>
-            <el-form-item label="往来资金账户类型"></el-form-item>
-            <el-form-item label="往来资金账户名"></el-form-item>
-            <el-form-item label="往来资金账户号"></el-form-item>
-            <el-form-item label="备注"></el-form-item>
-            <el-form-item label="操作人"></el-form-item>
-            <el-form-item label="入账时间"></el-form-item>
+        <template slot-scope="scope">
+          <el-form label-position="left" label-width="140px">
+            <el-col :span="8">
+              <el-form-item label="资金项目名称：">{{scope.row.fundsProjectName}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="流水方向：">{{scope.row.busiSubject}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="账户类型：">{{scope.row.acctType}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="账户开户行：">{{scope.row.acctBank}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="账户号：">{{scope.row.acctNo}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="往来资金账户类型：">{{scope.row.outAcctType}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="往来资金账户名：">{{scope.row.outAcctName}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="往来资金账户号：">{{scope.row.outAcctNo}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="备注：">{{scope.row.remark}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="操作人：">{{scope.row.creator}}</el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="入账时间：">{{scope.row.creatorDate}}</el-form-item>
+            </el-col>
           </el-form>
         </template>
       </el-table-column>
@@ -81,28 +104,28 @@
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="outBusiCode"
         label="流水号">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="busiSubject"
         label="流水科目">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="busiDate"
         label="流水时间">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="money"
         label="流水金额">
       </el-table-column>
     </el-table>
     <!-- 分页 -->
     <el-pagination
-      @current-change="handleCurrentPageChange"
+      @current-change="getTableData"
       :current-page.sync="currentPage"
       :page-size="pageSize"
       layout="total, prev, pager, next, jumper"
@@ -116,8 +139,14 @@
   </div>
 </template>
 <script>
-import { pickerOptions } from '@/util/utils'
+import {
+  pickerOptions,
+  initSelectOptions,
+  formatter,
+  initTable
+} from '@/util/utils'
 import nonBusinessRecordsConfirm from './children/confirm'
+import { getAcctNoBusinessRecord } from '@/service/getData'
 export default {
   name: 'nonBusinessRecords', // 专户、待拨户非业务类流水记录
   components: {
@@ -128,28 +157,43 @@ export default {
       totalPage: 0,       // 用户数据总量
       currentPage: 1,     // 默认页面
       pageSize: 15,       // 每页数量
+      dateRange: '',      // 时间
       data: [], // 表格数据
       selects: ['project', 'direction'],  // 下拉框搜索值
-      options: {},  // 下拉框选项
-      form: { // 搜索表格
-        input: '',
-        dateRange: '',
+      options: {
         project: [{ name: '全部', value: '' }],
         direction: [{ name: '全部', value: '' }]
+      },  // 下拉框选项
+      form: { // 搜索表格
+        input: '',
+        fundsProjectId: '',
+        busiDirection: '',
+        startDate: '',
+        endDate: '',
+        count: true
       },
       confirm: {
         show: false
       },
-      pickerOptions: pickerOptions
+      pickerOptions: pickerOptions,
+      formatter: formatter
     }
   },
+  created () {
+    initSelectOptions(this.selects, this.options)
+      .then(() => {
+        return this.getTableData()
+      })
+  },
   methods: {
-    handleCurrentPageChange () { },
+    getTableData () {
+      initTable(getAcctNoBusinessRecord, this)
+    },
     handleClose (refresh) {
     }
   }
 }
 </script>
 <style lang="less" scoped>
-
+@import "~@/style/public";
 </style>

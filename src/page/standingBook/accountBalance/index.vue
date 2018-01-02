@@ -11,7 +11,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="账户所有权归属主体">
-        <el-select v-model="form.s1" placeholder="选择状态">
+        <el-select v-model="form.accountType" placeholder="选择状态">
             <el-option
               v-for="(option, idx) in options.s1"
               :key="idx"
@@ -21,7 +21,7 @@
           </el-select>
       </el-form-item>
       <el-form-item label="账户所属资金项目">
-        <el-select v-model="form.s2" placeholder="选择状态">
+        <el-select v-model="form.fundsProjectId" placeholder="选择状态">
             <el-option
               v-for="(option, idx) in options.s2"
               :key="idx"
@@ -43,41 +43,42 @@
       highlight-current-row>
       <el-table-column
         align="center"
+        prop="fundsAccoutId"
         label="账户编号">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="fundsAccountNo"
         label="账户号">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="fundsProjectName"
         label="账户所属资金项目">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="accountType"
         label="账户类型">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="accountOrg"
         label="账户所有权主体">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="accountOwnerType"
         label="开具账户机构类型">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="accountOwnerName"
         label="开具账户机构名称">
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
+        prop="money"
         label="账户余额">
       </el-table-column>
     </el-table>
@@ -93,6 +94,8 @@
   </div>
 </template>
 <script>
+import { initSelectOptions, initTable } from '@/util/utils'
+import { getAccountBalance } from '@/service/getData'
 export default {
   name: 'accountBalance', // 账户余额查询
   data () {
@@ -104,7 +107,8 @@ export default {
       selects: ['s1', 's2'],
       form: { // 搜索表格
         input: '',
-        dateRange: ''
+        accountType: '',
+        fundsProjectId: ''
       },
       options: {
         s1: [{ name: '全部', value: '' }],
@@ -112,7 +116,16 @@ export default {
       }
     }
   },
+  created () {
+    initSelectOptions(this.selects, this.options)
+      .then(() => {
+        return this.getTableData()
+      })
+  },
   methods: {
+    getTableData () {
+      initTable(getAccountBalance, this)
+    },
     handleCurrentPageChange () { },
     handleClose (refresh) {
     }

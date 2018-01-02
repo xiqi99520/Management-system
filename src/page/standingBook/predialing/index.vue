@@ -2,42 +2,46 @@
   <div>
     <h1 class="title">预拨申请</h1>
     <!-- form search 表单 -->
-    <el-form :inline="true" :model="formSearch" class="form">
+    <el-form :inline="true" :model="form" class="form">
       <el-form-item label="查询条件">
-        <el-input class="search-input" v-model="formSearch.input" placeholder="姓名/合同编号/申请编号"></el-input>
+        <el-input class="search-input" v-model="form.contractCode" placeholder="姓名/合同编号/申请编号" clearable></el-input>
       </el-form-item>
       <el-form-item label="资金项目名称">
-        <el-select v-model="formSearch.project" placeholder="资金项目名称">
+        <el-select v-model="form.fundsProjectName" placeholder="资金项目名称">
           <el-option label="全部" value=""></el-option>
           <el-option v-for="(option, index) in areaData" :key="index" :label="option" :value="option"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="状态">
-        <el-select v-model="formSearch.state" placeholder="状态">
+        <el-select v-model="form.auditorStatus" placeholder="状态">
           <el-option label="全部" value=""></el-option>
           <el-option v-for="(option, index) in areaData" :key="index" :label="option" :value="option"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="申请放款提交时间">
         <el-date-picker
-          v-model="formSearch.dateRange"
+          v-model="dateRange"
           type="daterange"
           align="right"
           unlink-panels
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="formatter.dateRangeChange(dateRange, form)">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="期望放款时间">
         <el-date-picker
-          v-model="formSearch.dateRange01"
+          v-model="dateRange01"
           type="daterange"
           align="right"
           unlink-panels
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="formatter.dateRangeChange(dateRange01, form, 'expectStartDate', 'expectEndDate')">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -164,7 +168,12 @@
 
 <script>
 // import { mapState } from 'vuex'
-import { keydownSubmit } from '@/util/utils'
+import {
+  pickerOptions,
+  // initSelectOptions,
+  formatter
+  // initTable
+} from '@/util/utils'
 import {
   getPredialing
 } from '../../../service/getData'
@@ -186,14 +195,19 @@ export default {
       pageSize: 15,               // 管理员每页数据条数
       data: [],                   // 预拨申请数据
       multipleSelection: [],              // 多选的数据
-      formSearch: {               // 查询客户经理配置项
-        input: '',
-        state: '',
-        project: '',
-        dateRange: '',
-        dateRange01: ''
+      dateRange: null,
+      dateRange01: null,
+      form: {               // 查询客户经理配置项
+        contractCode: '',
+        auditorStatus: '',
+        fundsProjectName: '',
+        startDate: '',
+        endDate: '',
+        expectStartDate: '',
+        expectEndDate: ''
       },
-      keydownSubmit: keydownSubmit
+      pickerOptions: pickerOptions,
+      formatter: formatter
     }
   },
   // components: {
@@ -201,9 +215,6 @@ export default {
   // },
   beforeMount () {
     this.doGetManagers()
-  },
-  mounted () {
-    keydownSubmit(this.searchSubmit)
   },
   methods: {
     handleCurrentPageChange (currentPage) {       // 切换页面重新加载远程数据

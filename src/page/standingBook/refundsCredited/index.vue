@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 标题 -->
-    <h2>退款入账</h2>
+    <h3 class="main-content-title">退款入账</h3>
     <!-- 表格搜索 -->
     <el-form :inline="true" :model="form">
       <el-form-item label="查询条件">
@@ -10,26 +10,17 @@
           :model="form.input">
         </el-input>
       </el-form-item>
-      <el-form-item label="状态">
-        <el-select v-model="form.state" placeholder="选择状态">
-            <el-option
-              v-for="(option, idx) in stateOptions"
-              :key="idx"
-              :label="option.name"
-              :value="option.value">
-            </el-option>
-          </el-select>
-      </el-form-item>
       <el-form-item label="申请时间">
           <el-date-picker
-            v-model="form.dateRange"
+            v-model="dateRange"
             type="daterange"
             align="right"
             unlink-panels
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :picker-options="pickerOptions">
+            :picker-options="pickerOptions"
+            @change="formatter.dateRangeChange(dateRange, form)">
           </el-date-picker>
         </el-form-item>
       <el-form-item>
@@ -51,18 +42,18 @@
       </el-table-column>
       <el-table-column
         align="center"
+        prop="name"
+        label="姓名">
+      </el-table-column>
+      <el-table-column
+        align="center"
         prop=""
         label="合同编号">
       </el-table-column>
       <el-table-column
         align="center"
         prop=""
-        label="客户姓名">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop=""
-        label="申请时其他暂收款金额">
+        label="申请产品">
       </el-table-column>
       <el-table-column
         align="center"
@@ -72,12 +63,22 @@
       <el-table-column
         align="center"
         prop=""
-        label="申请提交人">
+        label="退款账户开户行">
       </el-table-column>
       <el-table-column
         align="center"
         prop=""
-        label="申请时间">
+        label="退款账户号">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop=""
+        label="性别">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop=""
+        label="申请退款时间">
       </el-table-column>
       <el-table-column
         align="center"
@@ -86,24 +87,14 @@
       </el-table-column>
       <el-table-column
         align="center"
-        prop=""
-        label="审核意见">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop=""
-        label="备注">
-      </el-table-column>
-      <el-table-column
-        align="center"
         label="操作">
+        <template slot-scope="scope">
+        </template>
       </el-table-column>
-      <template slot-scope="scope">
-      </template>
     </el-table>
     <!-- 分页 -->
     <el-pagination
-      @current-change="handleCurrentPageChange"
+      @current-change="getTabelData"
       :current-page.sync="currentPage"
       :page-size="pageSize"
       layout="total, prev, pager, next, jumper"
@@ -114,17 +105,17 @@
     <refunds-credited-dialog :data="dialog" @on-close="handleClose"></refunds-credited-dialog>
     <!-- 退款入账确认 -->
     <transition name="el-zoom-in-center">
-      <refunds-credited-confirm v-show="confirm.show"></refunds-credited-confirm>
+      <!-- <refunds-credited-confirm v-show="confirm.show"></refunds-credited-confirm> -->
     </transition>
   </div>
 </template>
 <script>
 import {
   pickerOptions,
-  initSelectOptions,
-  formatter
+  formatter,
+  initTable
 } from '@/util/utils'
-// import { listRefund } from '@/service/getData'
+import { listRefund } from '@/service/getData'
 import refundsCreditedDialog from './children/dialog'
 import refundsCreditedConfirm from './children/confirm'
 export default {
@@ -138,13 +129,13 @@ export default {
       totalPage: 0,       // 用户数据总量
       currentPage: 1,     // 默认页面
       pageSize: 15,       // 每页数量
+      dateRange: null,
       data: [], // 表格数据
-      selects: ['refundsCredited'], // 下拉框搜索值
-      stateOptions: [{ name: '全部', value: '' }],
       form: { // 搜索表格
         input: '',
-        dateRange: '',
-        state: ''
+        startDate: null,
+        endDate: null,
+        count: true
       },
       dialog: {
         show: false
@@ -157,12 +148,12 @@ export default {
     }
   },
   created () {
-    initSelectOptions(this.selects, this.form)
-      .then(resp => {
-        this.form = resp
-      })
+    this.getTabelData()
   },
   methods: {
+    getTabelData () {
+      initTable(listRefund, this)
+    },
     handleCurrentPageChange () { },
     handleSubmit () {
       // 打开新页面
@@ -176,5 +167,5 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
+@import "~@/style/public";
 </style>

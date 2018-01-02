@@ -159,6 +159,7 @@ export default {
     handlerBlur (key, index) {
       let value
       const entity = {
+        contractId: this.other.contractId,
         fieldKey: key,
         arraysValue: ',' + this.Data.map((item, idx) => {
           if (idx === index) {

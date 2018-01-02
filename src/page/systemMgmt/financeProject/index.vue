@@ -1,136 +1,111 @@
 <template>
-  <div>
-    <h1 class="title">客户经理管理</h1>
-    <!-- form search 表单 -->
-    <el-form :inline="true" :model="formSearch" class="form">
-      <el-form-item>
-          <el-input class="search-input" v-model="formSearch.input" placeholder="客户经理手机号/姓名/支行"></el-input>
-      </el-form-item>
-      <el-form-item label="所属地区">
-        <el-select v-model="formSearch.city" placeholder="地区名称">
-          <el-option label="所有地区" value=""></el-option>
-          <el-option v-for="(option, index) in areaData" :key="index" :label="option" :value="option"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          @click="searchSubmit"
-          :loading="btnLoading"
-          type="primary"
-          icon="el-icon-search"
-          title="搜索">
-        </el-button>
-      </el-form-item>
-      <el-form-item class="table-btn-ctl">
-        <a :href="templateUrl" download="导入客户经理模板.xlsx">
-          <el-button type="primary" icon="el-icon-download" title="下载导入模板">批量导入模板</el-button>
-        </a>
-        <el-upload
-          class="upload"
-          :action="uploadUrl"
-          :show-file-list="false"
-          :file-list="fileList"
-          :on-success="uploadSuccess"
-          :on-error="uploadError">
-          <el-button type="primary" icon="el-icon-upload2" title="上传导入文件">批量导入</el-button>
-        </el-upload>
-        <el-button
-          @click="showNewManager = true"
-          type="primary"
-          icon="el-icon-circle-plus-outline" title="新增客户经理">
-        </el-button>
-        <!--<el-button-->
-          <!--type="primary"-->
-          <!--icon="el-icon-edit"-->
-          <!--:disabled="btnDisabled"-->
-          <!--@click="showUpdateManager = true"-->
-          <!--title="编辑客户经理">-->
-        <!--</el-button>-->
-      </el-form-item>
-    </el-form>
-    <!-- table 表格 -->
-    <el-table
-      :data="data"
-      stripe
-      border
-      highlight-current-row
-      @row-click="handleRowClick"
-      ref="table"
-      style="width: 100%">
-      <el-table-column
-        align="center"
-        type="index"
-        :index="indexMethod"
-        label="序号">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="username"
-        label="姓名">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="operateNo"
-        label="工行营销代码">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="city"
-        label="地区">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="orgName"
-        label="支行">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="branch"
-        label="网点">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="phoneNo"
-        label="客户经理手机号">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="createTime"
-        label="创建时间">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" @click="showUpdateManager = true" title="编辑客户经理"></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <el-pagination
-      @current-change="handleCurrentPageChange"
-      :current-page.sync="currentPage"
-      :page-size="pageSize"
-      layout="total, prev, pager, next, jumper"
-      :total="total"
-      class="pagination">
-    </el-pagination>
+  <el-container>
+    <el-header>
+      <div>资金项目管理</div>
+    </el-header>
+    <el-main>
+      <!-- 表格查询 -->
+      <el-form
+        :inline="true"
+        :model="form"
+        class="form">
+        <el-form-item>
+          <el-button
+            @click="showNewManager = true"
+            type="primary"
+            icon="el-icon-circle-plus-outline" title="添加新账户">
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <!-- table 表格 -->
+      <el-table
+        :data="data"
+        stripe
+        border
+        highlight-current-row
+        @row-click="handleRowClick"
+        ref="table"
+        style="width: 100%">
+        <el-table-column
+          align="center"
+          type="index"
+          :index="indexMethod"
+          label="资金项目编号">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="username"
+          label="资金项目编码">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="operateNo"
+          label="资金项目名称">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="city"
+          label="资金项目金融机构">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="orgName"
+          label="创建人">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="branch"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="phoneNo"
+          label="备注">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="createTime"
+          label="状态">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="createTime"
+          label="收益机构">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" icon="el-icon-edit" @click="showUpdateManager = true" title="编辑客户经理"></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination
+        @current-change="handleCurrentPageChange"
+        :current-page.sync="currentPage"
+        :page-size="pageSize"
+        layout="total, prev, pager, next, jumper"
+        :total="total"
+        class="pagination">
+      </el-pagination>
+    </el-main>
     <!-- 新增客户经理对话框 -->
     <manager-dialog
-      title="新增客户经理"
+      title="添加新账户"
       :show="showNewManager"
       :org-data="orgData"
       :city-data="areaData"
       @on-close="closeDialog"></manager-dialog>
     <!-- 新增客户经理对话框 -->
     <manager-dialog
-      title="编辑客户经理"
+      title="编辑账户"
       :show="showUpdateManager"
       :org-data="orgData"
       :manager-data="selectRow"
       :city-data="areaData"
       @on-close="closeDialog"></manager-dialog>
-  </div>
+  </el-container>
 </template>
 
 <script>
@@ -151,6 +126,7 @@ export default {
   },
   data () {
     return {
+      form: {},
       areaData: [],
       showNewManager: false,      // 显示新增客户经理对话框
       showUpdateManager: false,   // 显示编辑客户经理对话框
@@ -300,6 +276,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  @import "~@/style/color";
+.el-header {
+    text-align: left;
+    line-height: 20px;
+    height: 20px !important;
+    div {
+      text-indent: 10px;
+      border-left: 5px solid @blue;
+      font-size: 20px;
+    }
+}
+
 .form {
   text-align: left;
 
@@ -308,7 +296,7 @@ export default {
   }
 
   .table-btn-ctl {
-    float: right;
+    float: left;
 
     .upload {
       display: inline-block;

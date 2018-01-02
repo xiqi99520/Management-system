@@ -25,7 +25,7 @@
       <el-submenu v-else :index="String(no)">
         <span slot="title">{{menu.name}}</span>
         <tree-menu-item v-for="(item, index) in menu.children" :menu="item" :key="index" :no="String(no + '-' + index)"></tree-menu-item>
-      </el-submenu>
+      </el-submenu>      
     </template>
   </li>
 </template>

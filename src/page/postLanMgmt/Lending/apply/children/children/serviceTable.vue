@@ -10,12 +10,12 @@
           <td>{{Data.acceptorName}}</td>
           <td :class="{ needs:other.write}">下户专员</td>
           <td class="input">
-            <el-form-item v-if="other.write" prop="inquirerId">
+            <el-form-item v-if="other.write" prop="predictorId">
               <el-select
                 filterable
                 placeholder="请输入"
-                v-model="Data.inquirerId"
-                @change="handlerBlur('inquirerId')">
+                v-model="Data.predictorId"
+                @change="handlerBlur('predictorId')">
                 <el-option
                   v-for="(item, idx) in options"
                   :key="idx"
@@ -24,7 +24,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <span v-else>{{Data.inquirerName}}</span>
+            <span v-else>{{Data.predictorName}}</span>
           </td>
           <!-- <td>风控初审</td>
           <td class="input">
@@ -64,12 +64,12 @@
           </td>
           <td :class="{ needs:other.write}">权证专员</td>
           <td class="input">
-            <el-form-item v-if="other.write" prop="attestorId">
+            <el-form-item v-if="other.write" prop="warrantId">
               <el-select
                 filterable
                 placeholder="请输入"
-                v-model="Data.attestorId"
-                @change="handlerBlur('attestorId')">
+                v-model="Data.warrantId"
+                @change="handlerBlur('warrantId')">
                 <el-option
                   v-for="(item, idx) in options"
                   :key="idx"
@@ -78,7 +78,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <span v-else>{{Data.attestorName}}</span>
+            <span v-else>{{Data.warrantName}}</span>
           </td>
         </tr>
         <tr>
@@ -132,11 +132,8 @@ export default {
       Data: this.data,
       options: [],
       rules: { // 表单验证规则
-        inquirerId: [
-          { type: 'number', required: true, message: '请选择下户专员', trigger: 'change' }
-        ],
         predictorId: [
-          { type: 'number', required: true, message: '请选择风控初审', trigger: 'change' }
+          { type: 'number', required: true, message: '请选择下户专员', trigger: 'change' }
         ],
         interviewerId: [
           { type: 'number', required: true, message: '请选择面签专员', trigger: 'change' }
@@ -167,6 +164,7 @@ export default {
   methods: {
     handlerBlur (key) {
       const entity = {
+        contractId: this.other.contractId,
         fieldKey: key,
         fieldValue: this.Data[key]
       }

@@ -2,6 +2,7 @@ import store from '@/store'
 import {
   getDict
 } from '@/service/getData'
+import { debug } from 'util'
 
 /**
  * 存储localStorage
@@ -305,13 +306,16 @@ export const formatter = {
       return result
     }
   },
-  dateRangeChange: (val, form) => {
+  dateTimeChange: (val, form, date = 'date') => {
+    form[date] = val
+  },
+  dateRangeChange: (val, form, startDate = 'startDate', endDate = 'endDate') => {
     if (val) {
-      form.startDate = val[0]
-      form.endDate = val[1]
+      form[startDate] = val[0]
+      form[endDate] = val[1]
     } else {
-      form.startDate = ''
-      form.endDate = ''
+      form[startDate] = ''
+      form[endDate] = ''
     }
   }
 }
@@ -373,17 +377,21 @@ export const pickerOptions = {
 /**
  * 初始化下拉框的值
  * @param {Ayyay} selects 查询的下拉框type
- * @param {Object} form 赋值
+ * @param {Object} options 赋值
  */
-export const initSelectOptions = (selects, options) => {
+export const initSelectOptions = (selects, options, overwrite = false) => {
   return getDict(selects)
     .then(resp => {
       if (resp.success) {
-        Object.entries(resp.data).map(([key, value]) => {
-          if (Object.keys(options).includes(key)) {
-            options[key] = options[key].concat(value)
-          }
-        })
+        if (overwrite) {
+          options = resp.data
+        } else {
+          Object.entries(resp.data).map(([key, value]) => {
+            if (Object.keys(options).includes(key)) {
+              options[key] = options[key].concat(value)
+            }
+          })
+        }
         return options
       } else {
         throw new Error(resp.message)
@@ -400,7 +408,11 @@ export const initSelectOptions = (selects, options) => {
  * @param {*} promise 查询的promise对象
  * @param {*} vue 当前页面的vue实例
  */
-export const initTable = (promise, vue) => {
+export const initTable = (promise, vue, pagination = true) => {
+  if (pagination) {
+    vue.form.limit = vue.pageSize
+    vue.form.offset = (vue.currentPage - 1) * vue.form.limit
+  }
   return promise(vue.form)
     .then(resp => {
       if (resp.success) {

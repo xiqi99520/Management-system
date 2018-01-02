@@ -1,8 +1,6 @@
 <template>
-    <!-- :default-active="menus.active" -->
   <el-menu
-    :default-active="menus.active"
-    :default-openeds="menus.openeds"
+    :default-active="activeIndex"
     @select="handleSelect"
     background-color="#f2f2f2"
     text-color="#999"
@@ -27,13 +25,11 @@ export default {
   computed: {
     ...mapState(['menus'])
   },
-  updated () {
-    // this.activeIndex = this.menus.active
+  mounted () {
+    this.activeIndex = this.menus.active
   },
-  watch: {
-    'menus.active' (val) {
-      // this.activeIndex = val
-    }
+  updated () {
+    this.activeIndex = this.menus.active
   },
   methods: {
     ...mapMutations(['SET_MENU']),
@@ -57,16 +53,6 @@ export default {
           index: this.$route.query.index
         }
       })
-    },
-    fRandomBy (under, over) {
-      switch (arguments.length) {
-        case 1:
-          return parseInt(Math.random() * under + 1)
-        case 2:
-          return parseInt(Math.random() * (over - under + 1) + under)
-        default:
-          return 0
-      }
     }
   }
 }

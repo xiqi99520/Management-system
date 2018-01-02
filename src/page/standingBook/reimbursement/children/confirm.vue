@@ -6,108 +6,129 @@
           <h2>还款入账确认</h2>
         </el-header>
         <el-main id="detailMain" @scroll.native="onScroll">
-          <el-row :gutter="20">
-            <el-col :span="8">
-              <div>
-                合同编号<el-input v-model="input" placeholder="请输入内容"></el-input>
-              </div>
-              <div>
-                应还款日期<el-date-picker
-                          v-model="value1"
-                          type="date"
-                          placeholder="选择日期">
-                        </el-date-picker>
-              </div>
-              <div>
-                还款方式<el-select v-model="value" placeholder="请选择">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-              </div>
-              <div>
-                还款到账账户号<el-input v-model="input" placeholder="请输入内容"></el-input>
-              </div>
-              <div>
-                实际还款金额<el-input v-model="input" placeholder="请输入内容">
-                              <template slot="append">元</template>
-                            </el-input>
-              </div>
-              <div>
-                还款来源账号<el-input v-model="input" placeholder="请输入内容"></el-input>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div>
-                客户姓名<el-input v-model="input" placeholder="请输入内容"></el-input>
-              </div>
-              <div>
-                应还款金额<el-input v-model="input" placeholder="请输入内容">
-                            <template slot="append">元</template>
-                          </el-input>
-              </div>
-              <div>
-                还款到账账户名称<el-select v-model="value" placeholder="请选择">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-              </div>
-              <div>
-                实际还款日期<el-date-picker
-                            v-model="value1"
-                            type="date"
-                            placeholder="选择日期">
-                          </el-date-picker>
-              </div>
-              <div>
-                还款单流水号<el-input v-model="input" placeholder="请输入内容"></el-input>
-              </div>
-              <div>
-                录账备注<el-input v-model="input" placeholder="请输入录账备注，限20字"></el-input>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div>
-                借据状态<el-input v-model="input" placeholder="请输入内容"></el-input>
-              </div>
-              <div>
-                还款到账账户<el-select v-model="value" placeholder="请选择">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                      </el-select>
-              </div>
-              <div>
-                到账账户机构<el-input v-model="input" placeholder="请输入内容"></el-input>
-              </div>
-            </el-col>
-          </el-row>
-          <!-- 入账预览 -->
-          <el-row style="margin-bottom: 20px; text-align: center;">
-            <el-col :span="24">
-              <el-button v-if="tableData.other.write" type="primary" @click="handleComplete" :loading="loading">完成录入</el-button>
-              <template v-if="render3Btn()">
-                <el-button type="primary"
-                  v-if="formatter.renderBtn('APPLY_AUDIT_DENY')" 
-                  @click="handleShowDialog('refuse')" 
-                  :loading="loading">
-                  入账预览
-                </el-button>
-              </template>
-            </el-col>
-          </el-row>
-
-
+          <el-form :model="Data" :rules="rules" ref="form" class="detailForm">
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <div>
+                  合同编号 <span>{{data.contractCode}}</span>
+                </div>
+                <div>
+                  应还款日期 <span>{{data.shouldRepayDate}}</span>
+                </div>
+                <div>
+                  还款方式
+                  <el-form-item prop="contractCode">
+                    <el-select v-model="value" placeholder="请选择">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div>
+                  还款到账账户号 <span>{{data.no}}</span>
+                </div>
+                <div>
+                  实际还款金额 
+                  <el-form-item prop="contractCode">
+                    <el-input v-model="input" placeholder="请输入内容">
+                      <template slot="append">元</template>
+                    </el-input>
+                  </el-form-item>
+                </div>
+                <div>
+                  还款来源账号 
+                  <el-form-item prop="contractCode">
+                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div>
+                  客户姓名 <span>{{data.name}}</span>
+                </div>
+                <div>
+                  应还款金额 <span>{{data.totalShouldRepay}}</span>
+                </div>
+                <div>
+                  还款到账账户名称 
+                  <el-form-item prop="contractCode">
+                    <el-select v-model="value" placeholder="请选择">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div>
+                  实际还款日期 
+                  <el-form-item prop="contractCode">
+                    <el-date-picker
+                      v-model="value1"
+                      type="date"
+                      placeholder="选择日期">
+                    </el-date-picker>
+                  </el-form-item>
+                </div>
+                <div>
+                  还款单流水号 
+                  <el-form-item prop="contractCode">
+                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  </el-form-item>
+                </div>
+                <div>
+                  录账备注 
+                  <el-form-item prop="contractCode">
+                    <el-input v-model="input" placeholder="请输入录账备注，限20字"></el-input>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div>
+                  借据状态 <span>{{data.no}}</span>
+                </div>
+                <div>
+                  还款到账账户 
+                  <el-form-item prop="contractCode">
+                    <el-select v-model="value" placeholder="请选择">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div>
+                  到账账户机构 
+                  <el-form-item prop="contractCode">
+                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <!-- 入账预览 -->
+            <el-row style="margin-bottom: 20px; text-align: center;">
+              <el-col :span="24">
+                <el-button v-if="tableData.other.write" type="primary" @click="handleComplete" :loading="loading">完成录入</el-button>
+                <template v-if="render3Btn()">
+                  <el-button type="primary"
+                    v-if="formatter.renderBtn('APPLY_AUDIT_DENY')" 
+                    @click="handleShowDialog('refuse')" 
+                    :loading="loading">
+                    入账预览
+                  </el-button>
+                </template>
+              </el-col>
+            </el-row>
+          </el-form>
         </el-main>
       </el-container>
     </el-container>
@@ -121,7 +142,7 @@ import { formatter } from '@/util/utils'
 // } from '@/service/getData'
 export default {
   name: 'confirm',
-  props: ['data', 'upload'],
+  props: ['data'],
   data () {
     return {
       loading: false

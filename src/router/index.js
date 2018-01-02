@@ -190,7 +190,7 @@ const router = new Router({
             requireAuth: true
           }
         }]
-      }, {// 渠道管理
+      }, { // 渠道管理
         path: 'channelMgmt',
         component: channelMgmt,
         name: 'channelMgmt',
@@ -207,7 +207,7 @@ const router = new Router({
           name: 'managerDetail',
           component: managerDetail
         }]
-      }, {// 客户管理
+      }, { // 客户管理
         path: 'customerMgmt',
         component: customerMgmt,
         name: 'customerMgmt',
@@ -245,7 +245,7 @@ const router = new Router({
         meta: {
           requireAuth: true
         }
-      }, {// 房产评估
+      }, { // 房产评估
         path: 'evaluation',
         name: 'evaluation',
         component: evaluation,
@@ -282,7 +282,6 @@ const router = new Router({
         }
       }, { // 权证上抵
         path: 'warrants',
-        name: 'warrants',
         component: warrants,
         meta: {
           requireAuth: true

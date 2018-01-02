@@ -29,14 +29,16 @@
         <el-main id="detailMain" @scroll.native="onScroll">
           <!-- 产品信息 -->
           <product-table
+            v-if="steps.includes('产品信息')"
             ref="products"
-            :data="tableData.loanDetail"
+            :data="tableData.products"
             :other="tableData.other"
             @on-save="handleSave"
             @on-query="handleShowDialog('query')">
           </product-table>
           <!-- 服务人员信息 -->
           <service-table
+            v-if="steps.includes('服务人员信息')"
             ref="servants"
             :data="tableData.servants"
             :other="tableData.other"
@@ -45,11 +47,13 @@
           </service-table>
           <!-- 进件详情 -->
           <into-pieces-table
+            v-if="steps.includes('进件详情')"
             :data="tableData.loanApplyDetail"
             @on-collapse="handleCollapse">
           </into-pieces-table>
           <!-- 主借款人基本信息 -->
           <main-borrower-table
+            v-if="steps.includes('主借款人基本信息')"
             ref="mainBorrower"
             :data="tableData.mainBorrower"
             :other="tableData.other"
@@ -66,6 +70,7 @@
           </common-borrower-table>
           <!-- 担保人基本信息 -->
           <guarantor-table
+            v-if="steps.includes('担保人基本信息')"
             ref="guarantor"
             :data="tableData.guarantor"
             :other="tableData.other"
@@ -73,6 +78,7 @@
           </guarantor-table>
           <!-- 放还款信息 -->
           <repayment-table
+            v-if="steps.includes('放还款信息')"
             ref="repayment"
             :data="tableData.loanDetail"
             :other="tableData.other"
@@ -81,6 +87,7 @@
           </repayment-table>
           <!-- 影像资料 -->
           <image-table
+            v-if="steps.includes('影像资料')"
             ref="image"
             :data="tableData.photo"
             :upload="upData"
@@ -88,6 +95,51 @@
             @on-collapse="handleCollapse"
             @on-pre="handelPreUpload">
           </image-table>
+          <!-- 放款流水记录 -->
+          <loan-water-records
+            v-if="steps.includes('放款流水记录')"
+            :data="tableData.loanWaterRecord">
+          </loan-water-records>
+          <!-- 还款计划表 -->
+          <repayment-schedule
+            v-if="steps.includes('还款计划表')"
+            :data="tableData.repaymentSchedule">
+          </repayment-schedule>
+          <!-- 还款台账表 -->
+          <repayment-ledger
+            v-if="steps.includes('还款台账表')"
+            :data="tableData.repaymentLedger">
+          </repayment-ledger>
+          <!-- 还款流水表 -->
+          <repayment-manifold
+            v-if="steps.includes('还款流水表')"
+            :data="tableData.repaymentManifold">
+          </repayment-manifold>
+          <!-- 还款详情表 -->
+          <repayment-details
+            v-if="steps.includes('还款详情表')"
+            :data="tableData.repaymentDetails">
+          </repayment-details>
+          <!-- 减免详情记录表 -->
+          <waiver-details
+            v-if="steps.includes('减免详情记录表')"
+            :data="tableData.waiverDetails">
+          </waiver-details>
+          <!-- 退款详情记录表 -->
+          <refund-details-record
+            v-if="steps.includes('退款详情记录表')"
+            :data="tableData.refundDetailsRecord">
+          </refund-details-record>
+          <!-- 其他暂收款记录表 -->
+          <other-temporary
+            v-if="steps.includes('其他暂收款记录表')"
+            :data="tableData.otherTemporary">
+          </other-temporary>
+          <!-- 操作历史记录 -->
+          <operating-history
+            v-if="steps.includes('操作历史记录')"
+            :data="tableData.operatingHistory">
+          </operating-history>
           <!-- 完成录入 -->
           <el-row style="margin-bottom: 20px; text-align: center;">
             <el-col :span="24">
@@ -128,6 +180,15 @@ import commonBorrowerTable from './children/commonBorrowerTable'
 import guarantorTable from './children/guarantorTable'
 import repaymentTable from './children/repaymentTable'
 import imageTable from './children/imageTable'
+import loanWaterRecords from './children/loanWaterRecords'
+import repaymentSchedule from './children/repaymentSchedule'
+import repaymentLedger from './children/repaymentLedger'
+import repaymentManifold from './children/repaymentManifold'
+import repaymentDetails from './children/repaymentDetails'
+import waiverDetails from './children/waiverDetails'
+import refundDetailsRecord from './children/refundDetailsRecord'
+import otherTemporary from './children/otherTemporary'
+import operatingHistory from './children/operatingHistory'
 import { formatter } from '@/util/utils'
 import {
   autoWrite,
@@ -151,7 +212,25 @@ export default {
     // 放还款信息
     repaymentTable,
     // 影像资料
-    imageTable
+    imageTable,
+    // 放款流水记录
+    loanWaterRecords,
+    // 还款计划表
+    repaymentSchedule,
+    // 还款台账表
+    repaymentLedger,
+    // 还款流水表
+    repaymentManifold,
+    // 还款详情表
+    repaymentDetails,
+    // 减免详情记录表
+    waiverDetails,
+    // 退款详情记录表
+    refundDetailsRecord,
+    // 其他暂收款记录表
+    otherTemporary,
+    // 操作历史记录
+    operatingHistory
   },
   props: ['data', 'upload'],
   data () {
@@ -163,7 +242,8 @@ export default {
       stepActive: 0,  // 当前激活导航
       title: '查看',
       automaticStep: '共同借款人基本信息',
-      steps: ['产品信息', '服务人员信息', '进件详情', '主借款人基本信息', '共同借款人基本信息', '担保人基本信息', '放还款信息', '影像资料'], // 左侧导航数据
+      // steps: ['产品信息', '服务人员信息', '进件详情', '主借款人基本信息', '共同借款人基本信息', '担保人基本信息', '放还款信息', '影像资料'], // 左侧导航数据
+      steps: this.data.steps,
       offsetTops: [], // 表格离顶部的偏移量
       tableData: { // 表格数据
         products: '',
@@ -192,7 +272,9 @@ export default {
       }
       // 产品信息
       this.tableData.products = {
-
+        productId: value.loanDetail.productId,
+        riseInterestRate: value.loanDetail.riseInterestRate,
+        riseInterestReason: value.loanDetail.riseInterestReason
       }
       // 服务人员信息
       this.tableData.servants = value.servants || {}
@@ -378,7 +460,7 @@ export default {
       if (complete.length !== 2 && complete[0]) {   // 验证完成开始录入
         let type, message, title
         this.loading = true
-        completeEntering(this.tableData.other.applyId)
+        completeEntering(this.tableData.other.applyId, { contractId: this.tableData.other.contractId })
           .then(resp => {
             if (resp.success) {
               type = 'success'

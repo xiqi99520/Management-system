@@ -45,7 +45,9 @@
     <el-container style="position: relative;overflow-y: auto">
       <!-- 菜单条 -->
       <el-aside :width="asideWidth">
-        <left-navigation></left-navigation>
+        <keep-alive>
+          <left-navigation></left-navigation>
+        </keep-alive>
       </el-aside>
       <!-- 内容主体 -->
       <el-main>
@@ -160,5 +162,7 @@ export default {
 .el-main {
   background-color: #e9eef3;
   color: #333;
+  padding: 0 20px;
+  overflow: auto;
 }
 </style>

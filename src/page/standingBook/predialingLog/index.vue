@@ -2,28 +2,30 @@
   <div>
     <h1 class="title">预拨申请记录</h1>
     <!-- form search 表单 -->
-    <el-form :inline="true" :model="formSearch" class="form">
+    <el-form :inline="true" :model="form" class="form">
       <el-form-item label="查询条件">
-        <el-input class="search-input" v-model="formSearch.input"></el-input>
+        <el-input class="search-input" v-model="form.input" placeholder="操作人ID/操作人姓名" clearable></el-input>
       </el-form-item>
       <el-form-item label="项目名称">
-        <el-select v-model="formSearch.project" placeholder="资金项目名称">
+        <el-select v-model="form.project" placeholder="资金项目名称">
           <el-option label="全部" value=""></el-option>
           <el-option v-for="(option, index) in areaData" :key="index" :label="option" :value="option"></el-option>
         </el-select>
       </el-form-item>
        <el-form-item label="文件名">
-          <el-input class="search-input" v-model="formSearch.name" placeholder="预拨申请书文件名"></el-input>
+          <el-input class="search-input" v-model="form.name" placeholder="预拨申请书文件名"></el-input>
       </el-form-item>
       <el-form-item label="提交时间">
         <el-date-picker
-          v-model="formSearch.dateRange"
+          v-model="dateRange"
           type="daterange"
           align="right"
           unlink-panels
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="formatter.dateRangeChange(dateRange, form)">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -137,7 +139,12 @@
 
 <script>
 // import { mapState } from 'vuex'
-import { keydownSubmit } from '@/util/utils'
+import {
+  pickerOptions,
+  // initSelectOptions,
+  formatter
+  // initTable
+} from '@/util/utils'
 import {
   getPredialingLog
 } from '../../../service/getData'
@@ -157,13 +164,16 @@ export default {
       currentPage: 1,             // 默认页面
       pageSize: 15,               // 每页数据条数
       data: [],                   // 预拨申请数据
-      formSearch: {               // 查询客户经理配置项
+      dateRange: null,
+      form: {               // 查询客户经理配置项
         input: '',
         project: '',
         name: '',
-        dateRange: ''
+        startDate: '',
+        endDate: ''
       },
-      keydownSubmit: keydownSubmit
+      pickerOptions: pickerOptions,
+      formatter: formatter
     }
   },
   // components: {
@@ -171,9 +181,6 @@ export default {
   // },
   beforeMount () {
     this.doGetManagers()
-  },
-  mounted () {
-    keydownSubmit(this.searchSubmit)
   },
   watch: {
     $route: {

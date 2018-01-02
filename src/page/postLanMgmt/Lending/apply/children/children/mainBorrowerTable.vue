@@ -504,6 +504,7 @@ export default {
 
       this.Data[key] = value
       const entity = {
+        contractId: this.other.contractId,
         fieldKey: key,
         arraysValue: this.Data[key] + ','
       }
@@ -515,6 +516,7 @@ export default {
       this.getCityName(this.city, this[key], name)
       name.map((item, idx) => {
         const entity = {
+          contractId: this.other.contractId,
           fieldKey: idx === 0 ? `${key}Province` : `${key}City`,
           arraysValue: item
         }

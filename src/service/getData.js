@@ -42,6 +42,30 @@ const loanApplyPhotoInterface = `${context}/LoanApplyPhoto`
 // 退款申请接口类
 const refundInterface = `${context}/reduction`
 
+// 专户待拨户非业务类流水管理
+const acctNoBusinessInterface = `${context}/acctNoBusiness`
+
+// 第三方非业务类流水管理
+const thirdNoBusinessInterface = `${context}/thirdNoBusiness`
+
+// 放还款流水
+const lendRepayBusinessInterface = `${context}/lendRepayBusiness`
+
+// 资金账户管理
+const fundsAccountInterface = `${context}/fundsAccount`
+
+// 渤海对接文档管理
+const bohaiInterface = `${context}/bohaiDocument`
+
+// 放款入账
+const ledgerInterface = `${context}/ledger`
+
+// 逾期
+const overdueInterface = `${context}/overdue`
+
+// 还款入账
+const repayInterface = `${context}/repay`
+
 /**
  * 详细接口URL
  */
@@ -187,6 +211,57 @@ const findPermUrl = `${permissionInterface}/findPermissions`
 // 获取退款单列表
 const listRefundUrl = `${refundInterface}/listRefund`
 
+// 新增退款申请
+const addRefundApplyUrl = `${refundInterface}/addRefundApply`
+
+// 退款审核通过
+const passRefundUrl = `${refundInterface}/passRefund`
+
+// 退款审核拒绝
+const refuseRefundUrl = `${refundInterface}/refuseRefund`
+
+// 查询专户待拨户非业务类流水
+const acctNoBusinessRecordUrl = `${acctNoBusinessInterface}/getAcctNoBusinessRecord`
+
+// 录入专户待拨户非业务类流水
+const entryAcctNoBusinessUrl = `${acctNoBusinessInterface}/entryAcctNoBusiness`
+
+// 录入第三方非业务类流水
+const entryThirdNoBusinessUrl = `${thirdNoBusinessInterface}/entryThirdNoBusiness`
+
+// 查询第三方非业务类流水
+const getThirdNoBusinessRecordUrl = `${thirdNoBusinessInterface}/getThirdNoBusinessRecord`
+
+// 查询放还款流水
+const getLendRepayBusinessUrl = `${lendRepayBusinessInterface}/getLendRepayBusiness`
+
+// 新增账户列表
+const addFundsAccountsUrl = `${fundsAccountInterface}/addFundsAccounts`
+
+// 查询账户列表
+const findFundsAccountsUrl = `${fundsAccountInterface}/findFundsAccounts`
+
+// 查询账户余额
+const getAccountBalanceUrl = `${fundsAccountInterface}/getAccountBalance`
+
+// 修改账户列表
+const updateFundsAccountsUrl = `${fundsAccountInterface}/updateFundsAccounts`
+
+// 渤海对接文档审核
+const bohaiDocAuditUrl = `${bohaiInterface}/bohaiDocAudit`
+
+// 查询渤海对接文档列表
+const getBohaiDocumentsUrl = `${bohaiInterface}/getBohaiDocuments`
+
+// 放款入账列表查询
+const ledgerListUrl = `${ledgerInterface}/findContractTempData`
+
+// 查询逾期列表
+const overdueListUrl = `${overdueInterface}/findOverdues`
+
+// 还款入账列表
+const repayListUrl = `${repayInterface}/findRepays`
+
 /**
  * 接口实现
  */
@@ -220,7 +295,9 @@ export const doNewUser = (formData, gender = '保密') => fetch(newUserUrl, {
   roleId: formData.roleId,
   username: formData.username,
   gender
-}, 'post')
+}, 'post', {
+  payload: true
+})
 
 export const doUpdateUser = (formData, gender = '保密') => fetch(updateUserUrl, {
   cityRoles: formData.role,
@@ -229,7 +306,9 @@ export const doUpdateUser = (formData, gender = '保密') => fetch(updateUserUrl
   phoneNo: formData.phone,
   gender,
   state: formData.state
-}, 'post')
+}, 'post', {
+  payload: true
+})
 
 export const doRsetUserPwd = (phoneNo) => fetch(resetUserPwdUrl, {
   phoneNo
@@ -300,17 +379,21 @@ export const getIncomingDataDetail = (applyId) => fetch(incomingDataDetailUrl, {
   applyId
 })
 
-export const agencyPredictMoney = (form) => fetch(agencyPredictMoneyUrl, form, 'post')
+export const agencyPredictMoney = (form) => fetch(agencyPredictMoneyUrl, form, 'post', {
+  payload: true
+})
 
 // 修改密码
 // export const changePwd = (form) => fetch(changePwdUrl, form, 'post')
 
 // 放款申请详情
-export const applyDetail = (uuid) => fetch(applyDetailUrl + '/' + uuid, {}, 'post')
+export const applyDetail = (uuid, contractId) => fetch(applyDetailUrl + '/' + uuid + '?contractId=' + contractId, {}, 'post')
 // export const applyDetail = () => fetch('http://localMock.com/getApplyDetail')
 
 // 获取下拉框选项
-export const getDict = (queryList) => fetch(dictUrl, queryList, 'post')
+export const getDict = (queryList) => fetch(dictUrl, queryList, 'post', {
+  payload: true
+})
 
 // 获取产品名称下拉框选项
 export const getProductName = () => fetch(productNameUrl, {}, 'get')
@@ -327,7 +410,9 @@ export const getSubLocation = (parentId) => fetch(subLocationUrl, {
 export const getDisplayLocation = () => fetch(displayLocationUrl, {}, 'post')
 
 // 自动保存当前区域信息至服务器
-export const autoWrite = (uuid, area, saveEntity) => fetch(`${autoWriteUrl}/${uuid}/${area}`, saveEntity, 'post')
+export const autoWrite = (uuid, area, saveEntity) => fetch(`${autoWriteUrl}/${uuid}/${area}`, saveEntity, 'post', {
+  payload: true
+})
 
 // 联想查询服务人员列表
 export const queryServants = () => fetch(queryServantUrl, {}, 'post')
@@ -366,7 +451,7 @@ export const updateManager = (formData) => fetch(updateManagerUrl, {
 }, 'post')
 
 // 完成录入操作
-export const completeEntering = (uuid) => fetch(`${completeEnteringUrl}/${uuid}`, {}, 'post')
+export const completeEntering = (uuid, form) => fetch(`${completeEnteringUrl}/${uuid}`, form, 'post')
 
 // 查询所有权限
 export const findPerms = () => fetch(findPermUrl, {}, 'post')
@@ -428,6 +513,11 @@ export const getPredialingLogDetail = (input = '', city = '', offset = 0, limit 
   city
 }, 'post')
 
+// 查询放款入账列表
+export const ledgerList = (form) => fetch(ledgerListUrl, form, 'get', {
+  payload: true
+})
+
 // 查询台账记录
 export const getstandingBook = (input = '', state = '', dateRange = '', offset = 0, limit = 15, count = true) => fetch(managerUrl, {
   offset,
@@ -439,14 +529,60 @@ export const getstandingBook = (input = '', state = '', dateRange = '', offset =
 }, 'post')
 
 // 查询逾期列表
-export const getOverdueList = (input = '', day = '', dateRange = '', offset = 0, limit = 15, count = true) => fetch(managerUrl, {
-  offset,
-  limit,
-  count,
-  input,
-  day,
-  dateRange
-}, 'post')
+export const getOverdueList = (form) => fetch(overdueListUrl, form, 'post', {
+  payload: true
+})
+
+// 查询还款入账列表
+export const repayList = (form) => fetch(repayListUrl, form, 'post', {
+  payload: true
+})
 
 // 获取退款单列表
-export const listRefund = (form) => fetch(listRefundUrl, form)
+export const listRefund = (form) => fetch(listRefundUrl, form, 'post', {
+  payload: true
+})
+
+// 新增退款申请
+export const addRefundApply = (form) => fetch(addRefundApplyUrl, form, 'post', {
+  payload: true
+})
+
+// 退款审核通过
+export const passRefund = (form) => fetch(`${passRefundUrl}/${form.uuid}`, form, 'post')
+
+// 退款审核拒绝
+export const refuseRefund = (form) => fetch(`${refuseRefundUrl}/${form.uuid}`, form, 'post')
+
+// 查询专户待拨户非业务类流水
+export const getAcctNoBusinessRecord = (form) => fetch(acctNoBusinessRecordUrl, form, 'post')
+
+// 录入专户待拨户非业务类流水
+export const entryAcctNoBusiness = (form) => fetch(entryAcctNoBusinessUrl, form, 'post')
+
+// 录入第三方非业务类流水
+export const entryThirdNoBusiness = (form) => fetch(entryThirdNoBusinessUrl, form, 'post')
+
+// 查询第三方非业务类流水
+export const getThirdNoBusinessRecord = (form) => fetch(getThirdNoBusinessRecordUrl, form, 'post')
+
+// 查询放还款流水
+export const getLendRepayBusiness = (form) => fetch(getLendRepayBusinessUrl, form)
+
+// 新增账户列表
+export const addFundsAccounts = (form) => fetch(addFundsAccountsUrl, form, 'post')
+
+// 查询账户列表
+export const findFundsAccounts = (form) => fetch(findFundsAccountsUrl, form)
+
+// 查询账户余额
+export const getAccountBalance = (form) => fetch(getAccountBalanceUrl, form, 'post')
+
+// 修改账户列表
+export const updateFundsAccounts = (form) => fetch(updateFundsAccountsUrl, form, 'post')
+
+// 渤海对接文档审核
+export const bohaiDocAudit = (form) => fetch(bohaiDocAuditUrl, form)
+
+// 查询渤海对接文档列表
+export const getBohaiDocuments = (form) => fetch(getBohaiDocumentsUrl, form)
