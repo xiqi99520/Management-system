@@ -74,13 +74,14 @@ export default {
 .detail-title {
   line-height: 60px;
   font-size: 18px;
-  // padding-left: 200px;
   margin: 0;
   span {
     display: inline-block;
     text-indent: 10px;
     border-left: 4px solid @blue;
     line-height: 1;
+    font-size: 24px;
+    color: #333;
   }
 }
 

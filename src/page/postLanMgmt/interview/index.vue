@@ -376,14 +376,14 @@ export default {
   }
 </script>
 <style>
-
-</style>
-<style lang="less">
-@import "~@/style/color";
 .head-bg{
   background: @blue;
   color: @white;
 }
+</style>
+<style lang="less" scoped>
+@import "~@/style/color";
+
 .el-header {
   margin-top: 15px;
   text-align: left;

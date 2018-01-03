@@ -1,0 +1,59 @@
+@import './color';
+
+.detailForm{
+  .detailForm-title {
+    color: @blue;
+    text-indent: 25px;
+    margin: 0;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 13px;
+      width: 5px;
+      height: 5px;
+      background-color: @blue;
+    }
+
+    .tip{
+      font-size: 14px;
+      color: #ff0055;
+    }
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #dedede;
+    td{
+      padding: 7px 16px;
+      border: 1px solid #dedede;
+      &:first-child{
+        width: 400px;
+      }
+      &:nth-of-type(odd) {
+        background-color: @gray;
+      }
+    }
+  }
+
+  .table-info{
+    td{
+      width: auto !important;
+    }
+  }
+
+  .el-checkbox{
+    margin-left: 0;
+    margin-right: 20px;
+  }
+
+  .el-upload{
+    display: block;
+  }
+
+  .btn-operate{
+    width: 160px;
+    height: 40px;
+  }
+}
