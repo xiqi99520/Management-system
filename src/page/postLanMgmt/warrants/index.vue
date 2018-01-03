@@ -64,6 +64,9 @@
         align="center"
         prop="code"
         label="申请编号">
+        <template slot-scope="scope">
+          <span class="link" @click="showDetail(scope.row)">{{ scope.row.code }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         align="center"
@@ -165,6 +168,10 @@
     </el-pagination>
     <!-- 审核通过对话框 -->
   </el-main>
+
+  <transition name="el-zoom-in-center">
+    <warrants-detail v-show="detail.show" @on-close="handleClose"></warrants-detail>
+  </transition>
   </el-container>
 </template>
 
@@ -172,6 +179,8 @@
 import {
   getWarrantsData
 } from '@/service/getData'
+
+import warrantsDetail from './children/detail'
 
 export default {
     data () {
@@ -188,6 +197,9 @@ export default {
           state: '',
           dateRange: '',
           lastOperation: ''
+        },
+        detail: {
+          show: false
         },
         pickerOptions: '2017-12-26',
         tableData: [{
@@ -363,6 +375,9 @@ export default {
         }]
       }
     },
+    components: {
+      warrantsDetail
+    },
     methods: {
       getTableData () { // 查询数据
         if (this.form.dateRange === null) {
@@ -386,8 +401,7 @@ export default {
           })
       },
       showDetail (row) {
-        console.log(row)
-        return this.$router.push({path: '/appSys/channelMgt/managerDetail', query: {id: row.id}})
+        this.detail.show = true
       },
       handleOff (row) {
         if (row.status === '激活') {
@@ -398,6 +412,9 @@ export default {
       },
       handleEdit (row) {
         return this.$router.push({path: '/system/userMgt/add', query: {id: row.id}})
+      },
+      handleClose(){
+        this.detail.show = false
       },
       onSubmit () {
         console.log('submit!')
