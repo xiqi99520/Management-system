@@ -151,8 +151,8 @@
       <el-form :model="taskForm" size="mini">
         <el-form-item label="请选择负责人">
           <el-select v-model="taskForm.riskManager" placeholder="评房专员" style="width:100%">
-            <el-option label="小刘" value="0"></el-option>
-            <el-option label="大张" value="1"></el-option>
+            <el-option label="小刘" value="小刘"></el-option>
+            <el-option label="大张" value="大张"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -276,15 +276,17 @@ export default {
       console.log(this.detailShow)
     },
     updateTaskSelect () {
-      let $task = this.taskForm.riskManager
-      console.log($task)
+      let $taskUser = this.taskForm.riskManager
       console.log(this.currentRow.riskManager)
-      if ($task === 0) {
-        this.currentRow.riskManager = '小刘'
-      } else if ($task === 1) {
-        this.currentRow.riskManager = '大张'
-      }
+      this.currentRow.riskManager = $taskUser
       this.taskSelectVisible = false
+      // 如果数据更新成功，提示如下
+      if (this.taskSelectVisible === false) {
+        this.$message({
+          type: 'success',
+          message: '风控经理修改成功！'
+        })
+      }
     },
     onSubmit () {
       console.log('submit!')
