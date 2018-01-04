@@ -57,12 +57,16 @@
       border
       highlight-current-row
       :data="tableData"
+      header-cell-class-name="table-head-bg"
       ref="table"
       style="width: 100%">
       <el-table-column
         align="center"
         prop="code"
         label="申请编号">
+        <template slot-scope="scope">
+          <span class="link" @click="showDetail(scope.row)">{{ scope.row.code }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         align="center"
@@ -139,7 +143,7 @@
         <template slot-scope="scope">
           <el-form :inline="true">
             <el-form-item>
-              <el-select placeholder="王小宝">
+              <el-select v-model="form.state" placeholder="王小宝">
                 <el-option label="王小宝" value="wang"></el-option>
                 <el-option label="小王宝" value="xiao"></el-option>
               </el-select>
@@ -164,19 +168,38 @@
     </el-pagination>
     <!-- 审核通过对话框 -->
   </el-main>
+
+  <transition name="el-zoom-in-center">
+    <warrants-detail v-show="detail.show" @on-close="handleClose"></warrants-detail>
+  </transition>
   </el-container>
 </template>
 
 <script>
+import {
+  getWarrantsData
+} from '@/service/getData'
+
+import warrantsDetail from './children/detail'
+
 export default {
     data () {
       return {
         filterData: {
-          user: '',
-          department: '',
-          role: '',
-          area: '',
+          input: '',
+          order: '',
+          startTime: '',
+          endTime: '',
           dateRange: ''
+        },
+        form: {
+          input: '',
+          state: '',
+          dateRange: '',
+          lastOperation: ''
+        },
+        detail: {
+          show: false
         },
         pickerOptions: '2017-12-26',
         tableData: [{
@@ -352,10 +375,33 @@ export default {
         }]
       }
     },
+    components: {
+      warrantsDetail
+    },
     methods: {
+      getTableData () { // 查询数据
+        if (this.form.dateRange === null) {
+          this.form.dateRange = ''
+        }
+        getWarrantsData(this.form, this.currentPage, this.pageSize)
+          .then(resp => {
+            if (resp.success) {
+              this.tableData = resp.data.content
+              this.totalPage = resp.data.total
+            } else {
+              throw (new Error(resp.data.message))
+            }
+          })
+          .catch(err => {
+            console.log(err.response)
+            this.$notify.error({
+              title: '错误',
+              message: err.name === 'Error' ? err.message : err.response.data.message
+            })
+          })
+      },
       showDetail (row) {
-        console.log(row)
-        return this.$router.push({path: '/appSys/channelMgt/managerDetail', query: {id: row.id}})
+        this.detail.show = true
       },
       handleOff (row) {
         if (row.status === '激活') {
@@ -367,14 +413,29 @@ export default {
       handleEdit (row) {
         return this.$router.push({path: '/system/userMgt/add', query: {id: row.id}})
       },
+      handleClose(){
+        this.detail.show = false
+      },
       onSubmit () {
         console.log('submit!')
       }
+    },
+    beforeMount () {
+      // 预加载表格数据
+      this.getTableData()
     }
   }
 </script>
+<style lang="less">
+@import "~@/style/color";
+  .table-head-bg{
+    background: @blue;
+    color: @white;
+  }
+</style>
 <style lang="less" scoped>
 @import "~@/style/color";
+
 .el-header {
   margin-top: 15px;
   text-align: left;

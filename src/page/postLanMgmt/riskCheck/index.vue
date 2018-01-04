@@ -57,6 +57,7 @@
       border
       highlight-current-row
       :data="tableData"
+      header-cell-class-name="table-head-bg"
       ref="table"
       style="width: 100%">
       <el-table-column
@@ -178,6 +179,9 @@
 
 <script>
 import riskCheckDetail from './children/detail'
+import {
+  findLoanCheckList
+} from '@/service/getData'
 
 export default {
     data () {
@@ -188,6 +192,12 @@ export default {
           role: '',
           area: '',
           dateRange: ''
+        },
+        form: {
+          input: '',
+          state: '',
+          dateRange: '',
+          lastOperation: ''
         },
         detail: {
           show: false
@@ -350,6 +360,27 @@ export default {
       riskCheckDetail
     },
     methods: {
+      getTableData () { // 查询数据
+        if (this.form.dateRange === null) {
+          this.form.dateRange = ''
+        }
+        findLoanCheckList(this.form, this.currentPage, this.pageSize)
+          .then(resp => {
+            if (resp.success) {
+              this.tableData = resp.data.content
+              this.totalPage = resp.data.total
+            } else {
+              throw (new Error(resp.data.message))
+            }
+          })
+          .catch(err => {
+            console.log(err.response)
+            this.$notify.error({
+              title: '错误',
+              message: err.name === 'Error' ? err.message : err.response.data.message
+            })
+          })
+      },
       showDetail (row) {
         this.detail.show = true
       },
@@ -367,9 +398,21 @@ export default {
       handleClose(){
         this.detail.show = false
       }
+    },
+    beforeMount () {
+      // 预加载表格数据
+      this.getTableData()
     }
   }
 </script>
+<style lang="less">
+@import "~@/style/color";
+  .table-head-bg{
+    background: @blue;
+    color: @white;
+  }
+</style>
+
 <style lang="less" scoped>
 @import "~@/style/color";
 
@@ -426,5 +469,9 @@ export default {
   .danger{
     background: #fa5555;
   }
+}
+.link{
+  color: #2299dd;
+  cursor: pointer;
 }
 </style>

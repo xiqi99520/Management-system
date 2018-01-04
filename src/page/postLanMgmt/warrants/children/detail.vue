@@ -3,12 +3,7 @@
     <el-container class="detailForm">
       <el-aside>
         <el-row>
-          <el-col>征信报告（详版）</el-col>
-          <el-col>资料核实</el-col>
-          <el-col>合同签署上传</el-col>
-          <el-col>合同公证上传</el-col>
-          <el-col>其他公证上传</el-col>
-          <el-col>是否陪同上抵</el-col>
+          <el-col>权证上抵资料</el-col>
         </el-row>
       </el-aside>
 
@@ -17,7 +12,7 @@
           <el-row>
             <el-col :span="12">
               <p class="detail-title">
-                <span>合同面签详情</span>
+                <span>权证上抵详情</span>
               </p>
             </el-col>
             <el-col :span="12" class="detail-title-btn">

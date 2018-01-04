@@ -1,8 +1,7 @@
 <template>
   <el-form :model="filterData" class="detailForm" ref="form">
-
     <el-form-item class="detailForm-item">
-      <table class="" cellspacing="0" cellpadding="10">
+      <table class="table-info" cellspacing="0" cellpadding="0">
         <tr>
           <td>申请编号</td>
           <td class="input">
@@ -38,6 +37,20 @@
       <h3 class="detailForm-title">资料核验</h3>
     </el-form-item>
     <el-form-item>
+      <!-- <table cellspacing="0" cellpadding="0">
+          <tr>
+            <td>抵押合同上传</td>
+            <td>
+              <el-upload
+                action="https://jsonplaceholder.typicode.com/posts/"
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove">
+                <i class="el-icon-plus"></i>
+              </el-upload>
+            </td>
+          </tr>
+        </table> -->
         <p>请点击右上角的选项卡，进入相应流程页面查看详情，检查所有资料是否齐备</p>
 
         <el-row :gutter="50">
@@ -133,11 +146,12 @@
 
         <el-form-item>
           <el-button type="primary">提交</el-button>
-          <el-button @click="handleClose">返回</el-button>
+          <el-button>返回</el-button>
         </el-form-item>
     </el-form-item>
   </el-form>
 </template>
+
 <script>
   export default {
     data () {
@@ -191,6 +205,11 @@
     }
   }
 </script>
+<style lang="less">
+  .el-upload--picture-card{
+    display: block;
+  }
+</style>
 <style lang="less" scoped>
   @import "~@/style/lendingApplyDetail";
 </style>

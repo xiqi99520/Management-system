@@ -68,6 +68,7 @@
       highlight-current-row
       :data="tableData"
       ref="table"
+      header-cell-class-name="table-head-bg"
       style="width: 100%">
       <el-table-column
         align="center"
@@ -374,6 +375,14 @@ export default {
     }
   }
 </script>
+
+<style lang="less">
+@import "~@/style/color";
+  .table-head-bg{
+    background: @blue;
+    color: @white;
+  }
+</style>
 <style lang="less" scoped>
 @import "~@/style/color";
 

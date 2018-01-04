@@ -28,11 +28,11 @@ const channelMgmt = r => require.ensure([], () => r(require('@/page/incomingData
 // 新增渠道
 const channelAdd = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/channel-add')), 'channelMgmt')
 
-// 渠道详情
-const channelDetail = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/channel-detail')), 'channelMgmt')
+// 支行管理
+const branchList = r => require.ensure([], () => r(require('@/page/incomingData/branch')), 'channelMgmt')
 
 // 客户经理管理
-const managerList = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/manager-list')), 'channelMgmt')
+const managerList = r => require.ensure([], () => r(require('@/page/incomingData/manager')), 'channelMgmt')
 
 // 新增客户经理
 const managerAdd = r => require.ensure([], () => r(require('@/page/incomingData/channel/children/manager-add')), 'channelMgmt')
@@ -200,24 +200,28 @@ const router = new Router({
           name: 'channelAdd',
           component: channelAdd
         }, {
-          path: 'managerList',
-          name: 'managerList',
-          component: managerList
-        }, {
           path: 'managerDetail',
           name: 'managerDetail',
           component: managerDetail
         }]
+      }, {
+        path: 'branchList',
+        name: 'branchList',
+        component: branchList
+      }, {
+        path: 'managerList',
+        name: 'managerList',
+        component: managerList
       }, { // 客户管理
-        path: 'customerMgmt',
-        component: customerMgmt,
-        name: 'customerMgmt',
-        children: [{
-          path: 'view',
-          name: 'customerDetail',
-          component: customerDetail
-        }]
+      path: 'customerMgmt',
+      component: customerMgmt,
+      name: 'customerMgmt',
+      children: [{
+        path: 'view',
+        name: 'customerDetail',
+        component: customerDetail
       }]
+    }]
     }, { // 业务流程
       path: 'operationFlow',
       name: 'operationFlow',
