@@ -3,34 +3,37 @@
      <el-header>
       <el-row type="flex" justify="space-between">
         <el-col :span="12"><div class="title">房产价值评估</div></el-col>
-        <el-col :span="12" align="right">
-          <el-button type="primary" class="allian-btn-default" @click="handleBack()">返回</el-button>
-        </el-col>
       </el-row>
     </el-header>
     <el-main class="view-container">
       <!-- 表格筛选 -->
       <el-form :inline="true" :model="filterData" class="form">
-        <el-form-item>
-          <el-input v-model="filterData.user" placeholder="申请人姓名/手机号/申请编号"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-select v-model="filterData.userStatus" placeholder="等待时长">
-            <el-option label="1小时" value="0"></el-option>
-            <el-option label="2小时" value="1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-date-picker type="daterange" align="right"
-            unlink-panels v-model="filterData.dateRange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" default-value="2010-10-01">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary">导出</el-button>
-        </el-form-item>
+        <el-row type="flex" justify="space-between">
+          <el-col align="left">
+            <el-form-item>
+              <el-input v-model="filterData.user" placeholder="申请人姓名/手机号/申请编号"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-select v-model="filterData.userStatus" placeholder="等待时长">
+                <el-option label="1小时" value="0"></el-option>
+                <el-option label="2小时" value="1"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-date-picker type="daterange" align="right"
+                unlink-panels v-model="filterData.dateRange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" default-value="2010-10-01">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="2" align="right">
+            <el-form-item>
+              <el-button type="primary">导出</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <!-- 表格 -->
       <el-table :data="tableData" stripe border style="width: 100%">
@@ -121,143 +124,152 @@
         class="pagination">
       </el-pagination>
     </el-main>
+    <transition name="el-zoom-in-center">
+      <!-- <detail-view :id="appId" v-show="detailShow" @on-close="handleCloseDetail"></detail-view> -->
+    </transition>
   </el-container>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        filterData: {
-          user: '',
-          loanStatus: '',
-          userStatus: '',
-          area: ''
-        },
-        data: [ ],
-        tableData: [{
-          id: 1,
-          code: '000001',
-          loanStatus: '渠道部',
-          pwdStatus: '未激活',
-          telnum: '134xxxx7123',
-          realName: '刘宝',
-          loanMoney: '120',
-          manager: '王晓',
-          sex: '男',
-          createTime: '2017/10/12 10:00',
-          userStatus: '激活',
-          email: 'liubao@hanglian.com',
-          updateTime: '2017/10/12 11:00'
-        }, {
-          id: 2,
-          code: '000002',
-          loanStatus: '渠道部',
-          pwdStatus: '未激活',
-          telnum: '134xxxx7123',
-          realName: '刘宝',
-          loanMoney: '120',
-          manager: '王晓',
-          sex: '男',
-          createTime: '2017/10/12 10:00',
-          userStatus: '激活',
-          email: 'liubao@hanglian.com',
-          updateTime: '2017/10/12 11:00'
-        }, {
-          id: 3,
-          code: '000003',
-          loanStatus: '渠道部',
-          pwdStatus: '未激活',
-          telnum: '134xxxx7123',
-          realName: '刘宝',
-          loanMoney: '120',
-          manager: '王晓',
-          sex: '男',
-          createTime: '2017/10/12 10:00',
-          userStatus: '激活',
-          email: 'liubao@hanglian.com',
-          updateTime: '2017/10/12 11:00'
-        }, {
-          id: 4,
-          code: '000004',
-          loanStatus: '渠道部',
-          pwdStatus: '未激活',
-          telnum: '134xxxx7123',
-          realName: '刘宝',
-          loanMoney: '120',
-          manager: '王晓',
-          sex: '男',
-          createTime: '2017/10/12 10:00',
-          userStatus: '激活',
-          email: 'liubao@hanglian.com',
-          updateTime: '2017/10/12 11:00'
-        }, {
-          id: 5,
-          code: '000005',
-          loanStatus: '渠道部',
-          pwdStatus: '未激活',
-          telnum: '134xxxx7123',
-          realName: '刘宝',
-          loanMoney: '120',
-          manager: '王晓',
-          sex: '男',
-          createTime: '2017/10/12 10:00',
-          userStatus: '激活',
-          email: 'liubao@hanglian.com',
-          updateTime: '2017/10/12 11:00'
-        }]
-      }
-    },
-    methods: {
-      handleView (row) {
-        console.log(row.id)
-        return this.$router.push({path: '/postLanMgmt/evaluationTaskDetail', query: {id: row.id}})
+// import detailView from './children/detail'
+export default {
+  data () {
+    return {
+      detailShow: false,
+      filterData: {
+        user: '',
+        loanStatus: '',
+        userStatus: '',
+        area: ''
       },
-      handleOff (row) {
-       // let id = row.id
-        let userStatus = row.userStatus
-        let msgInfo = ''
-        if (userStatus === '激活') {
-          row.userStatus = '禁用'
-          msgInfo = '激活成功！'
-        } else {
-          row.userStatus = '激活'
-          msgInfo = '禁用成功！'
-        }
+      data: [ ],
+      tableData: [{
+        id: 1,
+        code: '000001',
+        loanStatus: '渠道部',
+        pwdStatus: '未激活',
+        telnum: '134xxxx7123',
+        realName: '刘宝',
+        loanMoney: '120',
+        manager: '王晓',
+        sex: '男',
+        createTime: '2017/10/12 10:00',
+        userStatus: '激活',
+        email: 'liubao@hanglian.com',
+        updateTime: '2017/10/12 11:00'
+      }, {
+        id: 2,
+        code: '000002',
+        loanStatus: '渠道部',
+        pwdStatus: '未激活',
+        telnum: '134xxxx7123',
+        realName: '刘宝',
+        loanMoney: '120',
+        manager: '王晓',
+        sex: '男',
+        createTime: '2017/10/12 10:00',
+        userStatus: '激活',
+        email: 'liubao@hanglian.com',
+        updateTime: '2017/10/12 11:00'
+      }, {
+        id: 3,
+        code: '000003',
+        loanStatus: '渠道部',
+        pwdStatus: '未激活',
+        telnum: '134xxxx7123',
+        realName: '刘宝',
+        loanMoney: '120',
+        manager: '王晓',
+        sex: '男',
+        createTime: '2017/10/12 10:00',
+        userStatus: '激活',
+        email: 'liubao@hanglian.com',
+        updateTime: '2017/10/12 11:00'
+      }, {
+        id: 4,
+        code: '000004',
+        loanStatus: '渠道部',
+        pwdStatus: '未激活',
+        telnum: '134xxxx7123',
+        realName: '刘宝',
+        loanMoney: '120',
+        manager: '王晓',
+        sex: '男',
+        createTime: '2017/10/12 10:00',
+        userStatus: '激活',
+        email: 'liubao@hanglian.com',
+        updateTime: '2017/10/12 11:00'
+      }, {
+        id: 5,
+        code: '000005',
+        loanStatus: '渠道部',
+        pwdStatus: '未激活',
+        telnum: '134xxxx7123',
+        realName: '刘宝',
+        loanMoney: '120',
+        manager: '王晓',
+        sex: '男',
+        createTime: '2017/10/12 10:00',
+        userStatus: '激活',
+        email: 'liubao@hanglian.com',
+        updateTime: '2017/10/12 11:00'
+      }]
+    }
+  },
+  components: {
+    // detailView
+  },
+  methods: {
+    handleView (row) {
+      console.log(row.id)
+      return this.$router.push({path: '/postLanMgmt/evaluationTaskDetail', query: {id: row.id}})
+    },
+    handleOff (row) {
+      // let id = row.id
+      let userStatus = row.userStatus
+      let msgInfo = ''
+      if (userStatus === '激活') {
+        row.userStatus = '禁用'
+        msgInfo = '激活成功！'
+      } else {
+        row.userStatus = '激活'
+        msgInfo = '禁用成功！'
+      }
+      this.$message({
+        type: 'success',
+        message: msgInfo
+      })
+    },
+    handleDel (row) {
+      // let id = row.id;
+      this.$confirm('删除后不可恢复！确认删除该客户经理?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
         this.$message({
           type: 'success',
-          message: msgInfo
+          message: '删除成功!'
         })
-      },
-      handleDel (row) {
-        // let id = row.id;
-        this.$confirm('删除后不可恢复！确认删除该客户经理?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         })
-      },
-      handleBack () {
-        window.history.go(-1)
-      },
-      onSubmit () {
-        console.log('submit!')
-      }
+      })
+    },
+    handleBack () {
+      window.history.go(-1)
+    },
+    onSubmit () {
+      console.log('submit!')
     }
   }
+}
 </script>
 <style lang="less" scoped>
 @import "~@/style/color";
 .el-header {
+  margin-top: 15px;
   text-align: left;
   line-height: 20px;
   height: 20px !important;

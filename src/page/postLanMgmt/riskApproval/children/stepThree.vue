@@ -487,6 +487,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <!-- 选择初审结果为【通过】情况 -->
             <el-row type="flex" class="row-bg" justify="space-between" v-if="reviewForm.checkOneResult === '1'">
               <el-col :span="24" align="left">
                 <el-form-item label="请填写面签时客户需要携带的其他资料" class="form-item">
@@ -494,6 +495,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <!-- 选择初审结果为【拒贷】情况 -->
             <el-row type="flex" class="row-bg" justify="space-between" v-if="reviewForm.checkOneResult === '2'">
               <el-col :span="24" align="left">
                 <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入详细意见说明" :model="reviewForm.checkOneDenyNote"></el-input>

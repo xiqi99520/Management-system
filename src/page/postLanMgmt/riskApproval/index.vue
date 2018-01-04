@@ -2,7 +2,7 @@
   <el-container>
      <el-header>
       <el-row type="flex" justify="space-between">
-        <el-col :span="12"><div class="title">风控初审列表</div></el-col>
+        <el-col :span="12"><div class="title">风控审批列表</div></el-col>
         <el-col :span="12" align="right">
           <el-button type="primary" class="allian-btn-default" @click="handleBack()">返回</el-button>
         </el-col>
@@ -335,5 +335,8 @@ export default {
 }
 .el-tag {
   color:#666
+}
+.setHeader {
+  background-color: #ccc;
 }
 </style>
