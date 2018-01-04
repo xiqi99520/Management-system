@@ -470,4 +470,8 @@ export default {
     background: #fa5555;
   }
 }
+.link{
+  color: #2299dd;
+  cursor: pointer;
+}
 </style>

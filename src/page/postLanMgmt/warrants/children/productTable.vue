@@ -171,6 +171,11 @@
     }
   }
 </script>
+<style lang="less">
+  .el-upload--picture-card{
+    display: block;
+  }
+</style>
 <style lang="less" scoped>
   @import "~@/style/interviewDetail";
 </style>
