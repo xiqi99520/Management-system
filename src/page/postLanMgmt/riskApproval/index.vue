@@ -46,7 +46,7 @@
         </el-row>
       </el-form>
       <!-- 表格 -->
-      <el-table :data="tableData" stripe border style="width: 100%" size="mini">
+      <el-table :data="tableData" stripe border style="width: 100%" size="mini" header-cell-class-name="table-head-bg">
         <el-table-column
           fixed
           label="ID"
@@ -294,6 +294,13 @@ export default {
   }
 }
 </script>
+<style lang="less">
+@import "~@/style/color";
+  .table-head-bg{
+    background: @blue;
+    color: @white;
+  }
+</style>
 <style lang="less" scoped>
 @import "~@/style/color";
 .el-header {

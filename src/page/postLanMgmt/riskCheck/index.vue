@@ -57,7 +57,7 @@
       border
       highlight-current-row
       :data="tableData"
-      header-cell-class-name="head-bg"
+      header-cell-class-name="table-head-bg"
       ref="table"
       style="width: 100%">
       <el-table-column
@@ -407,10 +407,15 @@ export default {
 </script>
 <style lang="less">
 @import "~@/style/color";
-.head-bg{
-  background: @blue;
-  color: @white;
-}
+  .table-head-bg{
+    background: @blue;
+    color: @white;
+  }
+</style>
+
+<style lang="less" scoped>
+@import "~@/style/color";
+
 .el-header {
   margin-top: 15px;
   text-align: left;

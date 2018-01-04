@@ -46,10 +46,10 @@
                   风控稽核
                 </el-tab-pane>
                 <el-tab-pane label="面签公证" name="seven">
-                  面签公证
+                  <interview-detail></interview-detail>
                 </el-tab-pane>
                 <el-tab-pane label="权证上抵" name="eight">
-                  权证上抵
+                  <warrants-detail></warrants-detail>
                 </el-tab-pane>
               </el-tabs>
             </el-col>
@@ -64,6 +64,8 @@ import productTable from './productTable'
 import stepOne from '../../riskApproval/children/stepOne'
 import stepTwo from '../../riskApproval/children/stepTwo'
 import stepThree from '../../riskApproval/children/stepThree'
+import interviewDetail from '../../interview/children/productTable'
+import warrantsDetail from '../../warrants/children/productTable'
 
 export default {
   name: 'lendingApplyDetail',
@@ -71,7 +73,9 @@ export default {
     productTable,
     stepOne,
     stepTwo,
-    stepThree
+    stepThree,
+    interviewDetail,
+    warrantsDetail
   },
   data () {
     return {
@@ -82,7 +86,7 @@ export default {
 
   },
   methods: {
-    handleClose () { // 预上传图片
+    handleClose () {
       this.$emit('on-close')
     }
   }

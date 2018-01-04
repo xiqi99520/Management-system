@@ -45,8 +45,8 @@
               <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
                 list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
+
+                >
                 <i class="el-icon-plus"></i>
               </el-upload>
             </td>
@@ -57,8 +57,7 @@
               <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
                 list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
+                >
                 <i class="el-icon-plus"></i>
               </el-upload>
             </td>
@@ -69,8 +68,8 @@
               <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
                 list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
+
+                >
                 <i class="el-icon-plus"></i>
               </el-upload>
             </td>
@@ -81,8 +80,31 @@
               <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
                 list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
+
+                >
+                <i class="el-icon-plus"></i>
+              </el-upload>
+            </td>
+          </tr>
+          <tr>
+            <td>婚史核查资料(可选，需要核查时上传)</td>
+            <td>
+              <el-upload
+                action="https://jsonplaceholder.typicode.com/posts/"
+                list-type="picture-card"
+
+                >
+                <i class="el-icon-plus"></i>
+              </el-upload>
+            </td>
+          </tr>
+          <tr>
+            <td>法院核查资料(可选，需要核查时上传)</td>
+            <td>
+              <el-upload
+                action="https://jsonplaceholder.typicode.com/posts/"
+                list-type="picture-card"
+                >
                 <i class="el-icon-plus"></i>
               </el-upload>
             </td>
