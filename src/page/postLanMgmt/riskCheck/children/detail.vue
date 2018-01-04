@@ -40,10 +40,10 @@
                   <step-three></step-three>
                 </el-tab-pane>
                 <el-tab-pane label="终审评定" name="five">
-                  终审评定
+                  <step-three></step-three>
                 </el-tab-pane>
                 <el-tab-pane label="风控稽核" name="six">
-                  风控稽核
+                  <step-three></step-three>
                 </el-tab-pane>
                 <el-tab-pane label="面签公证" name="seven">
                   <interview-detail></interview-detail>

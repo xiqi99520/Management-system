@@ -372,6 +372,13 @@ export default {
         text-align: left;
         font-size: 16px
       }
+      .creditTitle {
+        padding-top:15px;
+        line-height:40px;
+        text-align:left;
+        font-weight: bold;
+        font-size: 14px
+      }
     }
 }
 .tollyList {

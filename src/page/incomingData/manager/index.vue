@@ -1,15 +1,17 @@
 <template>
   <el-container>
     <el-header>
-      <div>渠道管理</div>
+      <el-row type="flex" justify="space-between">
+        <el-col :span="12"><div class="title">客户经理管理</div></el-col>
+      </el-row>
     </el-header>
     <el-main>
       <!-- 表格筛选 -->
       <el-form :inline="true" :model="filterData" class="form">
         <el-form-item>
-          <el-input v-model="filterData.user" placeholder="渠道名/负责人"></el-input>
+          <el-input v-model="filterData.user" placeholder="手机号/姓名/营销代号"></el-input>
         </el-form-item>
-        <el-form-item label="渠道状态：">
+        <el-form-item label="状态：">
           <el-select v-model="filterData.department" placeholder="全部">
             <el-option label="渠道部" value="0"></el-option>
             <el-option label="运营部" value="1"></el-option>
@@ -35,17 +37,20 @@
           <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">导出CSV文件</el-button>
+          <el-button type="primary">导入模板</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">创建新渠道</el-button>
+          <el-button type="primary">批量导入</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">创建客户经理</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格 -->
-      <el-table :data="tableData" stripe border  ref="table" style="width: 100%">
+      <el-table :data="tableData" stripe border  ref="table" style="width: 100%" header-cell-class-name="table-head-bg">
           <el-table-column
             prop="name"
-            label="渠道名称"
+            label="客户经理姓名"
             align="center"
             width="150">
             <template slot-scope="scope">
@@ -53,8 +58,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="conscientious"
-            label="负责人"
+            prop="code"
+            label="营销代码"
             align="center"
             width="100">
           </el-table-column>
@@ -65,52 +70,40 @@
             width="120">
           </el-table-column>
           <el-table-column
-            prop="createTime"
-            label="创建时间"
+            prop="subBranch"
+            label="所属支行"
             align="center"
             width="150">
           </el-table-column>
           <el-table-column
-            prop="subBranchNum"
-            label="支行数目"
+            prop="lattice"
+            label="所在网点"
             align="center"
             width="100">
           </el-table-column>
           <el-table-column
-            prop="latticeNum"
-            label="网点数目"
+            prop="status"
+            label="当前状态"
             align="center"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="customerNum"
-            label="客户经理人数"
+            prop="createTime"
+            label="创建时间"
             align="center"
             width="120">
-          </el-table-column>
-          <el-table-column
-            prop="cumulative"
-            label="累计进件数"
-            align="center"
-            width="100">
           </el-table-column>
           <el-table-column
             prop="total"
-            label="累计放款额"
+            label="累计进件数"
             align="center"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="status"
-            label="渠道状态"
+            prop="amount"
+            label="累计放款额"
             align="center"
-            width="150">
-          </el-table-column>
-          <el-table-column
-            prop="updateTime"
-            label="最后更新时间"
-            align="center"
-            width="150">
+            width="180">
           </el-table-column>
           <el-table-column
             fixed="right"
@@ -146,141 +139,121 @@
         pickerOptions: '2017-12-26',
         tableData: [{
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }, {
           id: 1,
-          name: '西城一区',
-          conscientious: '刘大',
+          name: '王力宏',
+          code: 'XC083802',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
-          subBranchNum: 12,
-          latticeNum: 8,
-          customerNum: 27,
-          cumulative: 32,
-          total: '2272W',
+          subBranch: '北京三元桥支行',
+          lattice: '燕莎网点支行',
           status: '激活',
-          updateTime: '2017/10/12 11:00'
+          createTime: '2017/10/12 11:00',
+          total: 2365,
+          amount: '2272W'
         }]
       }
     },
     methods: {
       handleView (row) {
-        console.log(row.id)
-        return this.$router.push({path: '/appSys/channelMgt/channelDetail', query: {id: row.id}})
+        console.log(row)
+        return this.$router.push({path: '/appSys/channelMgt/managerDetail', query: {id: row.id}})
       },
       handleOff (row) {
         if (row.status === '激活') {
@@ -298,22 +271,73 @@
     }
   }
 </script>
+<style lang="less">
+@import "~@/style/color";
+  .table-head-bg{
+    background: @blue;
+    color: @white;
+  }
+</style>
+
 <style lang="less" scoped>
+@import "~@/style/color";
+
 .el-header {
+  margin-top: 15px;
   text-align: left;
   line-height: 20px;
   height: 20px !important;
-  div {
+  .title {
+    margin: 5px;
     text-indent: 10px;
-    border-left: 5px solid #2299dd;
+    border-left: 5px solid @blue;
     font-size: 20px;
+    vertical-align: middle
+  }
+  .allian-btn-default {
+    line-height:20px;
+    padding:5px 20px;
+  }
+}
+.view-container {
+  margin-top:20px;
+  padding-top:30px;
+  border-top:1px solid @blue;
+  .link-active {
+    color: @blue;
+    cursor: pointer;
   }
 }
 
-.filterData {
+.view-filterData{
   text-align: left;
   .input-select {
     width: 100px;
   }
+}
+.pagination {
+  padding:15px 0;
+}
+.tip{
+  text-align: left;
+  margin: 20px 0;
+  span{
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .warning{
+    background: #eb9e05;
+  }
+  .danger{
+    background: #fa5555;
+  }
+}
+.link{
+  color: #2299dd;
+  cursor: pointer;
 }
 </style>

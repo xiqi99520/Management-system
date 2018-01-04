@@ -1,15 +1,17 @@
 <template>
   <el-container>
     <el-header>
-      <div>支行管理</div>
+      <el-row type="flex" justify="space-between">
+        <el-col :span="12"><div class="title">支行管理</div></el-col>
+      </el-row>
     </el-header>
     <el-main>
       <!-- 表格筛选 -->
       <el-form :inline="true" :model="filterData" class="form">
         <el-form-item>
-          <el-input v-model="filterData.user" placeholder="渠道名/负责人"></el-input>
+          <el-input v-model="filterData.user" placeholder="支行名/负责人"></el-input>
         </el-form-item>
-        <el-form-item label="渠道状态：">
+        <el-form-item label="渠道对接人：">
           <el-select v-model="filterData.department" placeholder="全部">
             <el-option label="渠道部" value="0"></el-option>
             <el-option label="运营部" value="1"></el-option>
@@ -35,64 +37,67 @@
           <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">导出CSV文件</el-button>
+          <el-button type="primary">网点导入模板</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">创建新渠道</el-button>
+          <el-button type="primary">批量导入网点</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">创建网点支行</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">创建一级支行</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格 -->
-      <el-table :data="tableData" stripe border  ref="table" style="width: 100%">
-          <el-table-column
-            prop="name"
-            label="渠道名称"
+      <el-table :data="tableData" stripe border  ref="table" style="width: 100%" header-cell-class-name="table-head-bg">
+        <el-table-column type="expand"
+            prop=""
+            label=""
             align="center"
             width="150">
-            <template slot-scope="scope">
-              <span @click="handleView(scope.row)">{{ scope.row.name }}</span>
-            </template>
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="支行名称"
+            align="center"
+            width="150">
           </el-table-column>
           <el-table-column
             prop="conscientious"
-            label="负责人"
+            label="渠道对接人"
             align="center"
             width="100">
           </el-table-column>
           <el-table-column
             prop="telnum"
-            label="手机号码"
+            label="对接人手机"
             align="center"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="createTime"
-            label="创建时间"
+            prop="grade"
+            label="支行等级"
             align="center"
             width="150">
           </el-table-column>
           <el-table-column
             prop="subBranchNum"
-            label="支行数目"
+            label="下属网点数"
             align="center"
             width="100">
           </el-table-column>
           <el-table-column
             prop="latticeNum"
-            label="网点数目"
-            align="center"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="customerNum"
             label="客户经理人数"
             align="center"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="cumulative"
+            prop="customerNum"
             label="累计进件数"
             align="center"
-            width="100">
+            width="120">
           </el-table-column>
           <el-table-column
             prop="total"
@@ -102,7 +107,7 @@
           </el-table-column>
           <el-table-column
             prop="status"
-            label="渠道状态"
+            label="支行状态"
             align="center"
             width="150">
           </el-table-column>
@@ -145,11 +150,10 @@
         },
         pickerOptions: '2017-12-26',
         tableData: [{
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -158,11 +162,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -171,11 +174,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -184,11 +186,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -197,11 +198,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -210,11 +210,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -223,11 +222,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -236,11 +234,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -249,11 +246,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -262,11 +258,10 @@
           status: '激活',
           updateTime: '2017/10/12 11:00'
         }, {
-          id: 1,
-          name: '西城一区',
+          name: '北京燕莎支行',
           conscientious: '刘大',
           telnum: '134xxxx7123',
-          createTime: '2017/10/12 10:00',
+          grade: '一级支行',
           subBranchNum: 12,
           latticeNum: 8,
           customerNum: 27,
@@ -280,7 +275,7 @@
     methods: {
       handleView (row) {
         console.log(row.id)
-        return this.$router.push({path: '/appSys/channelMgt/channelDetail', query: {id: row.id}})
+        return this.$router.push({path: '/system/userMgt/view', query: {id: row.id}})
       },
       handleOff (row) {
         if (row.status === '激活') {
@@ -298,22 +293,73 @@
     }
   }
 </script>
+<style lang="less">
+@import "~@/style/color";
+  .table-head-bg{
+    background: @blue;
+    color: @white;
+  }
+</style>
+
 <style lang="less" scoped>
+@import "~@/style/color";
+
 .el-header {
+  margin-top: 15px;
   text-align: left;
   line-height: 20px;
   height: 20px !important;
-  div {
+  .title {
+    margin: 5px;
     text-indent: 10px;
-    border-left: 5px solid #2299dd;
+    border-left: 5px solid @blue;
     font-size: 20px;
+    vertical-align: middle
+  }
+  .allian-btn-default {
+    line-height:20px;
+    padding:5px 20px;
+  }
+}
+.view-container {
+  margin-top:20px;
+  padding-top:30px;
+  border-top:1px solid @blue;
+  .link-active {
+    color: @blue;
+    cursor: pointer;
   }
 }
 
-.filterData {
+.view-filterData{
   text-align: left;
   .input-select {
     width: 100px;
   }
+}
+.pagination {
+  padding:15px 0;
+}
+.tip{
+  text-align: left;
+  margin: 20px 0;
+  span{
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .warning{
+    background: #eb9e05;
+  }
+  .danger{
+    background: #fa5555;
+  }
+}
+.link{
+  color: #2299dd;
+  cursor: pointer;
 }
 </style>
