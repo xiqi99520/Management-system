@@ -125,12 +125,14 @@
       </el-pagination>
     </el-main>
     <transition name="el-zoom-in-center">
-      <!-- <detail-view :id="appId" v-show="detailShow" @on-close="handleCloseDetail"></detail-view> -->
+      <detail-view v-show="detail.show" @on-close="handleClose"></detail-view>
     </transition>
   </el-container>
 </template>
+
 <script>
-// import detailView from './children/detail'
+import detailView from './children/detail'
+
 export default {
   data () {
     return {
@@ -142,6 +144,9 @@ export default {
         area: ''
       },
       data: [ ],
+      detail: {
+        show: false
+      },
       tableData: [{
         id: 1,
         code: '000001',
@@ -216,12 +221,11 @@ export default {
     }
   },
   components: {
-    // detailView
+    detailView
   },
   methods: {
     handleView (row) {
-      console.log(row.id)
-      return this.$router.push({path: '/postLanMgmt/evaluationTaskDetail', query: {id: row.id}})
+      this.detail.show = true
     },
     handleOff (row) {
       // let id = row.id
@@ -256,6 +260,9 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    handleClose(){
+      this.detail.show = false
     },
     handleBack () {
       window.history.go(-1)
