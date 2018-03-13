@@ -1,6 +1,6 @@
 # hangliang_vue
 
-> A Vue.js project
+> 基于vue全家桶+axios+elementUI的后台管理系统
 
 ## Build Setup
 
