@@ -23,7 +23,7 @@ export default {
   computed: {
     ...mapState(['navs', 'menus', 'userInfo'])
   },
-  beforeMount () {
+  /*beforeMount () {
     if (!this.navs.data.length) { // 登录跳转
       // console.log(navMockData)
       let nav = { active: '', data: [] }
@@ -41,7 +41,7 @@ export default {
     } else {  // 刷新或者点击跳转
       this.handleSelect(this.$route.query.index)
     }
-  },
+  },*/
   methods: {
     ...mapMutations(['SET_NAV', 'SET_BTN']),
     handleSelect (index, jump = false) { // 点击导航

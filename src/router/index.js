@@ -170,7 +170,7 @@ const router = new Router({
     name: 'Home',
     component: home,
     meta: {
-      requireAuth: true
+      requireAuth: false
     },
     children: [{ // 进件系统
       path: 'incoming',

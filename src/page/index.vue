@@ -18,18 +18,19 @@
               <img src="../assets/default_user.png" alt="" class="home_logo">
               <el-dropdown>
                 <span class="el-dropdown-link">
-                  <span id="name">{{userInfo.username}}</span>
+                  <span id="name">测试</span>
+                  <!-- <span id="name">{{userInfo.username}}</span> -->
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item disabled>用户角色：</el-dropdown-item>
-                  <el-dropdown-item
+                  <!-- <el-dropdown-item
                     v-for="(role, idx) in userInfo.roles"
                     disabled
                     :key="idx"
                     size="mini">
                     &nbsp;&nbsp;{{role.name}}
-                  </el-dropdown-item>
+                  </el-dropdown-item> -->
                   <el-dropdown-item @click.native='show = true' divided>修改密码</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -56,7 +57,8 @@
         </keep-alive>
       </el-main>
     </el-container>
-    <user-contorl :show="show" :phone="userInfo.phoneNo" @on-close="handleClose"></user-contorl>
+    <user-contorl :show="show" :phone="1231231" @on-close="handleClose"></user-contorl>
+    <!-- <user-contorl :show="show" :phone="userInfo.phoneNo" @on-close="handleClose"></user-contorl> -->
   </el-container>
 </template>
 
@@ -94,7 +96,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userInfo', 'menus'])
+    // ...mapState(['userInfo', 'menus'])
+    ...mapState(['menus'])
   },
   methods: {
     ...mapMutations(['LOG_OUT']),
